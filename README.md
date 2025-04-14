@@ -1,54 +1,53 @@
-# React + TypeScript + Vite
+# 🚀 TrabaHope – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TrabaHope is a smart job platform that connects **applicants** and **recruiters** through an AI-enhanced hiring experience. The frontend is built using modern React tools and component libraries for a clean, responsive, and accessible user experience.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Demo
+Coming soon...
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📌 Project Description
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+TrabaHope aims to bring hope and opportunity by providing a seamless and intelligent job-matching platform. It supports two main user types:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 👤 Applicant Features:
+- Filter jobs based on resume
+- Save jobs to favorites
+- Track application status
+- Upload resume (PDF)
+- Manage profile (email, LinkedIn, contact info)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🧑‍💼 Recruiter Features:
+- Post job listings
+- Manage and view applicants
+- Filter candidates using AI rating scores
+- Respond to applications (Hire / Reject / Set Interview)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### 🤖 AI Features:
+- Resume match scoring based on job description
+- AI-based candidate ranking
+- Resume feedback (missing skills, section suggestions)
+- Career path/job recommendations based on applicant resume
+
+---
+
+## 🧰 Tech Stack
+
+| Tool/Library       | Description                              |
+|--------------------|------------------------------------------|
+| **React + TypeScript** | Modern UI development with static typing |
+| **Tailwind CSS**       | Utility-first styling for rapid UI design |
+| **Shadcn/UI**          | Beautiful and accessible UI components   |
+| **Material UI (MUI)**  | Additional component library             |
+| **Zustand**            | Lightweight state management             |
+| **Firebase Auth**      | User authentication                     |
+
+---
+
+## 💡 Inspiration
+The name TrabaHope comes from the desire to bring "trabaho" (work) and hope together—empowering job seekers and recruiters through intelligent design and technology.
+
+
