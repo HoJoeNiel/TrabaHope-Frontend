@@ -14,6 +14,13 @@ export interface FeatureType {
   description: string;
 }
 
+export interface UserTestimonyType {
+  photo: string;
+  name: string;
+  jobTitle: string;
+  testimony: string;
+}
+
 export const FEATURES: FeatureType[] = [
   {
     icon: <IoDocumentTextOutline className="text-white size-6" />,
@@ -94,5 +101,32 @@ export const RECRUITERS_FEATURE: FeatureType[] = [
     icon: <FaCheck className="text-white size-6" />,
     feature: "Manage applications",
     description: "Easily respond to applications and schedule interviews",
+  },
+];
+
+export const USER_TESTIMONY: UserTestimonyType[] = [
+  {
+    photo:
+      "https://img.freepik.com/premium-photo/woman-wearing-black-suit-with-white-shirt-that-says-she-is-smiling_1044065-157.jpg",
+    name: "Sarah Johnson",
+    jobTitle: "Software Engineer",
+    testimony:
+      "TrabaHope helped me find a job that perfectly matched my skills. The AI feedback on my resume was invaluable!",
+  },
+  {
+    photo:
+      "https://i.pinimg.com/originals/07/33/ba/0733ba760b29378474dea0fdbcb97107.png",
+    name: "Michael Tanner",
+    jobTitle: "HR Manager",
+    testimony:
+      "As a recruiter, I've cut my hiring time in half. The AI ranking system consistently helps us find the best candidates.",
+  },
+  {
+    photo:
+      "https://media.licdn.com/dms/image/D5603AQHAs8cT0hXD2g/profile-displayphoto-shrink_800_800/0/1689518586089?e=2147483647&v=beta&t=ZNTIFkmhfRGGeB1PLwpwuHn1yBF1E-cAfcqaRitzPxY",
+    name: "Emily Rodriguez",
+    jobTitle: "Marketing Specialist",
+    testimony:
+      "The career path suggestions opened my eyes to opportunities I hadn't considered. Now I'm in a role I love!",
   },
 ];

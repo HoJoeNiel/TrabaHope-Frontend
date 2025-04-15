@@ -2,6 +2,7 @@ import {
   FEATURES,
   JOB_SEEKERS_FEATURE,
   RECRUITERS_FEATURE,
+  USER_TESTIMONY,
 } from "@/constants/constants";
 
 import Header from "@/components/Header";
@@ -11,6 +12,7 @@ import businessDeal from "@/assets/undraw_business-deal_nx2n.svg";
 import interview from "@/assets/undraw_interview_yz52.svg";
 import peopleSearch from "@/assets/undraw_people-search_xpq4.svg";
 import businessMan from "@/assets/undraw_business-man_0ifc.svg";
+import TestimonyCard from "@/components/LandingPage/TestimonyCard";
 
 export default function LandingPage() {
   return (
@@ -162,7 +164,7 @@ export default function LandingPage() {
         </section>
 
         {/* CTA */}
-        <section className="w-full h-[400px] py-20   gradient-bg">
+        <section className="w-full h-[400px] py-20 gradient-bg">
           <div className="text-center">
             <h2 className="text-5xl font-extrabold text-white sm:text-4xl">
               <span className="block">Ready to transform your job search?</span>
@@ -179,6 +181,29 @@ export default function LandingPage() {
               <button className="px-4 py-2 text-lg text-white bg-blue-500 rounded-lg shadow transition-transform duration-300 hover:scale-105">
                 Learn more
               </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="w-full h-[500px] py-20 bg-white">
+          <div className="max-w-[1440px] mx-auto text-center">
+            <h2 className="text-5xl font-extrabold text-black sm:text-4xl">
+              <span className="block">Loved by users</span>
+            </h2>
+            <p className="mt-3 mb-8 mx-auto text-2xl text-gray-500">
+              See what our community is saying about TrabaHope
+            </p>
+
+            <div className="grid grid-cols-3 gap-8">
+              {USER_TESTIMONY.map((u) => (
+                <TestimonyCard
+                  photo={u.photo}
+                  name={u.name}
+                  jobTitle={u.jobTitle}
+                  testimony={u.testimony}
+                />
+              ))}
             </div>
           </div>
         </section>
