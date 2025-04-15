@@ -1,4 +1,8 @@
 import Header from "@/components/Header";
+import FeatureCard from "@/components/LandingPage/FeatureCard";
+
+import { FEATURES } from "@/constants/constants";
+
 import businessDeal from "@/assets/undraw_business-deal_nx2n.svg";
 import interview from "@/assets/undraw_interview_yz52.svg";
 import peopleSearch from "@/assets/undraw_people-search_xpq4.svg";
@@ -61,6 +65,34 @@ export default function LandingPage() {
             d="M0,64L30,64C60,64,120,64,180,101.3C240,139,300,213,360,218.7C420,224,480,160,540,117.3C600,75,660,53,720,58.7C780,64,840,96,900,117.3C960,139,1020,149,1080,165.3C1140,181,1200,203,1260,192C1320,181,1380,139,1410,117.3L1440,96L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
           ></path>
         </svg>
+      </section>
+
+      {/* Features  */}
+      <section className="w-full h-[500px]">
+        <div className="max-w-[1440px] mx-auto">
+          <div className="text-center">
+            <h3 className="text-dusty-sky-blue font-semibold tracking-wide uppercase">
+              AI-POWERED PLATFORM
+            </h3>
+            <h1 className="text-4xl mt-1 font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-4xl">
+              Smart matching for better careers
+            </h1>
+            <p className="max-w-xl mt-5 mx-auto text-xl text-gray-500">
+              TrabaHope uses advanced AI to streamline the job search and hiring
+              process for both applicants and recruiters.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-6 mt-16">
+            {FEATURES.map(({ icon, feature, description }) => (
+              <FeatureCard
+                icon={icon}
+                feature={feature}
+                description={description}
+              />
+            ))}
+          </div>
+        </div>
       </section>
     </div>
   );
