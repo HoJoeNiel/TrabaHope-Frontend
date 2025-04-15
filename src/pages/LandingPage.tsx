@@ -1,11 +1,16 @@
 import Header from "@/components/Header";
 import FeatureCard from "@/components/LandingPage/FeatureCard";
 
-import { FEATURES } from "@/constants/constants";
+import {
+  FEATURES,
+  JOB_SEEKERS_FEATURE,
+  RECRUITERS_FEATURE,
+} from "@/constants/constants";
 
 import businessDeal from "@/assets/undraw_business-deal_nx2n.svg";
 import interview from "@/assets/undraw_interview_yz52.svg";
 import peopleSearch from "@/assets/undraw_people-search_xpq4.svg";
+import businessMan from "@/assets/undraw_business-man_0ifc.svg";
 
 export default function LandingPage() {
   return (
@@ -91,6 +96,62 @@ export default function LandingPage() {
                 description={description}
               />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* For Job Seekers */}
+      <section className="w-full h-[600px] bg-gray-50 py-12">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-2">
+          <div>
+            <h1 className="text-3xl mt-1 font-extrabold text-gray-900">
+              For Job Seekers
+            </h1>
+            <p className="mt-3 mb-8 mx-auto text-xl text-gray-500">
+              Find your dream job faster with TrabaHope's smart tools designed
+              for applicants.
+            </p>
+            {JOB_SEEKERS_FEATURE.map(({ icon, feature, description }) => (
+              <FeatureCard
+                icon={icon}
+                feature={feature}
+                description={description}
+              />
+            ))}
+            <button className="gradient-bg text-white font-bold px-4 py-2 rounded-lg mt-6">
+              Sign up as Applicant
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <img src={businessMan} alt="Business man" className="w-[430px]" />
+          </div>
+        </div>
+      </section>
+
+      {/* For Recruiters */}
+      <section className="w-full h-[600px] py-12">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-2">
+          <div>
+            <h1 className="text-3xl mt-1 font-extrabold text-gray-900">
+              For Recruiters
+            </h1>
+            <p className="mt-3 mb-8 mx-auto text-xl text-gray-500">
+              Find the perfect candidates and streamline your hiring process
+              with TrabaHope.
+            </p>
+            {RECRUITERS_FEATURE.map(({ icon, feature, description }) => (
+              <FeatureCard
+                icon={icon}
+                feature={feature}
+                description={description}
+              />
+            ))}
+            <button className="gradient-bg text-white font-bold px-4 py-2 rounded-lg mt-6">
+              Sign up as Recruiter
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <img src={peopleSearch} alt="Business man" className="w-[430px]" />
           </div>
         </div>
       </section>
