@@ -8,7 +8,6 @@ import {
 import Header from "@/components/Header";
 import FeatureCard from "@/components/LandingPage/FeatureCard";
 
-import businessDeal from "@/assets/undraw_business-deal_nx2n.svg";
 import interview from "@/assets/undraw_interview_yz52.svg";
 import peopleSearch from "@/assets/undraw_people-search_xpq4.svg";
 import businessMan from "@/assets/undraw_business-man_0ifc.svg";
@@ -47,21 +46,16 @@ export default function LandingPage() {
                   </button>
                 </div>
               </div>
-              <div className="relative h-[500px]">
+              <div className="relative h-[550px]">
                 <img
                   src={interview}
                   alt="interview"
-                  className="size-52 absolute bottom-4 left-20 z-10"
+                  className="w-[380px] absolute bottom-0 left-40 z-10"
                 />
                 <img
                   src={peopleSearch}
                   alt="interview"
-                  className="size-96 absolute top-10 left-40"
-                />
-                <img
-                  src={businessDeal}
-                  alt="interview"
-                  className="size-52 absolute top-0 right-32"
+                  className="w-[380px] absolute top-0 left-80"
                 />
               </div>
             </div>
