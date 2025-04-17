@@ -1,5 +1,5 @@
-import RecruiterSignup from "./pages/RecruiterSignup";
+import ApplicantSignup from "./pages/ApplicantSignup";
 
 export default function App() {
-  return <RecruiterSignup />;
+  return <ApplicantSignup />;
 }
