@@ -10,7 +10,6 @@
 
 .gradient-bg {
   background: linear-gradient(90deg, #6096b4 0%, #93bfcf 100%);
-  /* @apply bg-gradient-to-r from-emerald-700 to-sky-700; */
 }
 .hero-waves {
   position: absolute;

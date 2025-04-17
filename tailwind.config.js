@@ -11,6 +11,7 @@ export default {
       },
       colors: {
         "dusty-sky-blue": "#6096b4",
+        "muted-aqua": "#93bfcf",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
