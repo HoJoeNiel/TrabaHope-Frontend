@@ -1,5 +1,5 @@
-import Login from "./pages/Login";
+import RecruiterSignup from "./pages/RecruiterSignup";
 
 export default function App() {
-  return <Login />;
+  return <RecruiterSignup />;
 }
