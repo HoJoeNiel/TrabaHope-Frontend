@@ -7,12 +7,15 @@ import { GiStonePath } from "react-icons/gi";
 import { IoIosSearch } from "react-icons/io";
 import { VscChecklist } from "react-icons/vsc";
 import { FaCheck } from "react-icons/fa6";
+import { GoGraph } from "react-icons/go";
+import { PiListChecksThin } from "react-icons/pi";
+import { FaRobot } from "react-icons/fa";
 
 export interface FeatureType {
   icon: React.ReactNode;
   feature: string;
   description: string;
-  className: string;
+  className?: string;
 }
 
 export interface UserTestimonyType {
@@ -129,5 +132,41 @@ export const USER_TESTIMONY: UserTestimonyType[] = [
     jobTitle: "Marketing Specialist",
     testimony:
       "The career path suggestions opened my eyes to opportunities I hadn't considered. Now I'm in a role I love!",
+  },
+];
+
+export const APPLICANT_SIGNUP_FEATURE = [
+  {
+    icon: <IoDocumentTextOutline className="text-white size-6" />,
+    title: "AI Resume Matching",
+    description:
+      "Our AI analyzes your resume and matches you with jobs that fit your skills and experience, increasing your chances of getting hired.",
+  },
+  {
+    icon: <GoGraph className="text-white size-6" />,
+    title: "Career Growth Insights",
+    description:
+      " Get personalized feedback on your resume, skill recommendations, and career path suggestions based on your experience and goals.",
+  },
+  {
+    icon: <PiListChecksThin className="text-white size-6" />,
+    title: "Application Tracking",
+    description:
+      "Keep track of all your job applications in one place and receive updates on your application status in real-time.",
+  },
+];
+
+export const RECRUITER_SIGNUP_FEATURE = [
+  {
+    icon: <FaRobot className="text-white size-6" />,
+    title: "AI-Powered candidate matching",
+    description:
+      "Our advanced AI algorithms help you find candidates that truly match your job requirements, reducing time-to-hire and improving quality of hires.",
+  },
+  {
+    icon: <PiListChecksThin className="text-white size-6" />,
+    title: "Streamlined workflow",
+    description:
+      "Manage your entire recruitment process in one place with intelligent filtering, automated screening, and comprehensive applicant tracking.",
   },
 ];
