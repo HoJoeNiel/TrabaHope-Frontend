@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button";
 export default function RecruiterSignup() {
   return (
     <div className="w-screen h-screen grid grid-cols-2 max-md:grid-cols-1">
-      <div className="gradient-bg h-screen max-md:h-auto max-md:pb-20 flex justify-end pt-28">
+      <div className="recruiter-gradient h-screen max-md:h-auto max-md:pb-20 flex justify-end pt-28">
         <div className="w-full max-w-[720px] mx-16">
           <div className="flex items-center space-x-3">
-            <div className="size-12 max-lg:size-10 gradient-bg flex items-center justify-center shadow rounded-xl">
+            <div className="size-12 max-lg:size-10 recruiter-gradient flex items-center justify-center shadow rounded-xl">
               <span className="text-white text-lg max-lg:text-base font-bold">
                 T
               </span>
@@ -68,7 +68,7 @@ export default function RecruiterSignup() {
       </div>
 
       <div className="bg-white h-screen">
-        <div className="px-24 mt-20 w-full max-w-[720px]">
+        <div className="px-24 mt-20 mb-12 w-full max-w-[720px]">
           <h2 className="text-3xl max-lg:text-2xl font-bold text-gray-800 mb-2">
             Create Recruiter Account
           </h2>
@@ -126,7 +126,7 @@ export default function RecruiterSignup() {
             </label>
           </div>
 
-          <Button className="w-full py-6 my-6 text-lg max-lg:text-base gradient-bg">
+          <Button className="w-full py-6 my-6 text-lg max-lg:text-base recruiter-gradient">
             Sign Up as Recruiter
           </Button>
 

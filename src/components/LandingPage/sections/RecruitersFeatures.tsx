@@ -1,9 +1,11 @@
 import { RECRUITERS_FEATURE } from "@/constants/constants";
 
 import FeatureCard from "../FeatureCard";
-import peopleSearch from "@/assets/undraw_people-search_xpq4.svg";
+import peopleSearch from "@/assets/undraw_people-search_xpq4 (1).svg";
+import { useNavigate } from "react-router-dom";
 
 export default function RecruitersFeatures() {
+  const navigate = useNavigate();
   return (
     <section className="w-full h-[600px] py-12">
       <div className="max-w-[1440px] mx-auto grid grid-cols-2">
@@ -20,9 +22,13 @@ export default function RecruitersFeatures() {
               icon={icon}
               feature={feature}
               description={description}
+              className="recruiter-gradient"
             />
           ))}
-          <button className="gradient-bg text-white font-bold px-4 py-2 rounded-lg mt-6 transition-transform duration-300 hover:scale-105">
+          <button
+            onClick={() => navigate("/signup/recruiter")}
+            className="recruiter-gradient text-white font-bold px-4 py-2 rounded-lg mt-6 transition-transform duration-300 hover:scale-105"
+          >
             Sign up as Recruiter
           </button>
         </div>

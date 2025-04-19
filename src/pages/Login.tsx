@@ -7,17 +7,20 @@ import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { IoMdPerson } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
+import { GoGraph } from "react-icons/go";
+
 import Footer from "@/components/Footer";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Header />
-      <main className="h-[790px] bg-white relative">
+      <main className="flex-1 bg-white relative">
         {/* main login div */}
         <div className="bg-white h-full flex justify-center items-center">
           <div className="w-full max-w-[1440px] flex justify-between">
-            <div className="bg-white border border-gray-100 w-[500px] h-[630px] p-8 shadow-lg rounded-lg">
+            <div className="bg-white border border-gray-100 w-[550px] h-[630px] p-8 shadow-lg rounded-lg">
               <h1 className="text-2xl text-gray-800 text-center font-bold mb-6">
                 Welcome back
               </h1>
@@ -83,21 +86,24 @@ export default function Login() {
                 <label htmlFor="remember-me">Remember me</label>
               </div>
 
-              <button className="gradient-bg w-full py-2 text-lg text-center rounded-lg shadow text-white">
+              <button className="main-gradient-bg w-full py-2 text-lg text-center rounded-lg shadow text-white">
                 Log in
               </button>
 
               <p className="text-center my-4">
                 Don't have an account?
-                <span className="text-dusty-sky-blue hover:underline">
+                <Link
+                  to="/signup/applicant"
+                  className="text-dusty-sky-blue hover:underline pl-1"
+                >
                   Create one now
-                </span>
+                </Link>
               </p>
             </div>
             <div className="w-[600px] h-[630px] flex flex-col justify-center gap-8">
               <div className="bg-white w-full h-[160px] shadow-lg border border-gray-200 rounded-xl py-8 px-10">
                 <div className="flex space-x-6 mb-4">
-                  <IoMdPerson className="text-dusty-sky-blue ml-4 size-8" />
+                  <IoMdPerson className="text-sky-500 ml-4 size-8" />
                   <div className="w-[40%]">
                     <div className="h-4 bg-gray-200 rounded-lg mb-1" />
                     <div className="h-3 w-[70%] bg-gray-100 rounded-lg mb-1" />
@@ -106,7 +112,7 @@ export default function Login() {
 
                 <div className="w-full h-1 bg-gray-100" />
                 <div className="flex justify-between py-4">
-                  <div className="flex space-x-2 items-centers">
+                  <div className="flex space-x-2 items-center">
                     <div className="size-7 bg-green-200 rounded-full flex justify-center items-center">
                       <FaCheck className="text-green-600" />
                     </div>
@@ -114,13 +120,13 @@ export default function Login() {
                       94% Match
                     </span>
                   </div>
-                  <div className="px-3 py-1 bg-[#5a96bb] text-white text-sm rounded-full">
+                  <div className="px-3 py-1 bg-sky-500 text-white text-sm rounded-full">
                     AI Recommended
                   </div>
                 </div>
               </div>
 
-              <div className="gradient-bg rounded-2xl p-8 shadow-xl text-white">
+              <div className="main-gradient-bg rounded-2xl p-8 shadow-xl text-white">
                 <h3 className="text-xl font-bold mb-4">
                   Smart job matching powered by AI
                 </h3>
@@ -129,10 +135,10 @@ export default function Login() {
                   your skills and experience.
                 </p>
 
-                <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                <div className="bg-white/10 border border-white/20 p-4 rounded-lg backdrop-blur-sm">
                   <div className="flex items-center mb-3">
-                    <div className="h-8 w-8 bg-white/20 rounded-full flex items-center justify-center">
-                      <i className="fas fa-chart-line text-white text-xs"></i>
+                    <div className="h-8 w-8 bg-white/20 shadow rounded-full flex items-center justify-center">
+                      <GoGraph className="text-white" />
                     </div>
                     <div className="ml-3 text-sm font-medium">
                       Resume Match Score
@@ -155,7 +161,7 @@ export default function Login() {
         <TopWave />
         <BottomWave />
       </main>
-      <Footer className="gradient-bg" />
+      <Footer className="main-gradient-bg" />
     </div>
   );
 }

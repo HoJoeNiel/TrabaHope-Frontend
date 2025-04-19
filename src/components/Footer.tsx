@@ -8,7 +8,7 @@ export default function Footer({ className }: { className?: string }) {
     <footer className={`w-full bg-gray-800 h-[150px] px-12 py-4 ${className}`}>
       <div className="flex items-center space-x-2 text-white font-bold mb-5">
         {/* temporary app logo */}
-        <div className="p-2 text-sm shadow gradient-bg rounded-xl">
+        <div className="p-2 text-sm shadow main-gradient-bg rounded-xl">
           <span>TH</span>
         </div>
         <h3 className="text-xl ">TrabaHope</h3>

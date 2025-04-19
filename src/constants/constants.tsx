@@ -12,6 +12,7 @@ export interface FeatureType {
   icon: React.ReactNode;
   feature: string;
   description: string;
+  className: string;
 }
 
 export interface UserTestimonyType {

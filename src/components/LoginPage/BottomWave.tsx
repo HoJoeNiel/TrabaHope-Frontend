@@ -8,8 +8,8 @@ export default function BottomWave() {
     >
       <defs>
         <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#6096b4" />
-          <stop offset="100%" stopColor="#93bfcf" />
+          <stop offset="0%" stopColor="#0ea5e9" />
+          <stop offset="100%" stopColor="#0369a1" />
         </linearGradient>
       </defs>
       <path

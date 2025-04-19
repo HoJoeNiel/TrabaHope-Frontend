@@ -24,6 +24,7 @@ export default function Features() {
               icon={icon}
               feature={feature}
               description={description}
+              className="main-gradient-bg"
             />
           ))}
         </div>

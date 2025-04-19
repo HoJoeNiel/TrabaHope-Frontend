@@ -12,19 +12,9 @@ import { Button } from "@/components/ui/button";
 
 export default function ApplicantSignup() {
   return (
-    <div className="w-screen h-screen grid grid-cols-2 max-md:grid-cols-1">
-      <div className="bg-white h-screen flex justify-end">
-        <div className="px-24 mt-20 w-full max-w-[720px]">
-          <div className="flex items-center space-x-3 mb-10">
-            <div className="size-12 max-lg:size-10 bg-gradient-to-r from-teal-500 to-teal-700 flex items-center justify-center shadow rounded-xl">
-              <span className="text-white text-lg max-lg:text-base font-bold">
-                T
-              </span>
-            </div>
-            <h1 className="text-2xl max-lg:text-xl font-bold text-black">
-              TrabaHope
-            </h1>
-          </div>
+    <div className="w-screen min-h-screen grid grid-cols-2 max-md:grid-cols-1">
+      <div className="bg-white min-h-screen flex justify-end">
+        <div className="px-24 mt-28 mb-16 w-full max-w-[720px]">
           <h2 className="text-3xl max-lg:text-2xl font-bold text-gray-800 mb-2">
             Create Applicant Account
           </h2>
@@ -128,8 +118,18 @@ export default function ApplicantSignup() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-teal-500 to-teal-700 h-screen max-md:h-auto max-md:pb-20 flex justify-start pt-28">
+      <div className="bg-gradient-to-r from-teal-500 to-teal-700 min-h-screen max-md:h-auto max-md:pb-20 flex justify-start pt-28">
         <div className="w-full max-w-[720px] mx-16">
+          <div className="flex items-center space-x-3">
+            <div className="size-12 max-lg:size-10 applicant-gradient flex items-center justify-center shadow rounded-xl">
+              <span className="text-white text-lg max-lg:text-base font-bold">
+                T
+              </span>
+            </div>
+            <h1 className="text-2xl max-lg:text-xl font-bold text-white">
+              TrabaHope
+            </h1>
+          </div>
           <div className="flex flex-col gap-1.5 mt-8">
             <h1 className="text-white text-4xl max-lg:text-3xl font-extrabold tracking-wide mb-4">
               For Job Seekers

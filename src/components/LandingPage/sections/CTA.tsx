@@ -1,6 +1,6 @@
 export default function CTA() {
   return (
-    <section className="w-full h-[400px] py-20 gradient-bg">
+    <section className="w-full h-[400px] py-20 main-gradient-bg">
       <div className="text-center">
         <h2 className="text-5xl font-extrabold text-white sm:text-4xl">
           <span className="block">Ready to transform your job search?</span>

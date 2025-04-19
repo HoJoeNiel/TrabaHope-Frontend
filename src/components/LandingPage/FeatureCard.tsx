@@ -4,10 +4,13 @@ export default function FeatureCard({
   icon,
   feature,
   description,
+  className,
 }: FeatureType) {
   return (
     <div className="flex space-x-3 items-start mb-2">
-      <div className="gradient-bg flex items-center justify-center p-2 rounded-lg shadow">
+      <div
+        className={`flex items-center justify-center p-2 rounded-lg shadow ${className}`}
+      >
         {icon}
       </div>
       <div>
