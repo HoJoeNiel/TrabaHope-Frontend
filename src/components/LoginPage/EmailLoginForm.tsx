@@ -11,11 +11,7 @@ export default function EmailLoginForm() {
 
       <div className="grid w-full items-center gap-1.5 mb-4">
         <Label htmlFor="password">Password</Label>
-        <Input
-          type="password"
-          id="password"
-          placeholder="Create Password (min. 8 characters)"
-        />
+        <Input type="password" id="password" placeholder="Password" />
       </div>
 
       <div className="flex space-x-2 mb-4">
