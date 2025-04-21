@@ -1,17 +1,73 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { auth } from "@/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function EmailLoginForm() {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const { email, password } = credentials;
+      await signInWithEmailAndPassword(auth, email, password);
+      const currentUser = auth.currentUser;
+      const uid = currentUser?.uid;
+      const token = await currentUser?.getIdToken();
+
+      if (token && uid) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("uid", uid);
+        console.log("User successfully logged in!");
+        navigate("/dashboard");
+      }
+    } catch (error: unknown) {
+      let errorMessage = "Something went wrong: ";
+      if (error instanceof Error) {
+        errorMessage += error.message;
+      }
+      setError(errorMessage);
+    }
+  };
+
   return (
-    <form action="">
+    <form onSubmit={handleSubmit}>
       <div className="grid w-full items-center gap-1.5 mb-4">
         <Label htmlFor="email-address">Email Address</Label>
-        <Input type="email" id="email-address" placeholder="Email Address" />
+        <Input
+          type="email"
+          id="email-address"
+          name="email"
+          placeholder="Email Address"
+          value={credentials.email}
+          onChange={handleInputChange}
+        />
+        {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
       </div>
 
       <div className="grid w-full items-center gap-1.5 mb-4">
         <Label htmlFor="password">Password</Label>
-        <Input type="password" id="password" placeholder="Password" />
+        <Input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          value={credentials.password}
+          onChange={handleInputChange}
+        />
       </div>
 
       <div className="flex space-x-2 mb-4">
@@ -19,7 +75,10 @@ export default function EmailLoginForm() {
         <label htmlFor="remember-me">Remember me</label>
       </div>
 
-      <button className="main-gradient-bg w-full py-2 text-lg text-center rounded-lg shadow text-white">
+      <button
+        type="submit"
+        className="main-gradient-bg w-full py-2 text-lg text-center rounded-lg shadow text-white"
+      >
         Log in
       </button>
     </form>
