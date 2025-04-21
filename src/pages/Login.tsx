@@ -4,7 +4,7 @@ import TopWave from "@/components/LoginPage/TopWave";
 import AIRecommendedCard from "@/components/LoginPage/AIRecommendedCard";
 import AiMatchInfoCard from "@/components/LoginPage/AiMatchInfoCard";
 import Footer from "@/components/Footer";
-import AuthSocialButtons from "@/components/LoginPage/AuthSocialButtons";
+import AuthSocialButtons from "@/components/AuthSocialButtons";
 import EmailLoginForm from "@/components/LoginPage/EmailLoginForm";
 
 import { Link } from "react-router-dom";
