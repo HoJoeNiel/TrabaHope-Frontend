@@ -1,11 +1,7 @@
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import FormField from "../FormField";
-import SocialLoginButton from "../SocialLoginButton";
+import AuthSocialButtons from "../LoginPage/AuthSocialButtons";
 
 export default function RecruiterSignupForm() {
   return (
@@ -19,19 +15,45 @@ export default function RecruiterSignupForm() {
         </p>
 
         <div className="grid grid-cols-2 gap-4 mt-6">
-          <FormField type="text" id="first-name" label="First Name" />
-          <FormField type="text" id="last-name" label="Last Name" />
+          <FormField
+            type="text"
+            name="firstName"
+            id="first-name"
+            label="First Name"
+          />
+          <FormField
+            type="text"
+            name="lastName"
+            id="last-name"
+            label="Last Name"
+          />
         </div>
 
-        <FormField type="text" id="company-name" label="Company Name" />
-        <FormField type="email" id="work-email" label="Work Email" />
+        <FormField
+          type="text"
+          name="companyName"
+          id="company-name"
+          label="Company Name"
+        />
+        <FormField
+          type="email"
+          name="workEmail"
+          id="work-email"
+          label="Work Email"
+        />
         <FormField
           type="password"
+          name="password"
           id="password"
           label="Password"
           placeholder="Create Password (min. 8 characters)"
         />
-        <FormField type="number" id="phone-number" label="Phone Number" />
+        <FormField
+          type="number"
+          name="phoneNumber"
+          id="phone-number"
+          label="Phone Number"
+        />
 
         <div className="flex items-center space-x-2">
           <Checkbox id="terms" />
@@ -53,7 +75,9 @@ export default function RecruiterSignupForm() {
           <div className="h-0.5 bg-gray-200 flex-1" />
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mt-4">
+        <AuthSocialButtons action="signup" />
+
+        {/* <div className="grid grid-cols-3 gap-3 mt-4">
           <SocialLoginButton
             icon={<FaGoogle className="text-red-600 size-5" />}
             label="Google"
@@ -66,7 +90,7 @@ export default function RecruiterSignupForm() {
             icon={<FaGithub className="text-black size-5" />}
             label="Github"
           />
-        </div>
+        </div> */}
 
         <p className="text-center mt-6 text-gray-600">
           Already have an account?

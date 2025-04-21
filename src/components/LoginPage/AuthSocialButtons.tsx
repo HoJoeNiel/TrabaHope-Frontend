@@ -8,7 +8,11 @@ type action = "signup" | "login";
 
 export default function AuthSocialButtons({ action }: { action: action }) {
   return (
-    <>
+    <div
+      className={
+        action === "signup" ? "grid grid-cols-3 gap-3 mt-4" : undefined
+      }
+    >
       <SocialLoginButton
         icon={<FaGoogle className="text-red-600 size-5" />}
         label={action === "login" ? "Continue with Google" : "Google"}
@@ -21,6 +25,6 @@ export default function AuthSocialButtons({ action }: { action: action }) {
         icon={<FaGithub className="text-black size-5" />}
         label={action === "login" ? "Continue with Github" : "Github"}
       />
-    </>
+    </div>
   );
 }
