@@ -17,6 +17,7 @@ const router = createBrowserRouter([
       { path: "recruiter", element: <RecruiterSignup /> },
     ],
   },
+  { path: "/dashboard", element: <div>Dashboard</div> },
 ]);
 
 export default function App() {

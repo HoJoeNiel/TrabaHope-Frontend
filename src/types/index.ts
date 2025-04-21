@@ -10,4 +10,5 @@ export interface UserCredentials {
 
 export type RecruiterCredentials = Omit<UserCredentials, "email"> & {
   workEmail: string;
+  companyName: string;
 };

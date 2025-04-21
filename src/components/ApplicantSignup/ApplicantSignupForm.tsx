@@ -1,16 +1,15 @@
 import FormField from "@/components/FormField";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import AuthSocialButtons from "@/components/AuthSocialButtons";
 
-import { auth } from "@/firebase";
-import { Formik, Form, FormikErrors } from "formik";
-import { newApplicantAccountSchema } from "@/schema";
 import { UserCredentials } from "@/types";
+import { newApplicantAccountSchema } from "@/schema";
 import { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import AuthSocialButtons from "../LoginPage/AuthSocialButtons";
-
+import { Form, Formik, FormikErrors } from "formik";
+import { auth } from "@/firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Loader2 } from "lucide-react";
 
 const initialValues: UserCredentials = {
@@ -32,7 +31,7 @@ export default function ApplicantSignupForm() {
       setErrors,
     }: { setErrors: (errors: FormikErrors<UserCredentials>) => void }
   ) => {
-    console.log("running");
+    // TODO: Add user role (applicant or recruiter) before authenticating
     setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(
