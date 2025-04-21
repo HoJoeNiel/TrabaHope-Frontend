@@ -21,3 +21,23 @@ export const newApplicantAccountSchema = yup.object().shape({
     .required("Required"),
   phoneNumber: yup.string().required("Required"),
 });
+
+export const newRecruiterAccountSchema = yup.object().shape({
+  firstName: yup.string().required("Required"),
+  lastName: yup.string().required("Required"),
+  companyName: yup.string().required("Required"),
+  workEmail: yup.string().email("Please enter a valid email.").required("Required"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters long.")
+    .matches(PASSWORD_REGEX, {
+      message:
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    })
+    .required("Required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Password must match")
+    .required("Required"),
+  phoneNumber: yup.string().required("Required"),
+});
