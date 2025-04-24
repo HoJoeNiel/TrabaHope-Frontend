@@ -3,6 +3,7 @@ import ApplicantSignup from "./pages/ApplicantSignup";
 import LandingPage from "./pages/LandingPage";
 import RecruiterSignup from "./pages/RecruiterSignup";
 import Login from "./pages/Login";
+import JobListingPage from "./pages/Applicant/JobListingPage";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       { path: "recruiter", element: <RecruiterSignup /> },
     ],
   },
-  { path: "/dashboard", element: <div>Dashboard</div> },
+  { path: "/job-listing", element:<JobListingPage /> },
 ]);
 
 export default function App() {
