@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { MdPerson } from "react-icons/md";
 import AIResumeMatchComponent from "@/components/JobListingPage/AIResumeMatchComponent";
 import ResumeTipsCard from "@/components/JobListingPage/ResumeTipsCard";
+import SavedJobsOverview from "@/components/JobListingPage/SavedJobsOverview";
 
 export default function JobListingPage() {
   return (
@@ -40,6 +41,7 @@ export default function JobListingPage() {
           <div className="w-1/4 flex flex-col sticky top-2">
             <AIResumeMatchComponent />
             <ResumeTipsCard />
+            <SavedJobsOverview />
           </div>
         </div>
       </main>
