@@ -228,6 +228,7 @@ export const salaryRange: category[] = [
 
 export const JOBS: Job[] = [
   {
+    id: crypto.randomUUID(),
     companyInitials: "TC",
     jobTitle: "Frontend Developer",
     companyName: "TechCorp Inc.",
@@ -242,10 +243,11 @@ export const JOBS: Job[] = [
     tags: ["React", "Typescript", "Tailwind CSS", "Git"],
     actions: {
       saved: false,
-      applied: true,
+      applied: false,
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "HI",
     jobTitle: "Backend Engineer",
     companyName: "Hyperloop Innovations",
@@ -259,11 +261,12 @@ export const JOBS: Job[] = [
       "We're seeking a Backend Engineer to build and maintain our RESTful APIs and microservices using Node.js and PostgreSQL. You'll collaborate with frontend developers and DevOps to ensure robust and scalable backend architecture. Experience with Docker, CI/CD pipelines, and writing unit/integration tests is highly preferred.",
     tags: ["Node.js", "PostgreSQL", "Docker", "CI/CD"],
     actions: {
-      saved: true,
+      saved: false,
       applied: false,
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "FD",
     jobTitle: "UI/UX Designer",
     companyName: "Figma Dreams",
@@ -282,6 +285,7 @@ export const JOBS: Job[] = [
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "DA",
     jobTitle: "Data Analyst",
     companyName: "DataAware Co.",
@@ -295,11 +299,12 @@ export const JOBS: Job[] = [
       "Join our growing analytics team as a Data Analyst! You'll be responsible for interpreting complex data sets and generating actionable insights for stakeholders. Strong SQL skills, familiarity with data visualization tools like Power BI or Tableau, and a solid grasp of statistical techniques are must-haves.",
     tags: ["SQL", "Power BI", "Data Visualization", "Statistics"],
     actions: {
-      saved: true,
-      applied: true,
+      saved: false,
+      applied: false,
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "GC",
     jobTitle: "Customer Support Specialist",
     companyName: "GlobalConnect",
@@ -323,6 +328,7 @@ export const JOBS: Job[] = [
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "NX",
     jobTitle: "UI/UX Designer",
     companyName: "NextWave Solutions",
@@ -336,11 +342,12 @@ export const JOBS: Job[] = [
       "NextWave Solutions is hiring a creative UI/UX Designer to help design intuitive interfaces for our web and mobile apps. You'll work closely with product managers and developers to turn user needs into elegant visual designs.",
     tags: ["Figma", "User Research", "Prototyping", "Adobe XD"],
     actions: {
-      saved: true,
+      saved: false,
       applied: false,
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "DF",
     jobTitle: "Data Analyst",
     companyName: "DataForge Analytics",
@@ -359,6 +366,7 @@ export const JOBS: Job[] = [
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "GV",
     jobTitle: "Mobile App Developer",
     companyName: "Groove Ventures",
@@ -372,11 +380,12 @@ export const JOBS: Job[] = [
       "Groove Ventures is on the lookout for a skilled Mobile App Developer with experience in Flutter and Firebase. You will play a key role in building scalable, high-performance applications for our global user base.",
     tags: ["Flutter", "Firebase", "REST API", "State Management"],
     actions: {
-      saved: true,
+      saved: false,
       applied: false,
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "ZL",
     jobTitle: "DevOps Engineer",
     companyName: "ZenLayer PH",
@@ -391,10 +400,11 @@ export const JOBS: Job[] = [
     tags: ["CI/CD", "Kubernetes", "Docker", "AWS"],
     actions: {
       saved: false,
-      applied: true,
+      applied: false,
     },
   },
   {
+    id: crypto.randomUUID(),
     companyInitials: "AS",
     jobTitle: "Content Writer",
     companyName: "Aspire Media",
@@ -408,8 +418,8 @@ export const JOBS: Job[] = [
       "Aspire Media is looking for a creative and detail-oriented content writer to produce compelling blog posts, social media content, and marketing copy. Experience in SEO and content strategy is a plus.",
     tags: ["SEO", "Copywriting", "Content Strategy", "Blogging"],
     actions: {
-      saved: true,
-      applied: true,
+      saved: false,
+      applied: false,
     },
   },
 ];

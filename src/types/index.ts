@@ -37,6 +37,7 @@ export type Action = {
 };
 
 export type Job = {
+  id: string;
   companyInitials: string;
   jobTitle: string;
   companyName: string;
