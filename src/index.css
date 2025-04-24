@@ -30,14 +30,25 @@
   line-height: 0;
   transform: rotate(180deg);
 }
+
 .hero-waves svg {
   position: relative;
   display: block;
   width: calc(100% + 1.3px);
   height: 150px;
 }
+
 .hero-waves .shape-fill {
   fill: #ffffff;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 @layer base {
