@@ -5,13 +5,22 @@ import { Job } from "@/types";
 import { FiCheckCircle } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
+import { FaBookmark } from "react-icons/fa";
 import { CiClock1 } from "react-icons/ci";
-import { FaChevronDown } from "react-icons/fa6";
 import { LuBuilding } from "react-icons/lu";
-import { FaChevronUp } from "react-icons/fa";
+import { useJobStore } from "@/stores/useJobStore";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function JobCard({ job }: { job: Job }) {
-  const [isExpanded, setExpanded] = useState<boolean>(true);
+  const addJobToSaved = useJobStore((state) => state.addJobToSaved);
+  const removeJobToSaved = useJobStore((state) => state.removeJobToSaved);
+  const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
     companyInitials,
     jobTitle,
@@ -81,7 +90,7 @@ export default function JobCard({ job }: { job: Job }) {
                 </div>
               </div>
 
-              <div className="flex flex-col items-end space-y-1">
+              <div className="flex flex-col items-end space-y-3">
                 <div
                   className={`${percentageBGColor}  ${percentageTextColor} flex space-x-2 text-sm items-center px-2 py-1 rounded-xl`}
                 >
@@ -89,11 +98,24 @@ export default function JobCard({ job }: { job: Job }) {
                   <span>{matchPercentage}% Matched</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div
-                    className={`p-2 size-10 rounded-full flex items-center justify-center bg-gray-100 hover:bg-gray-200`}
+                  <button
+                    onClick={
+                      job.actions.saved
+                        ? () => removeJobToSaved(job)
+                        : () => addJobToSaved(job)
+                    }
+                    className={`p-2 size-10 rounded-full flex items-center justify-center ${
+                      job.actions.saved
+                        ? "bg-yellow-100 hover:bg-yellow-200"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
                   >
-                    <CiBookmark className="text-gray-800 size-5" />
-                  </div>
+                    {job.actions.saved ? (
+                      <FaBookmark className="text-yellow-500" />
+                    ) : (
+                      <CiBookmark className="text-gray-800 size-5" />
+                    )}
+                  </button>
                   {actions.applied && (
                     <span className="bg-green-200 px-4 py-2 rounded-full text-green-700">
                       Applied
@@ -105,53 +127,54 @@ export default function JobCard({ job }: { job: Job }) {
           </div>
         </div>
 
-        <div className={isExpanded ? "block" : "hidden"}>
-          <h2 className="text-gray-800 font-medium mb-2 text-lg">
-            Job Description
-          </h2>
-          <p className="text-gray-600 text-justify">{description}</p>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger onClick={() => setExpanded(!isExpanded)}>
+              <span className="">
+                {isExpanded ? "Show Less" : "Show Details"}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <h2 className="text-gray-800 font-medium mb-2 text-lg">
+                Job Description
+              </h2>
+              <p className="text-gray-600 text-justify">{description}</p>
 
-          <div className="w-full flex space-x-4 overflow-x-scroll no-scrollbar mt-4">
-            {tags.map((tag) => (
-              <div
-                key={tag}
-                className="px-2 py-1 text-sm rounded-full font-medium bg-gray-200 text-gray-600"
-              >
-                {tag}
+              <div className="w-full flex space-x-4 overflow-x-scroll no-scrollbar mt-4">
+                {tags.map((tag) => (
+                  <div
+                    key={tag}
+                    className="px-2 py-1 text-sm rounded-full font-medium bg-gray-200 text-gray-600"
+                  >
+                    {tag}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="w-full grid grid-cols-2 mt-6">
-            <div className="">
-              <p className="text-gray-800 font-bold">Salary Range</p>
-              <p className="text-gray-500">{salaryRange}</p>
-            </div>
+              <div className="w-full grid grid-cols-2 mt-6">
+                <div className="">
+                  <p className="text-gray-800 font-bold">Salary Range</p>
+                  <p className="text-gray-500">{salaryRange}</p>
+                </div>
 
-            <div className="">
-              <p className="text-gray-800 font-bold">Employment Type</p>
-              <p className="text-gray-500">{employmentType}</p>
-            </div>
-          </div>
+                <div className="">
+                  <p className="text-gray-800 font-bold">Employment Type</p>
+                  <p className="text-gray-500">{employmentType}</p>
+                </div>
+              </div>
 
-          <div className="flex space-x-4 mt-6">
-            <button className="px-4 py-2 bg-sky-500 rounded-lg text-white text-lg">
-              Apply Now
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-600 font-bold text-lg border border-gray-300 rounded-lg">
-              View Company
-            </button>
-          </div>
-        </div>
+              <div className="flex space-x-4 mt-6">
+                <button className="px-4 py-2 bg-sky-500 rounded-lg text-white text-lg">
+                  Apply Now
+                </button>
+                <button className="px-4 py-2 bg-white text-gray-600 font-bold text-lg border border-gray-300 rounded-lg">
+                  View Company
+                </button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
-
-      <button
-        onClick={() => setExpanded(!isExpanded)}
-        className="w-full border-t border-t-gray-200 py-2 text-gray-600 flex items-center justify-center space-x-2"
-      >
-        {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
-        <span className="">{isExpanded ? "Show Less" : "Show Details"}</span>
-      </button>
     </div>
   );
 }

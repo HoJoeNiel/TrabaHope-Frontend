@@ -1,8 +1,9 @@
 import JobCard from "./JobCard";
-import { JOBS } from "@/constants/constants";
 import { SelectComponent } from "./SelectComponent";
+import { useJobStore } from "@/stores/useJobStore";
 
 export default function JobList() {
+  const jobs = useJobStore((state) => state.jobs);
   return (
     <div className="flex-1 bg-gray-50">
       <div className="flex justify-between items-center">
@@ -16,7 +17,7 @@ export default function JobList() {
         </div>
       </div>
       <div className="">
-        {JOBS.map((job) => (
+        {jobs.map((job) => (
           <JobCard key={job.description} job={job} />
         ))}
       </div>
