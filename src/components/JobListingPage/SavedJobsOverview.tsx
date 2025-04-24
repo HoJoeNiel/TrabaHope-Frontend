@@ -1,6 +1,10 @@
+import { useJobStore } from "@/stores/useJobStore";
 import { FaBookmark } from "react-icons/fa";
 
 export default function SavedJobsOverview() {
+  const savedJobs = useJobStore((state) => state.savedJobs);
+  const lastThreeItems = savedJobs?.slice(-3).reverse();
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex items-center justify-between mb-4">
@@ -11,41 +15,29 @@ export default function SavedJobsOverview() {
           <h2 className="font-bold text-lg">Saved Jobs</h2>
         </div>
         <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
-          3
+          {savedJobs.length}
         </span>
       </div>
 
       <div className="space-y-4">
-        <div className="pb-3 border-b border-gray-100">
-          <h3 className="font-medium text-gray-800">Senior React Developer</h3>
-          <p className="text-sm text-sky-600">GlobalTech</p>
-          <div className="flex justify-between items-center mt-1">
-            <span className="text-xs text-gray-500">Saved 2 days ago</span>
-            <button className="text-sky-600 hover:text-sky-800 text-sm">
-              Apply
-            </button>
+        {savedJobs.length === 0 && (
+          <>
+            <p>You haven't saved any jobs yet.</p>
+            <p>Tap the bookmark icon to start saving opportunities you like!</p>
+          </>
+        )}
+        {lastThreeItems?.map((sj) => (
+          <div className="pb-3 border-b border-gray-100">
+            <h3 className="font-medium text-gray-800">{sj.jobTitle}</h3>
+            <p className="text-sm text-sky-600">{sj.companyName}</p>
+            <div className="flex justify-between items-center mt-1">
+              <span className="text-xs text-gray-500">{sj.postedDate}</span>
+              <button className="text-sky-600 hover:text-sky-800 text-sm">
+                Apply
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="pb-3 border-b border-gray-100">
-          <h3 className="font-medium text-gray-800">Product Designer</h3>
-          <p className="text-sm text-sky-600">Creative Solutions</p>
-          <div className="flex justify-between items-center mt-1">
-            <span className="text-xs text-gray-500">Saved 1 week ago</span>
-            <button className="text-sky-600 hover:text-sky-800 text-sm">
-              Apply
-            </button>
-          </div>
-        </div>
-        <div className="pb-3">
-          <h3 className="font-medium text-gray-800">Frontend Team Lead</h3>
-          <p className="text-sm text-sky-600">Startup Inc</p>
-          <div className="flex justify-between items-center mt-1">
-            <span className="text-xs text-gray-500">Saved 2 weeks ago</span>
-            <button className="text-sky-600 hover:text-sky-800 text-sm">
-              Apply
-            </button>
-          </div>
-        </div>
+        ))}
       </div>
 
       <button className="mt-4 text-sky-600 hover:text-sky-800 text-sm">
