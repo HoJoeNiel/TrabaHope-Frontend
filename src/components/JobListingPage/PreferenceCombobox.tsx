@@ -23,11 +23,13 @@ import { category } from "@/types";
 type PreferenceComboboxProp = {
   category: category[];
   label: string;
+  setPreferences: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export default function PreferenceCombobox({
   category,
   label,
+  setPreferences,
 }: PreferenceComboboxProp) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -57,6 +59,7 @@ export default function PreferenceCombobox({
                   value={c.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
+                    setPreferences((prev) => [...prev, currentValue]);
                     setOpen(false);
                   }}
                 >
