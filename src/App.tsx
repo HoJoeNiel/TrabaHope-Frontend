@@ -5,6 +5,7 @@ import RecruiterSignup from "./pages/RecruiterSignup";
 import Login from "./pages/Login";
 import JobListingPage from "./pages/Applicant/JobListingPage";
 import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
+import SavedJobsPage from "./pages/Applicant/SavedJobsPage";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,14 @@ const router = createBrowserRouter([
       { path: "recruiter", element: <RecruiterSignup /> },
     ],
   },
-  { path: "/job-listing", element: <JobListingPage /> },
-  { path: "/applicant-profile", element: <ApplicantProfile /> },
+  {
+    path: "/applicant",
+    children: [
+      { path: "job-listing", element: <JobListingPage /> },
+      { path: "profile", element: <ApplicantProfile /> },
+      { path: "saved-jobs", element: <SavedJobsPage /> },
+    ],
+  },
 ]);
 
 export default function App() {
