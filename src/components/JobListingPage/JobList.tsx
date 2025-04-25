@@ -1,6 +1,8 @@
 import JobCard from "./JobCard";
-import { SelectComponent } from "./SelectComponent";
+import { SelectComponent } from "@/components/SelectComponent";
 import { useJobStore } from "@/stores/useJobStore";
+
+const options = ["Best Match", "Latest", "Salary (High to Low)"];
 
 export default function JobList() {
   const jobs = useJobStore((state) => state.jobs);
@@ -13,7 +15,7 @@ export default function JobList() {
 
         <div className="flex space-x-4 mb-3 items-center">
           <span className="text-sm">Sort by: </span>
-          <SelectComponent />
+          <SelectComponent options={options} className="w-[180px]" />
         </div>
       </div>
       <div className="">

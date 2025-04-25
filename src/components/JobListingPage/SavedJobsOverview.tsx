@@ -2,7 +2,7 @@ import { useJobStore } from "@/stores/useJobStore";
 import { FaBookmark } from "react-icons/fa";
 
 type Props = {
-  className: string;
+  className?: string;
 };
 
 export default function SavedJobsOverview({ className }: Props) {
