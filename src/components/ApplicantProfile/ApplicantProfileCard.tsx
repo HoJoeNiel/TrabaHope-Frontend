@@ -93,7 +93,7 @@ export default function ApplicantProfileCard() {
             <div className="flex items-center">
               <TbWorld size={16} className="text-gray-500 mr-2" />
               <span className="text-blue-500 hover:text-blue-600 cursor-pointer">
-                johndoe.dev
+                nelman.dev
               </span>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function ApplicantProfileCard() {
               </label>
               <input
                 type="text"
-                defaultValue="John Doe"
+                defaultValue="Jonel Villaver"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -162,7 +162,7 @@ export default function ApplicantProfileCard() {
               </label>
               <input
                 type="email"
-                defaultValue="john.doe@example.com"
+                defaultValue="jonelvillaver735@gmail.com"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -172,7 +172,7 @@ export default function ApplicantProfileCard() {
               </label>
               <input
                 type="tel"
-                defaultValue="+63 912 345 6789"
+                defaultValue="+63 970 807 5290"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -182,7 +182,7 @@ export default function ApplicantProfileCard() {
               </label>
               <input
                 type="url"
-                defaultValue="linkedin.com/in/johndoe"
+                defaultValue="linkedin.com/in/jonelvillaver"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

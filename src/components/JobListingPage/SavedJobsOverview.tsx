@@ -1,12 +1,16 @@
 import { useJobStore } from "@/stores/useJobStore";
 import { FaBookmark } from "react-icons/fa";
 
-export default function SavedJobsOverview() {
+type Props = {
+  className: string;
+};
+
+export default function SavedJobsOverview({ className }: Props) {
   const savedJobs = useJobStore((state) => state.savedJobs);
   const lastThreeItems = savedJobs?.slice(-3).reverse();
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="bg-sky-100 h-10 w-10 rounded-full flex items-center justify-center text-sky-600">
