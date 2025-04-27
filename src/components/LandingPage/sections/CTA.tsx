@@ -14,7 +14,7 @@ export default function CTA() {
           <button className="px-4 py-2 text-lg text-dusty-sky-blue bg-white rounded-lg shadow transition-transform duration-300 hover:scale-105">
             Get started for free
           </button>
-          <button className="px-4 py-2 text-lg text-white bg-blue-500 rounded-lg shadow transition-transform duration-300 hover:scale-105">
+          <button className="px-4 py-2 text-lg text-white bg-blue-400 rounded-lg shadow transition-transform duration-300 hover:scale-105">
             Learn more
           </button>
         </div>

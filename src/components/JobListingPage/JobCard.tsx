@@ -164,10 +164,10 @@ export default function JobCard({ job }: { job: Job }) {
               </div>
 
               <div className="flex space-x-4 mt-6">
-                <button className="px-4 py-2 bg-sky-500 rounded-lg text-white text-lg">
+                <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-white text-lg">
                   Apply Now
                 </button>
-                <button className="px-4 py-2 bg-white text-gray-600 font-bold text-lg border border-gray-300 rounded-lg">
+                <button className="px-4 py-2 bg-white text-gray-700 text-lg border border-gray-300 rounded-lg">
                   View Company
                 </button>
               </div>

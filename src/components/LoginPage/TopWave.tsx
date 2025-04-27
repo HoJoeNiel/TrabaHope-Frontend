@@ -7,8 +7,8 @@ export default function TopWave() {
       preserveAspectRatio="none"
     >
       <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#0ea5e9 " />
-        <stop offset="100%" stopColor="#0369a1 " />
+        <stop offset="0%" stopColor="#dbeafe  " />
+        <stop offset="100%" stopColor="#93c5fd  " />
       </linearGradient>
       <path
         fill="url(#waveGradient)"

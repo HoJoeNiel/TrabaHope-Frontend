@@ -99,7 +99,7 @@ export default function SavedJobsCard({ job }: { job: Job }) {
         </div>
       </div>
 
-      <div className="w-full bg-gray-50 flex items-center justify-between py-4 px-6">
+      <div className="w-full bg-gray-50 border-t border-t-gray-100 flex items-center justify-between py-4 px-6">
         <div
           className={`${percentageBGColor}  ${percentageTextColor} flex space-x-2 text-sm items-center px-2 py-1 rounded-xl`}
         >
@@ -108,10 +108,10 @@ export default function SavedJobsCard({ job }: { job: Job }) {
         </div>
 
         <div className="flex space-x-4">
-          <button className="px-4 py-2 bg-sky-500 rounded-lg text-white">
+          <button className="px-4 py-2 bg-blue-500 rounded-lg text-white">
             Apply Now
           </button>
-          <button className="px-4 py-2 bg-white text-gray-600 font-bold border border-gray-300 rounded-lg">
+          <button className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg">
             View Company
           </button>
         </div>

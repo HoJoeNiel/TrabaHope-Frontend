@@ -25,7 +25,7 @@ export default function AuthSocialButtons({ action }: { action: action }) {
     try {
       await signInWithPopup(auth, googleProvider);
       setLoading(false);
-      navigate("/dashboard", { replace: true });
+      navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
       setLoading(false);
       handleAuthError(error);
@@ -37,7 +37,7 @@ export default function AuthSocialButtons({ action }: { action: action }) {
     try {
       await signInWithPopup(auth, facebookProvider);
       setLoading(false);
-      navigate("/dashboard", { replace: true });
+      navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
       setLoading(false);
       handleAuthError(error);
@@ -49,7 +49,7 @@ export default function AuthSocialButtons({ action }: { action: action }) {
     try {
       await signInWithPopup(auth, githubProvider);
       setLoading(false);
-      navigate("/dashboard", { replace: true });
+      navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
       setLoading(false);
       handleAuthError(error);

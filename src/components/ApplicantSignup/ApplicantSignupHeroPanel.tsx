@@ -3,7 +3,7 @@ import AuthFeatureCard from "../AuthFeatureCard";
 
 export default function ApplicantSignupHeroPanel() {
   return (
-    <div className="bg-gradient-to-r from-teal-500 to-teal-700 min-h-screen max-md:h-auto max-md:pb-20 flex justify-start pt-28">
+    <div className="bg-gradient-to-t from-teal-500 to-teal-700 min-h-screen max-md:h-auto max-md:pb-20 flex justify-start pt-28">
       <div className="w-full max-w-[720px] mx-16">
         <div className="flex items-center space-x-3">
           <div className="size-12 max-lg:size-10 applicant-gradient flex items-center justify-center shadow rounded-xl">

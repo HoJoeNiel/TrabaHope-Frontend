@@ -1,9 +1,7 @@
-import Header from "@/components/Header";
 import BottomWave from "@/components/LoginPage/BottomWave";
 import TopWave from "@/components/LoginPage/TopWave";
 import AIRecommendedCard from "@/components/LoginPage/AIRecommendedCard";
 import AiMatchInfoCard from "@/components/LoginPage/AiMatchInfoCard";
-import Footer from "@/components/Footer";
 import AuthSocialButtons from "@/components/AuthSocialButtons";
 import EmailLoginForm from "@/components/LoginPage/EmailLoginForm";
 
@@ -12,7 +10,6 @@ import { Link } from "react-router-dom";
 export default function Login() {
   return (
     <div className="flex flex-col h-screen">
-      <Header />
       <main className="flex-1 bg-white relative">
         <div className="bg-white h-full flex justify-center items-center">
           <div className="w-full max-w-[1440px] flex justify-between">
@@ -52,7 +49,6 @@ export default function Login() {
         <TopWave />
         <BottomWave />
       </main>
-      <Footer className="main-gradient-bg" />
     </div>
   );
 }

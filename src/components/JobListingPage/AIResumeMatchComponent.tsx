@@ -1,8 +1,11 @@
 import { HiOutlineLightBulb } from "react-icons/hi2";
 import { FiCheckCircle } from "react-icons/fi";
 import { FiRefreshCcw } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function AIResumeMatchComponent() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full  rounded-lg border border-gray-200 bg-white shadow-sm p-4">
       <div className="flex items-center gap-3 mb-4">
@@ -44,7 +47,7 @@ export default function AIResumeMatchComponent() {
       </div>
 
       <div className="mt-5 pt-4 border-t border-gray-200">
-        <button className="flex items-center justify-center w-full gap-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 px-4 rounded-md transition-colors">
+        <button onClick={() => navigate('/applicant/profile')} className="flex items-center justify-center w-full gap-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 px-4 rounded-md transition-colors">
           <FiRefreshCcw className="h-4 w-4" />
           Update Your Resume
         </button>

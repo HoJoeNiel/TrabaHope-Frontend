@@ -1,5 +1,6 @@
 import { useJobStore } from "@/stores/useJobStore";
 import { FaBookmark } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   className?: string;
@@ -8,6 +9,7 @@ type Props = {
 export default function SavedJobsOverview({ className }: Props) {
   const savedJobs = useJobStore((state) => state.savedJobs);
   const lastThreeItems = savedJobs?.slice(-3).reverse();
+  const navigate = useNavigate();
 
   return (
     <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
@@ -44,7 +46,10 @@ export default function SavedJobsOverview({ className }: Props) {
         ))}
       </div>
 
-      <button className="mt-4 text-sky-600 hover:text-sky-800 text-sm">
+      <button
+        onClick={() => navigate("/applicant/saved-jobs")}
+        className="mt-4 text-sky-600 hover:text-sky-800 text-sm"
+      >
         View All Saved Jobs
       </button>
     </div>

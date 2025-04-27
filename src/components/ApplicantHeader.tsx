@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function ApplicantHeader() {
   return (
-    <header className="bg-white w-full flex justify-center py-4 border-b border-b-gray-300 shadow">
+    <header className="bg-transparent w-full flex justify-center py-4 ">
       <div className="flex items-center justify-between w-full max-w-[1440px]">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
@@ -15,11 +15,14 @@ export default function ApplicantHeader() {
         </div>
 
         <div className="flex items-center space-x-4">
-          <Link to="/applicant/dashboard">
-            <button className="text-sky-600 font-medium">Dashboard</button>
+          <Link to="/applicant/profile">
+            <button className="text-sky-600 hover:font-bold transition-all duration-300">My Profile</button>
           </Link>
           <Link to="/applicant/my-applications">
-            <button className="text-sky-600">My Applications</button>
+            <button className="text-sky-600 hover:font-bold transition-all duration-300">My Applications</button>
+          </Link>
+          <Link to="/applicant/saved-jobs">
+            <button className="text-sky-600 hover:font-bold transition-all duration-300 font-medium">Saved Jobs</button>
           </Link>
           <div className="bg-sky-200 p-2 size-10 text-sky-600 rounded-full flex justify-center items-center">
             <MdPerson className="size-6" />

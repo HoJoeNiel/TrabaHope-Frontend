@@ -22,7 +22,7 @@ export default function AIRecommendedCard() {
             94% Match
           </span>
         </div>
-        <div className="px-3 py-1 bg-sky-500 text-white text-sm rounded-full">
+        <div className="px-3 py-1 bg-blue-500 text-white text-sm rounded-full">
           AI Recommended
         </div>
       </div>

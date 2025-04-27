@@ -77,7 +77,7 @@ export default function EmailLoginForm() {
 
       <button
         type="submit"
-        className="main-gradient-bg w-full py-2 text-lg text-center rounded-lg shadow text-white"
+        className="bg-blue-500 w-full py-2 text-lg text-center rounded-lg shadow text-white"
       >
         Log in
       </button>

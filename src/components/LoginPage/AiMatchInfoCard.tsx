@@ -2,7 +2,7 @@ import { GoGraph } from "react-icons/go";
 
 export default function AiMatchInfoCard() {
   return (
-    <div className="main-gradient-bg rounded-2xl p-8 shadow-xl text-white">
+    <div className="bg-gradient-to-t from-blue-500 to-blue-700 rounded-2xl p-8 shadow-xl text-white">
       <h3 className="text-xl font-bold mb-4">
         Smart job matching powered by AI
       </h3>
@@ -20,7 +20,7 @@ export default function AiMatchInfoCard() {
         </div>
 
         <div className="w-full bg-white/20 rounded-full h-3 mb-3">
-          <div className="bg-white h-3 w-[85%] rounded-full"></div>
+          <div className="bg-green-400 h-3 w-[85%] rounded-full"></div>
         </div>
 
         <div className="flex justify-between text-xs">

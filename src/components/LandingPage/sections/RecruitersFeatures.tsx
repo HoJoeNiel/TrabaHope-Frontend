@@ -7,8 +7,11 @@ import { useNavigate } from "react-router-dom";
 export default function RecruitersFeatures() {
   const navigate = useNavigate();
   return (
-    <section className="w-full h-[600px] py-12">
+    <section className="w-full bg-indigo-500/20 h-[600px] py-12">
       <div className="max-w-[1440px] mx-auto grid grid-cols-2">
+        <div className="flex ">
+          <img src={peopleSearch} alt="Business man" className="w-[430px]" />
+        </div>
         <div>
           <h1 className="text-3xl mt-1 font-extrabold text-gray-900">
             For Recruiters
@@ -31,9 +34,6 @@ export default function RecruitersFeatures() {
           >
             Sign up as Recruiter
           </button>
-        </div>
-        <div className="flex justify-center">
-          <img src={peopleSearch} alt="Business man" className="w-[430px]" />
         </div>
       </div>
     </section>

@@ -6,10 +6,10 @@ import SavedJobsStats from "@/components/SavedJobsPage/SavedJobsStats";
 import { useJobStore } from "@/stores/useJobStore";
 
 export default function SavedJobsPage() {
-  const jobs = useJobStore((state) => state.jobs);
+  const savedJobs = useJobStore((state) => state.savedJobs);
 
   return (
-    <div className="flex flex-col min-h-screen min-w-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen min-w-screen bg-blue-50">
       <ApplicantHeader />
 
       <main className="flex-1 w-full max-w-[1440px] mx-auto">
@@ -22,8 +22,8 @@ export default function SavedJobsPage() {
 
         <FilterSection />
         <SavedJobsStats />
-        
-        {jobs.map((job) => (
+
+        {savedJobs.map((job) => (
           <SavedJobsCard job={job} />
         ))}
       </main>

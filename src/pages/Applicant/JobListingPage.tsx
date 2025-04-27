@@ -8,7 +8,7 @@ import ApplicantHeader from "@/components/ApplicantHeader";
 
 export default function JobListingPage() {
   return (
-    <div className="min-w-screen min-h-screen bg-gray-50">
+    <div className="min-w-screen min-h-screen bg-blue-50">
       <ApplicantHeader />
       <main className="max-w-[1440px] mx-auto">
         <JobFilters />

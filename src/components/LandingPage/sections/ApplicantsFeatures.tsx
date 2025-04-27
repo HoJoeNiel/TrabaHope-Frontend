@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function ApplicantsFeatures() {
   const navigate = useNavigate();
   return (
-    <section className="w-full h-[600px] bg-gray-50 py-12">
+    <section className="w-full h-[600px] bg-teal-500/20 py-12">
       <div className="max-w-[1440px] mx-auto grid grid-cols-2">
         <div>
           <h1 className="text-3xl mt-1 font-extrabold text-gray-900">

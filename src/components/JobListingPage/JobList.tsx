@@ -7,7 +7,7 @@ const options = ["Best Match", "Latest", "Salary (High to Low)"];
 export default function JobList() {
   const jobs = useJobStore((state) => state.jobs);
   return (
-    <div className="flex-1 bg-gray-50">
+    <div className="flex-1 bg-blue-50">
       <div className="flex justify-between items-center">
         <span className="text-gray-800 font-medium">
           Showing 245 opportunities
