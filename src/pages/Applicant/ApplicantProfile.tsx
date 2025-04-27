@@ -14,7 +14,7 @@ export default function ApplicantProfile() {
     <div className="flex flex-col min-w-screen min-h-screen bg-blue-50">
       <ApplicantHeader />
       <main className="flex-1 bg-blue-50 w-full max-w-[1440px] mx-auto mt-4">
-        <ApplicantProfileCard />
+      <ApplicantProfileCard />
         <ProfileCompleteness />
         <ResumeSection />
         <WorkExperienceAccordion />

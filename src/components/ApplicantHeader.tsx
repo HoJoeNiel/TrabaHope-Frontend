@@ -1,7 +1,10 @@
+import { useUserStore } from "@/stores/useUserStore";
 import { MdPerson } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 export default function ApplicantHeader() {
+  const user = useUserStore((state) => state.user);
+
   return (
     <header className="bg-transparent w-full flex justify-center py-4 ">
       <div className="flex items-center justify-between w-full max-w-[1440px]">
@@ -35,8 +38,12 @@ export default function ApplicantHeader() {
               Jobs Listing
             </button>
           </Link>
-          <div className="bg-sky-200 p-2 size-10 text-sky-600 rounded-full flex justify-center items-center">
-            <MdPerson className="size-6" />
+          <div className="bg-sky-200 overflow-hidden border size-10 text-sky-600 rounded-full flex justify-center items-center">
+            {user?.photoURL ? (
+              <img src={user?.photoURL} />
+            ) : (
+              <MdPerson className="size-6" />
+            )}
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ export default function EmailLoginForm() {
         localStorage.setItem("token", token);
         localStorage.setItem("uid", uid);
         console.log("User successfully logged in!");
-        navigate("/dashboard");
+        navigate("/applicant/job-posting");
       }
     } catch (error: unknown) {
       let errorMessage = "Something went wrong: ";
