@@ -16,13 +16,24 @@ export default function ApplicantHeader() {
 
         <div className="flex items-center space-x-4">
           <Link to="/applicant/profile">
-            <button className="text-sky-600 hover:font-bold transition-all duration-300">My Profile</button>
+            <button className="text-sky-600 hover:font-bold transition-all duration-300">
+              My Profile
+            </button>
           </Link>
           <Link to="/applicant/my-applications">
-            <button className="text-sky-600 hover:font-bold transition-all duration-300">My Applications</button>
+            <button className="text-sky-600 hover:font-bold transition-all duration-300">
+              My Applications
+            </button>
           </Link>
           <Link to="/applicant/saved-jobs">
-            <button className="text-sky-600 hover:font-bold transition-all duration-300 font-medium">Saved Jobs</button>
+            <button className="text-sky-600 hover:font-bold transition-all duration-300 font-medium">
+              Saved Jobs
+            </button>
+          </Link>
+          <Link to="/applicant/job-listing">
+            <button className="text-sky-600 hover:font-bold transition-all duration-300 font-medium">
+              Jobs Listing
+            </button>
           </Link>
           <div className="bg-sky-200 p-2 size-10 text-sky-600 rounded-full flex justify-center items-center">
             <MdPerson className="size-6" />

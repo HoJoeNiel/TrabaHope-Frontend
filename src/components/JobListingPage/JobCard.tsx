@@ -16,6 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { getDaysAgo } from "@/helpers";
 
 export default function JobCard({ job }: { job: Job }) {
   const addJobToSaved = useJobStore((state) => state.addJobToSaved);
@@ -35,8 +36,6 @@ export default function JobCard({ job }: { job: Job }) {
     tags,
     actions,
   } = job;
-
-  console.log(job);
 
   const index = Math.floor(Math.random() * 22);
   const text = COLORS[index].text;
@@ -88,7 +87,10 @@ export default function JobCard({ job }: { job: Job }) {
                   <div className="flex items-center space-x-2">
                     <CiClock1 className="text-gray-700 size-5" />
                     <span className="text-gray-700 text-sm">
-                      {timestamps?.posted}
+                      {timestamps?.posted
+                        ? getDaysAgo(timestamps.posted)
+                        : "N/A"}{" "}
+                      days ago
                     </span>
                   </div>
                 </div>
