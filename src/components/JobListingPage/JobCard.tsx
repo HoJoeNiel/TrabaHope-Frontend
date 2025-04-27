@@ -21,6 +21,7 @@ import { getDaysAgo } from "@/helpers";
 export default function JobCard({ job }: { job: Job }) {
   const addJobToSaved = useJobStore((state) => state.addJobToSaved);
   const removeJobToSaved = useJobStore((state) => state.removeJobToSaved);
+  const applyToJob = useJobStore((state) => state.applyToJob);
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
     companyInitials,
@@ -170,8 +171,16 @@ export default function JobCard({ job }: { job: Job }) {
               </div>
 
               <div className="flex space-x-4 mt-6">
-                <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-white text-lg">
-                  Apply Now
+                <button
+                  onClick={() => applyToJob(job)}
+                  disabled={job.actions.applied}
+                  className={`px-4 py-2  rounded-lg text-lg ${
+                    job.actions.applied
+                      ? "bg-gray-200 text-gray-500 cursor-auto"
+                      : "bg-blue-500 hover:bg-blue-600 text-white"
+                  }`}
+                >
+                  {job.actions.applied ? "Application sent" : "Apply Now"}
                 </button>
                 <button className="px-4 py-2 bg-white text-gray-700 text-lg border border-gray-300 rounded-lg">
                   View Company

@@ -9,6 +9,7 @@ type JobStore = {
   appliedJobs: Job[];
   addJobToSaved: (job: Job) => void;
   removeJobToSaved: (job: Job) => void;
+  applyToJob: (job: Job) => void;
 };
 
 const jobStoreLogic = persist<JobStore>(
@@ -34,6 +35,19 @@ const jobStoreLogic = persist<JobStore>(
           j.id !== job.id
             ? j
             : { ...job, actions: { ...job.actions, saved: !job.actions.saved } }
+        ),
+      })),
+
+    applyToJob: (job) =>
+      set((state) => ({
+        appliedJobs: [job, ...state.appliedJobs],
+        jobs: state.jobs.map((j) =>
+          j.id !== job.id
+            ? j
+            : {
+                ...job,
+                actions: { ...job.actions, applied: !job.actions.applied },
+              }
         ),
       })),
   }),
