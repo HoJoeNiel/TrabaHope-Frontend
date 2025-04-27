@@ -30,11 +30,13 @@ export default function JobCard({ job }: { job: Job }) {
     salaryRange,
     matchPercentage,
     companyName,
-    postedDate,
+    timestamps,
     description,
     tags,
     actions,
   } = job;
+
+  console.log(job);
 
   const index = Math.floor(Math.random() * 22);
   const text = COLORS[index].text;
@@ -85,7 +87,9 @@ export default function JobCard({ job }: { job: Job }) {
                   )}
                   <div className="flex items-center space-x-2">
                     <CiClock1 className="text-gray-700 size-5" />
-                    <span className="text-gray-700 text-sm">{postedDate}</span>
+                    <span className="text-gray-700 text-sm">
+                      {timestamps?.posted}
+                    </span>
                   </div>
                 </div>
               </div>
