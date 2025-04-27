@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import JobListingPage from "./pages/Applicant/JobListingPage";
 import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
 import SavedJobsPage from "./pages/Applicant/SavedJobsPage";
+import MyApplications from "./pages/Applicant/MyApplications";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "job-listing", element: <JobListingPage /> },
       { path: "profile", element: <ApplicantProfile /> },
       { path: "saved-jobs", element: <SavedJobsPage /> },
+      { path: "my-applications", element: <MyApplications /> },
     ],
   },
 ]);
