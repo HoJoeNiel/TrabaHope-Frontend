@@ -37,12 +37,13 @@ export type Action = {
 };
 
 export type JobStatus =
-  | "pending"
-  | "applied"
-  | "interview"
-  | "offer"
-  | "rejected"
-  | "hired";
+  | "Pending"
+  | "Applied"
+  | "Interview"
+  | "Review"
+  | "Offer"
+  | "Rejected"
+  | "Hired";
 
 export type TimeStamps = {
   posted?: string;
