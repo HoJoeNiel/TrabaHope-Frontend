@@ -7,7 +7,7 @@ import { useJobStore } from "@/stores/useJobStore";
 
 export default function SavedJobsPage() {
   const savedJobs = useJobStore((state) => state.savedJobs);
-
+  
   return (
     <div className="flex flex-col min-h-screen min-w-screen bg-blue-50">
       <ApplicantHeader />
@@ -24,7 +24,7 @@ export default function SavedJobsPage() {
         <SavedJobsStats />
 
         {savedJobs.map((job) => (
-          <SavedJobsCard job={job} />
+          <SavedJobsCard key={job.id} job={job} />
         ))}
       </main>
 

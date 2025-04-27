@@ -38,7 +38,7 @@ export default function SavedJobsOverview({ className }: Props) {
             <p className="text-sm text-sky-600">{sj.companyName}</p>
             <div className="flex justify-between items-center mt-1">
               <span className="text-xs text-gray-500">
-                {sj.timestamps.posted}
+                {sj.timestamps?.posted}
               </span>
               <button className="text-sky-600 hover:text-sky-800 text-sm">
                 Apply

@@ -29,7 +29,7 @@ const jobStoreLogic = persist<JobStore>(
 
     addJobToSaved: (job) =>
       set((state) => ({
-        savedJobs: [...state.savedJobs, job],
+        savedJobs: [job, ...state.savedJobs],
         jobs: state.jobs.map((j) =>
           j.id !== job.id
             ? j
