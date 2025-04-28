@@ -6,6 +6,7 @@ import {
   googleProvider,
 } from "@/firebase";
 import { handleAuthError } from "@/helpers/authHelpers";
+import { useUserStore } from "@/stores/useUserStore";
 import { signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 
@@ -18,12 +19,23 @@ type action = "signup" | "login";
 
 export default function AuthSocialButtons({ action }: { action: action }) {
   const [isLoading, setLoading] = useState<boolean>(false);
+  const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
 
   const handleCreateAccountWithGoogle = async (): Promise<void> => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      if (user) {
+        setUser({
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
+      }
+
       setLoading(false);
       navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
@@ -35,7 +47,16 @@ export default function AuthSocialButtons({ action }: { action: action }) {
   const handleCreateAccountWithFacebook = async (): Promise<void> => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, facebookProvider);
+      const result = await signInWithPopup(auth, facebookProvider);
+      const user = result.user;
+
+      if (user) {
+        setUser({
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
+      }
       setLoading(false);
       navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
@@ -47,7 +68,16 @@ export default function AuthSocialButtons({ action }: { action: action }) {
   const handleCreateAccountWithGithub = async (): Promise<void> => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, githubProvider);
+      const result = await signInWithPopup(auth, githubProvider);
+      const user = result.user;
+
+      if (user) {
+        setUser({
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
+      }
       setLoading(false);
       navigate("/applicant/job-listing", { replace: true });
     } catch (error) {

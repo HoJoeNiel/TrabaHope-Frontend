@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import profile from "@/assets/2x2pic.jpg";
-
 import { CiCalendar } from "react-icons/ci";
 import { TbEdit } from "react-icons/tb";
 import { CiMail } from "react-icons/ci";
@@ -11,10 +9,13 @@ import { CiLocationOn } from "react-icons/ci";
 import { TbWorld } from "react-icons/tb";
 import { IoIosClose } from "react-icons/io";
 import { IoCheckmarkOutline } from "react-icons/io5";
+import { useUserStore } from "@/stores/useUserStore";
+import { MdPerson } from "react-icons/md";
 
 export default function ApplicantProfileCard() {
   const [editing, setEditing] = useState(false);
   const [showFullBio, setShowFullBio] = useState(false);
+  const user = useUserStore((state) => state.user);
 
   const bio =
     "Passionate Frontend Developer with 7+ years of experience creating responsive, user-focused web applications. Specialized in React, TypeScript, and modern CSS frameworks. Strong advocate for accessible design and performance optimization. Previously worked at tech startups and enterprise companies, helping build products used by millions of users worldwide. Currently seeking opportunities to leverage my expertise in creating exceptional user experiences while continually expanding my skillset in emerging frontend technologies.";
@@ -29,7 +30,15 @@ export default function ApplicantProfileCard() {
             <div className="flex">
               <div className="relative">
                 <div className="bg-blue-100 rounded-full size-20 flex items-center justify-center overflow-hidden border">
-                  <img src={profile} alt="applicant profile picture" />
+                  {user?.photoURL ? (
+                    <img
+                      src={user?.photoURL}
+                      alt="applicant profile picture"
+                      className="object-contain size-20"
+                    />
+                  ) : (
+                    <MdPerson />
+                  )}
                 </div>
                 <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 cursor-pointer">
                   <TbEdit size={12} className="text-white" />

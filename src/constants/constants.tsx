@@ -236,7 +236,9 @@ export const JOBS: Job[] = [
     location: "Salcedo Village, Makati City",
     employmentType: EmploymentType.FULL_TIME,
     salaryRange: "₱35,000 - ₱45,000",
-    postedDate: "2 days ago",
+    timestamps: {
+      posted: new Date("March 21, 2025").toLocaleDateString(),
+    },
     matchPercentage: 98,
     description:
       "We're looking for an experienced Frontend Developer to join our team and build cutting-edge web applications using React, Typescript, and Tailwind CSS. You will be responsible for transforming design mockups into interactive, high-performance interfaces while collaborating closely with designers and backend developers. Ideal candidates have a keen eye for detail, a deep understanding of component-based architecture, and are comfortable working in a fast-paced agile environment. Experience with Git workflows and performance optimization is a plus.",
@@ -255,7 +257,9 @@ export const JOBS: Job[] = [
     location: "Cebu IT Park, Cebu City",
     employmentType: EmploymentType.FULL_TIME,
     salaryRange: "₱50,000 - ₱65,000",
-    postedDate: "1 week ago",
+    timestamps: {
+      posted: new Date("March 21, 2025").toLocaleDateString(),
+    },
     matchPercentage: 87,
     description:
       "We're seeking a Backend Engineer to build and maintain our RESTful APIs and microservices using Node.js and PostgreSQL. You'll collaborate with frontend developers and DevOps to ensure robust and scalable backend architecture. Experience with Docker, CI/CD pipelines, and writing unit/integration tests is highly preferred.",
@@ -274,7 +278,9 @@ export const JOBS: Job[] = [
     location: "Remote (Philippines)",
     employmentType: EmploymentType.FREELANCE,
     salaryRange: "₱30,000 - ₱40,000",
-    postedDate: "3 days ago",
+    timestamps: {
+      posted: new Date("April 07, 2025").toLocaleDateString(),
+    },
     matchPercentage: 91,
     description:
       "We're hiring a UI/UX Designer who excels at creating intuitive and visually appealing designs using Figma. You’ll work closely with our product and engineering teams to shape the look and feel of our platform. Ideal candidates are user-obsessed and have experience conducting usability testing and crafting design systems.",
@@ -293,7 +299,9 @@ export const JOBS: Job[] = [
     location: "Ortigas Center, Pasig City",
     employmentType: EmploymentType.FULL_TIME,
     salaryRange: "₱40,000 - ₱55,000",
-    postedDate: "5 days ago",
+    timestamps: {
+      posted: new Date("February 27, 2025").toLocaleDateString(),
+    },
     matchPercentage: 85,
     description:
       "Join our growing analytics team as a Data Analyst! You'll be responsible for interpreting complex data sets and generating actionable insights for stakeholders. Strong SQL skills, familiarity with data visualization tools like Power BI or Tableau, and a solid grasp of statistical techniques are must-haves.",
@@ -312,7 +320,9 @@ export const JOBS: Job[] = [
     location: "Remote (Philippines)",
     employmentType: EmploymentType.PART_TIME,
     salaryRange: "₱20,000 - ₱25,000",
-    postedDate: "1 day ago",
+    timestamps: {
+      posted: new Date("April 13, 2025").toLocaleDateString(),
+    },
     matchPercentage: 93,
     description:
       "We're looking for a reliable Customer Support Specialist to join our remote team. Responsibilities include responding to customer inquiries via email and chat, troubleshooting basic product issues, and escalating technical problems. Excellent written English and empathy are key traits we value.",
@@ -336,7 +346,9 @@ export const JOBS: Job[] = [
     location: "Remote",
     employmentType: EmploymentType.PART_TIME,
     salaryRange: "₱25,000 - ₱35,000",
-    postedDate: "1 day ago",
+    timestamps: {
+      posted: new Date("January 18, 2025").toLocaleDateString(),
+    },
     matchPercentage: 92,
     description:
       "NextWave Solutions is hiring a creative UI/UX Designer to help design intuitive interfaces for our web and mobile apps. You'll work closely with product managers and developers to turn user needs into elegant visual designs.",
@@ -355,7 +367,9 @@ export const JOBS: Job[] = [
     location: "Ortigas Center, Pasig City",
     employmentType: EmploymentType.FULL_TIME,
     salaryRange: "₱40,000 - ₱55,000",
-    postedDate: "3 days ago",
+    timestamps: {
+      posted: new Date("February 11, 2025").toLocaleDateString(),
+    },
     matchPercentage: 87,
     description:
       "We’re seeking a Data Analyst to process and analyze large data sets to uncover insights that will drive strategic decisions across departments. Candidates should be proficient in SQL, Python, and data visualization tools like Power BI or Tableau.",
@@ -374,7 +388,9 @@ export const JOBS: Job[] = [
     location: "Remote",
     employmentType: EmploymentType.CONTRACT,
     salaryRange: "₱60,000 - ₱80,000",
-    postedDate: "5 hours ago",
+    timestamps: {
+      posted: new Date("March 29, 2025").toLocaleDateString(),
+    },
     matchPercentage: 94,
     description:
       "Groove Ventures is on the lookout for a skilled Mobile App Developer with experience in Flutter and Firebase. You will play a key role in building scalable, high-performance applications for our global user base.",
@@ -393,7 +409,9 @@ export const JOBS: Job[] = [
     location: "Bonifacio Global City, Taguig",
     employmentType: EmploymentType.FULL_TIME,
     salaryRange: "₱55,000 - ₱70,000",
-    postedDate: "4 days ago",
+    timestamps: {
+      posted: new Date("March 03, 2025").toLocaleDateString(),
+    },
     matchPercentage: 89,
     description:
       "ZenLayer PH is hiring a DevOps Engineer to automate infrastructure and improve our CI/CD pipelines. The ideal candidate has experience with cloud providers, Docker, Kubernetes, and monitoring tools like Prometheus.",
@@ -412,7 +430,9 @@ export const JOBS: Job[] = [
     location: "Remote",
     employmentType: EmploymentType.FREELANCE,
     salaryRange: "₱20,000 - ₱30,000",
-    postedDate: "Just now",
+    timestamps: {
+      posted: new Date("April 04, 2025").toLocaleDateString(),
+    },
     matchPercentage: 91,
     description:
       "Aspire Media is looking for a creative and detail-oriented content writer to produce compelling blog posts, social media content, and marketing copy. Experience in SEO and content strategy is a plus.",

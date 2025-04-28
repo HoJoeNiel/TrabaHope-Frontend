@@ -33,11 +33,13 @@ export default function SavedJobsOverview({ className }: Props) {
           </>
         )}
         {lastThreeItems?.map((sj) => (
-          <div className="pb-3 border-b border-gray-100">
+          <div key={sj.id} className="pb-3 border-b border-gray-100">
             <h3 className="font-medium text-gray-800">{sj.jobTitle}</h3>
             <p className="text-sm text-sky-600">{sj.companyName}</p>
             <div className="flex justify-between items-center mt-1">
-              <span className="text-xs text-gray-500">{sj.postedDate}</span>
+              <span className="text-xs text-gray-500">
+                {sj.timestamps?.posted}
+              </span>
               <button className="text-sky-600 hover:text-sky-800 text-sm">
                 Apply
               </button>

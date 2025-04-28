@@ -5,6 +5,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { LuBuilding } from "react-icons/lu";
 import { FiExternalLink } from "react-icons/fi";
 import { CiTrash } from "react-icons/ci";
+import { getDaysAgo } from "@/helpers";
 
 export default function SavedJobsCard({ job }: { job: Job }) {
   const {
@@ -14,7 +15,7 @@ export default function SavedJobsCard({ job }: { job: Job }) {
     location,
     matchPercentage,
     companyName,
-    postedDate,
+    timestamps,
     description,
     tags,
   } = job;
@@ -63,7 +64,11 @@ export default function SavedJobsCard({ job }: { job: Job }) {
                   <div className="flex items-center space-x-2">
                     <CiClock1 className="text-gray-700 size-5" />
                     <span className="text-gray-700 text-sm">
-                      Posted {postedDate}
+                      Posted{" "}
+                      {timestamps?.posted
+                        ? getDaysAgo(timestamps?.posted)
+                        : "N/A"}{" "}
+                      days ago
                     </span>
                   </div>
                 </div>

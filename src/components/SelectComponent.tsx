@@ -24,7 +24,9 @@ export function SelectComponent({
         <SelectGroup>
           <SelectLabel>{options[0]}</SelectLabel>
           {options.map((o) => (
-            <SelectItem value={o}>{o}</SelectItem>
+            <SelectItem key={o} value={o}>
+              {o}
+            </SelectItem>
           ))}
         </SelectGroup>
       </SelectContent>

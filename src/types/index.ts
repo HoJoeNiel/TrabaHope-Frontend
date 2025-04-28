@@ -36,18 +36,35 @@ export type Action = {
   applied: boolean;
 };
 
+export type JobStatus =
+  | "Pending"
+  | "Applied"
+  | "Interview"
+  | "Review"
+  | "Offer"
+  | "Rejected"
+  | "Hired";
+
+export type TimeStamps = {
+  posted?: string;
+  applied?: string;
+  lastUpdate?: string;
+};
+
 export type Job = {
   id: string;
   companyInitials: string;
-  jobTitle: string;
   companyName: string;
-  remote: boolean;
+  jobTitle: string;
   location: string;
   employmentType: EmploymentType;
-  salaryRange: string;
-  postedDate: string;
-  matchPercentage: number;
   description: string;
+  remote: boolean;
+  salaryRange: string;
+  status?: JobStatus;
+  matchPercentage: number;
+  nextStep?: string;
   tags: string[];
   actions: Action;
+  timestamps: TimeStamps;
 };
