@@ -16,7 +16,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getDaysAgo } from "@/helpers";
+import { getDaysAgo, slugify } from "@/helpers";
+import { useNavigate } from "react-router-dom";
 
 export default function JobCard({ job }: { job: Job }) {
   const addJobToSaved = useJobStore((state) => state.addJobToSaved);
@@ -37,6 +38,7 @@ export default function JobCard({ job }: { job: Job }) {
     tags,
     actions,
   } = job;
+  const navigate = useNavigate();
 
   const index = Math.floor(Math.random() * 22);
   const border = COLORS[index].border;
@@ -54,6 +56,11 @@ export default function JobCard({ job }: { job: Job }) {
     percentageBGColor = "bg-yellow-200";
     percentageTextColor = "text-yellow-700";
   }
+
+  const handleViewCompany = () => {
+    const slug = slugify(companyName);
+    navigate(`/company/${slug}`);
+  };
 
   return (
     <div
@@ -180,7 +187,10 @@ export default function JobCard({ job }: { job: Job }) {
                 >
                   {job.actions.applied ? "Application sent" : "Apply Now"}
                 </button>
-                <button className="px-4 py-2 bg-white text-gray-700 text-lg border border-gray-300 rounded-lg">
+                <button
+                  onClick={handleViewCompany}
+                  className="px-4 py-2 bg-white text-gray-700 text-lg border border-gray-300 rounded-lg"
+                >
                   View Company
                 </button>
               </div>

@@ -759,7 +759,7 @@ export const COMPANIES: Company[] = [
   {
     name: "Meta Platforms, Inc.",
     companySlug: "meta-platforms-inc",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Meta_Platforms_Inc._logo.svg",
+    logo: "https://www.stocksbnb.com/wp-content/uploads/2022/08/meta-logo-1.png",
     location: "Menlo Park, California, USA",
     website: "meta.com",
     industry: "Social Media and Virtual Reality",
