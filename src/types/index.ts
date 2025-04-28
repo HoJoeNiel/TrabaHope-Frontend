@@ -53,7 +53,7 @@ export type TimeStamps = {
 
 export type Job = {
   id: string;
-  companyInitials: string;
+  companyProfile: string;
   companyName: string;
   jobTitle: string;
   location: string;

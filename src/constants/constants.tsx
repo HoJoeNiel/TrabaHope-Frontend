@@ -229,9 +229,10 @@ export const salaryRange: category[] = [
 export const JOBS: Job[] = [
   {
     id: crypto.randomUUID(),
-    companyInitials: "TC",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
     jobTitle: "Frontend Developer",
-    companyName: "TechCorp Inc.",
+    companyName: "Apple",
     remote: true,
     location: "Salcedo Village, Makati City",
     employmentType: EmploymentType.FULL_TIME,
@@ -250,9 +251,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "HI",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
     jobTitle: "Backend Engineer",
-    companyName: "Hyperloop Innovations",
+    companyName: "Google",
     remote: false,
     location: "Cebu IT Park, Cebu City",
     employmentType: EmploymentType.FULL_TIME,
@@ -271,9 +273,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "FD",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
     jobTitle: "UI/UX Designer",
-    companyName: "Figma Dreams",
+    companyName: "Microsoft",
     remote: true,
     location: "Remote (Philippines)",
     employmentType: EmploymentType.FREELANCE,
@@ -292,9 +295,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "DA",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
     jobTitle: "Data Analyst",
-    companyName: "DataAware Co.",
+    companyName: "Amazon",
     remote: false,
     location: "Ortigas Center, Pasig City",
     employmentType: EmploymentType.FULL_TIME,
@@ -313,9 +317,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "GC",
+    companyProfile:
+      "https://www.stocksbnb.com/wp-content/uploads/2022/08/meta-logo-1.png",
     jobTitle: "Customer Support Specialist",
-    companyName: "GlobalConnect",
+    companyName: "Meta Platforms Inc.",
     remote: true,
     location: "Remote (Philippines)",
     employmentType: EmploymentType.PART_TIME,
@@ -339,9 +344,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "NX",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
     jobTitle: "UI/UX Designer",
-    companyName: "NextWave Solutions",
+    companyName: "Netflix",
     remote: true,
     location: "Remote",
     employmentType: EmploymentType.PART_TIME,
@@ -360,9 +366,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "DF",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
     jobTitle: "Data Analyst",
-    companyName: "DataForge Analytics",
+    companyName: "Nike",
     remote: false,
     location: "Ortigas Center, Pasig City",
     employmentType: EmploymentType.FULL_TIME,
@@ -381,9 +388,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "GV",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
     jobTitle: "Mobile App Developer",
-    companyName: "Groove Ventures",
+    companyName: "Tesla",
     remote: true,
     location: "Remote",
     employmentType: EmploymentType.CONTRACT,
@@ -402,9 +410,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "ZL",
+    companyProfile:
+      "https://logos-world.net/wp-content/uploads/2020/04/Sony-Logo-1962-1969.png",
     jobTitle: "DevOps Engineer",
-    companyName: "ZenLayer PH",
+    companyName: "Sony",
     remote: false,
     location: "Bonifacio Global City, Taguig",
     employmentType: EmploymentType.FULL_TIME,
@@ -423,9 +432,10 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyInitials: "AS",
+    companyProfile:
+      "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
     jobTitle: "Content Writer",
-    companyName: "Aspire Media",
+    companyName: "Samsung",
     remote: true,
     location: "Remote",
     employmentType: EmploymentType.FREELANCE,
