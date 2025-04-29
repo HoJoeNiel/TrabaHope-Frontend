@@ -16,7 +16,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getDaysAgo } from "@/helpers";
+import { getDaysAgo, slugify } from "@/helpers";
+import { useNavigate } from "react-router-dom";
 
 export default function JobCard({ job }: { job: Job }) {
   const addJobToSaved = useJobStore((state) => state.addJobToSaved);
@@ -24,7 +25,7 @@ export default function JobCard({ job }: { job: Job }) {
   const applyToJob = useJobStore((state) => state.applyToJob);
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
-    companyInitials,
+    companyProfile,
     jobTitle,
     remote,
     employmentType,
@@ -37,10 +38,9 @@ export default function JobCard({ job }: { job: Job }) {
     tags,
     actions,
   } = job;
+  const navigate = useNavigate();
 
   const index = Math.floor(Math.random() * 22);
-  const text = COLORS[index].text;
-  const bg = COLORS[index].bg;
   const border = COLORS[index].border;
 
   let percentageBGColor;
@@ -57,6 +57,11 @@ export default function JobCard({ job }: { job: Job }) {
     percentageTextColor = "text-yellow-700";
   }
 
+  const handleViewCompany = () => {
+    const slug = slugify(companyName);
+    navigate(`/company/${slug}`);
+  };
+
   return (
     <div
       className={`w-full bg-white border-l-4 ${border} rounded-lg mb-8 shadow hover:shadow-lg transition-all duration-300`}
@@ -64,16 +69,16 @@ export default function JobCard({ job }: { job: Job }) {
       <div className="px-6 py-8">
         <div className="flex space-x-4 mb-4">
           <div
-            className={`size-16 ${bg} rounded-lg text-sm p-4 flex justify-center items-center`}
+            className={`size-16 bg-gray-50 border border-gray-100 p-2 rounded-lg text-sm flex justify-center items-center`}
           >
-            <span className={`${text} text-2xl`}>{companyInitials}</span>
+            <img src={companyProfile} className="object-contain" />
           </div>
 
           <div className="w-full">
             <div className="flex justify-between">
               <div className="flex flex-col space-y-1">
                 <h2 className="font-bold text-xl">{jobTitle}</h2>
-                <div className="flex space-x-2 items-center">
+                <div className="flex space-x-1 items-center">
                   <LuBuilding className="text-sky-600 size-5" />
                   <span className="text-sky-600">{companyName}</span>
                 </div>
@@ -182,7 +187,10 @@ export default function JobCard({ job }: { job: Job }) {
                 >
                   {job.actions.applied ? "Application sent" : "Apply Now"}
                 </button>
-                <button className="px-4 py-2 bg-white text-gray-700 text-lg border border-gray-300 rounded-lg">
+                <button
+                  onClick={handleViewCompany}
+                  className="px-4 py-2 bg-white text-gray-700 text-lg border border-gray-300 rounded-lg"
+                >
                   View Company
                 </button>
               </div>

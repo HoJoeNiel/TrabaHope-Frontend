@@ -15,7 +15,7 @@ export default function JobList() {
 
         <div className="flex space-x-4 mb-3 items-center">
           <span className="text-sm">Sort by: </span>
-          <SelectComponent options={options} className="w-[180px]" />
+          <SelectComponent options={options} className="w-[180px] bg-white border-none shadow" />
         </div>
       </div>
       <div className="">

@@ -53,7 +53,7 @@ export type TimeStamps = {
 
 export type Job = {
   id: string;
-  companyInitials: string;
+  companyProfile: string;
   companyName: string;
   jobTitle: string;
   location: string;
@@ -67,4 +67,33 @@ export type Job = {
   tags: string[];
   actions: Action;
   timestamps: TimeStamps;
+};
+
+export type ActiveJob = {
+  id: number;
+  title: string;
+  location: string;
+  type: string;
+  postedDate: string;
+  salary: string;
+  matchScore: number;
+};
+
+export type Company = {
+  name: string;
+  companySlug: string;
+  logo: string;
+  location: string;
+  website: string;
+  industry: string;
+  size: string;
+  founded: string;
+  specialties: string[];
+  about: string;
+  mission: string;
+  benefits: string[];
+  openPositions: number;
+  averageRating: number;
+  reviewCount: number;
+  activeJobs: ActiveJob[];
 };

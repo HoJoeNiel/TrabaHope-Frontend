@@ -44,3 +44,9 @@ export const getStatusIcon = (status: JobStatus) => {
       return <Clock className="w-4 h-4" />;
   }
 };
+
+export const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");

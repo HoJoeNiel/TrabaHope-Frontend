@@ -7,6 +7,7 @@ import JobListingPage from "./pages/Applicant/JobListingPage";
 import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
 import SavedJobsPage from "./pages/Applicant/SavedJobsPage";
 import MyApplications from "./pages/Applicant/MyApplications";
+import CompanyProfilePage from "./pages/Applicant/CompanyProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       { path: "saved-jobs", element: <SavedJobsPage /> },
       { path: "my-applications", element: <MyApplications /> },
     ],
+  },
+  {
+    path: "/company/:companySlug",
+    element: <CompanyProfilePage />,
   },
 ]);
 
