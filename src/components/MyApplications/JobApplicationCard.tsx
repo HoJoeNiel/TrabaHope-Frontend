@@ -12,11 +12,12 @@ export default function JobApplicationCard({ job }: { job: Job }) {
       <div className="p-4 border-b border-gray-100 flex justify-between items-start">
         <div className="flex items-start space-x-4">
           <div
-            className={`w-12 h-12 rounded-md flex items-center justify-center text-gray-700 bg-blue-100`}
+            className={`size-16 rounded-md p-2 flex items-center justify-center bg-blue-100`}
           >
-            <span className="text-lg font-semibold text-blue-500">
-              {job.companyInitials}
-            </span>
+            <img
+              src={job.companyProfile}
+              className="object-contain"
+            />
           </div>
           <div>
             <h3 className="text-lg font-medium text-gray-800">
