@@ -9,7 +9,7 @@ import { getDaysAgo } from "@/helpers";
 
 export default function SavedJobsCard({ job }: { job: Job }) {
   const {
-    companyInitials,
+    companyProfile,
     jobTitle,
     remote,
     location,
@@ -38,10 +38,8 @@ export default function SavedJobsCard({ job }: { job: Job }) {
     <div className="w-full bg-white rounded-lg overflow-hidden shadow pt-6 my-6">
       <div className="px-6">
         <div className="flex space-x-4 mb-4">
-          <div className="size-16 rounded-lg bg-blue-100 text-sm p-4 flex justify-center items-center">
-            <span className="text-2xl text-blue-600 font-semibold">
-              {companyInitials}
-            </span>
+          <div className="size-16 rounded-lg bg-gray-100 text-sm p-4 flex justify-center items-center">
+            <img src={companyProfile} className="object-contain" />
           </div>
 
           <div className="w-full">
