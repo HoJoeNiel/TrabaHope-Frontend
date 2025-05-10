@@ -3,7 +3,7 @@ import FeatureCard from "../FeatureCard";
 
 export default function Features() {
   return (
-    <section className="w-full h-[500px]">
+    <section className="w-full h-[500px] bg-white">
       <div className="max-w-[1440px] mx-auto">
         <div className="text-center">
           <h3 className="text-dusty-sky-blue font-semibold tracking-wide uppercase">
