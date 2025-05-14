@@ -1,11 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-type User = {
-  displayName: string | null;
-  email: string | null;
-  photoURL: string | null;
-};
+import { User } from "@/types";
 
 type UserStore = {
   user: User | null;

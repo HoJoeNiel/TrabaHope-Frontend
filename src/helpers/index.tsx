@@ -1,4 +1,4 @@
-import { JobStatus } from "@/types";
+import { JobStatus, RawFirebaseUser, User } from "@/types";
 import { BarChart2, Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
 
 export const getDaysAgo = (date: string | Date): number => {
@@ -50,3 +50,18 @@ export const slugify = (text: string) =>
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "");
+
+export const normalizeFirebaseUser = (user: RawFirebaseUser): User | null => {
+  // it's okay to return null here if the displayName is null
+  // because I manually set the displayName based on user credentials when they sign up using email and password
+  // when using third party provider it is automatic
+  // lapag ko lang dito para note pag nagkaroon ng problema
+  if (!user.email || !user.role || !user.displayName) return null;
+
+  return {
+    displayName: user.displayName,
+    email: user.email,
+    photoURL: user.photoURL,
+    role: user.role,
+  };
+};

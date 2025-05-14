@@ -8,6 +8,22 @@ export interface UserCredentials {
   phoneNumber: string;
 }
 
+export type Role = "applicant" | "recruiter";
+
+export type User = {
+  displayName: string;
+  email: string;
+  photoURL: string | null;
+  role: Role;
+};
+
+export type RawFirebaseUser = {
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+  role: Role;
+};
+
 export type RecruiterCredentials = Omit<UserCredentials, "email"> & {
   workEmail: string;
   companyName: string;

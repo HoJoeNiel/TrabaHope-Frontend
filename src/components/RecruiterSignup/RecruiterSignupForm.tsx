@@ -3,14 +3,17 @@ import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
 import AuthSocialButtons from "@/components/AuthSocialButtons";
 
-import { RecruiterCredentials } from "@/types";
+import { RawFirebaseUser, RecruiterCredentials } from "@/types";
 import { newRecruiterAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Loader2 } from "lucide-react";
+import { normalizeFirebaseUser } from "@/helpers";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useUserStore } from "@/stores/useUserStore";
 
 const initialValues: RecruiterCredentials = {
   firstName: "",
@@ -25,6 +28,7 @@ const initialValues: RecruiterCredentials = {
 export default function RecruiterSignupForm() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleAccountCreation = async (
     values: RecruiterCredentials,
@@ -40,15 +44,40 @@ export default function RecruiterSignupForm() {
         values.workEmail,
         values.password
       );
-      const user = result.user;
+      const currentUser = result.user;
 
-      await updateProfile(user, {
+      await updateProfile(currentUser, {
         displayName: `${values.firstName} ${values.lastName}`,
       });
 
+      const user: RawFirebaseUser = {
+        displayName: currentUser.displayName,
+        email: currentUser.email,
+        photoURL: currentUser.photoURL,
+        role: "recruiter",
+      };
+
+      const normalizeUser = normalizeFirebaseUser(user);
+
+      console.log(normalizeUser);
+      if (normalizeUser) setUser(normalizeUser);
+
+      // Save sa firestore DB (temporary lang habang wala pa yung backend)
+      await setDoc(doc(db, "users", currentUser.uid), {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        displayName: currentUser.displayName,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+        role: "recruiter",
+        createdAt: serverTimestamp(),
+      });
+      console.log("done save sa firestore");
+
       setLoading(false);
       // const token = await user.getIdToken();
-      navigate("/dashboard", { replace: true });
+      navigate("/recruiter/create-new-job", { replace: true });
     } catch (error) {
       setLoading(false);
       let errorMessage = "Something went wrong: ";
