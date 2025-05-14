@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import ApplicantSignup from "@/pages/ApplicantSignup";
 import LandingPage from "@/pages/LandingPage";
@@ -9,6 +9,7 @@ import ApplicantProfile from "@/pages/Applicant/ApplicantProfile";
 import SavedJobsPage from "@/pages/Applicant/SavedJobsPage";
 import MyApplications from "@/pages/Applicant/MyApplications";
 import CompanyProfilePage from "@/pages/Applicant/CompanyProfilePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/applicant",
+    element: (
+      <ProtectedRoute>
+        <Outlet />
+      </ProtectedRoute>
+    ),
     children: [
       { path: "job-listing", element: <JobListingPage /> },
       { path: "profile", element: <ApplicantProfile /> },
@@ -34,7 +40,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/recruiter",
-    children: [{ path: "", element: "" }],
+    element: (
+      <ProtectedRoute>
+        <Outlet />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "create-new-job", element: <h1>Create new job page c===3</h1> },
+    ],
   },
   {
     path: "/company/:companySlug",
