@@ -22,11 +22,15 @@ export const newApplicantAccountSchema = yup.object().shape({
   phoneNumber: yup.string().required("Required"),
 });
 
-export const newRecruiterAccountSchema = yup.object().shape({
-  firstName: yup.string().required("Required"),
-  lastName: yup.string().required("Required"),
+export const newCompanyAccountSchema = yup.object().shape({
   companyName: yup.string().required("Required"),
-  workEmail: yup.string().email("Please enter a valid email.").required("Required"),
+  industry: yup.string().required("Required"),
+  companyWebsite: yup.string().required("Required"),
+  companyEmail: yup
+    .string()
+    .email("Please enter a valid email.")
+    .required("Required"),
+  phoneNumber: yup.string().required("Required"),
   password: yup
     .string()
     .min(8, "Password must be at least 8 characters long.")
@@ -39,5 +43,4 @@ export const newRecruiterAccountSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password")], "Password must match")
     .required("Required"),
-  phoneNumber: yup.string().required("Required"),
 });
