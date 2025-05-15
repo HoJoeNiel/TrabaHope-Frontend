@@ -24,9 +24,19 @@ export type RawFirebaseUser = {
   role: Role;
 };
 
-export type RecruiterCredentials = Omit<UserCredentials, "email"> & {
-  workEmail: string;
+// export type RecruiterCredentials = Omit<UserCredentials, "email"> & {
+//   workEmail: string;
+//   companyName: string;
+// };
+
+export type CompanyCredentials = {
   companyName: string;
+  industry: string;
+  companyWebsite: string;
+  companyEmail: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
 };
 
 export type category = {

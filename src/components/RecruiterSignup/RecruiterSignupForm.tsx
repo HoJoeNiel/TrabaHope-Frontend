@@ -1,10 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
-import AuthSocialButtons from "@/components/AuthSocialButtons";
 
-import { RawFirebaseUser, RecruiterCredentials } from "@/types";
-import { newRecruiterAccountSchema } from "@/schema";
+import { RawFirebaseUser, CompanyCredentials } from "@/types";
+import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
@@ -15,14 +14,32 @@ import { normalizeFirebaseUser } from "@/helpers";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useUserStore } from "@/stores/useUserStore";
 
-const initialValues: RecruiterCredentials = {
-  firstName: "",
-  lastName: "",
+const INDUSTRY_OPTIONS = [
+  "Information Technology (IT)",
+  "Healthcare & Medical",
+  "Education & Training",
+  "Finance & Accounting",
+  "Manufacturing & Production",
+  "Construction & Engineering",
+  "Retail & E-commerce",
+  "Marketing & Advertising",
+  "Telecommunications",
+  "Transportation & Logistics",
+  "Hospitality & Tourism",
+  "Legal Services",
+  "Real Estate",
+  "Energy & Utilities",
+  "Other",
+];
+
+const initialValues: CompanyCredentials = {
   companyName: "",
-  workEmail: "",
+  industry: "",
+  companyWebsite: "",
+  companyEmail: "",
+  phoneNumber: "",
   password: "",
   confirmPassword: "",
-  phoneNumber: "",
 };
 
 export default function RecruiterSignupForm() {
@@ -31,24 +48,26 @@ export default function RecruiterSignupForm() {
   const setUser = useUserStore((state) => state.setUser);
 
   const handleAccountCreation = async (
-    values: RecruiterCredentials,
+    values: CompanyCredentials,
     {
       setErrors,
-    }: { setErrors: (errors: FormikErrors<RecruiterCredentials>) => void }
+    }: { setErrors: (errors: FormikErrors<CompanyCredentials>) => void }
   ) => {
     // TODO: Add user role (applicant or recruiter) before authenticating
     setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(
         auth,
-        values.workEmail,
+        values.companyEmail,
         values.password
       );
       const currentUser = result.user;
 
       await updateProfile(currentUser, {
-        displayName: `${values.firstName} ${values.lastName}`,
+        displayName: values.companyName,
       });
+
+      console.log(values);
 
       const user: RawFirebaseUser = {
         displayName: currentUser.displayName,
@@ -59,16 +78,15 @@ export default function RecruiterSignupForm() {
 
       const normalizeUser = normalizeFirebaseUser(user);
 
-      console.log(normalizeUser);
       if (normalizeUser) setUser(normalizeUser);
 
       // Save sa firestore DB (temporary lang habang wala pa yung backend)
       await setDoc(doc(db, "users", currentUser.uid), {
         uid: currentUser.uid,
         email: currentUser.email,
-        displayName: currentUser.displayName,
-        firstName: values.firstName,
-        lastName: values.lastName,
+        companyName: values.companyName,
+        industry: values.industry,
+        companyWebsite: values.companyWebsite,
         phoneNumber: values.phoneNumber,
         role: "recruiter",
         createdAt: serverTimestamp(),
@@ -83,7 +101,7 @@ export default function RecruiterSignupForm() {
       let errorMessage = "Something went wrong: ";
       if (error instanceof Error) {
         errorMessage += error.message;
-        setErrors({ workEmail: error.message });
+        setErrors({ companyEmail: error.message });
       }
       throw new Error(errorMessage);
     }
@@ -101,7 +119,7 @@ export default function RecruiterSignupForm() {
 
         <Formik
           initialValues={initialValues}
-          validationSchema={newRecruiterAccountSchema}
+          validationSchema={newCompanyAccountSchema}
           onSubmit={(values, { setErrors }) =>
             handleAccountCreation(values, { setErrors })
           }
@@ -111,29 +129,32 @@ export default function RecruiterSignupForm() {
               <div className="grid grid-cols-2 gap-4 mt-6">
                 <FormField
                   type="text"
-                  name="firstName"
-                  id="firstName"
-                  label="First Name"
+                  name="companyName"
+                  id="companyName"
+                  label="Company Name"
                 />
                 <FormField
-                  type="text"
-                  name="lastName"
-                  id="lastName"
-                  label="Last Name"
+                  id="industry"
+                  name="industry"
+                  label="Industry"
+                  isDropdown
+                  options={INDUSTRY_OPTIONS}
+                  setFn={(value) => setFieldValue("industry", value)}
                 />
               </div>
 
               <FormField
                 type="text"
-                name="companyName"
-                id="companyName"
-                label="Company Name"
+                name="companyWebsite"
+                id="companyWebsite"
+                label="Company Website"
+                placeholder="https//yourcompany.com"
               />
               <FormField
                 type="email"
-                name="workEmail"
-                id="workEmail"
-                label="Work Email"
+                name="companyEmail"
+                id="companyEmail"
+                label="company@example.com"
               />
               <FormField
                 type="password"
@@ -192,17 +213,10 @@ export default function RecruiterSignupForm() {
           )}
         </Formik>
 
-        <div className="flex items-center space-x-4">
-          <div className="h-0.5 bg-gray-200 flex-1" />
-          <span className="text-gray-800">Or sign up with</span>
-          <div className="h-0.5 bg-gray-200 flex-1" />
-        </div>
-
-        <AuthSocialButtons action="signup" />
-
         <p className="text-center mt-6 text-gray-600">
           Already have an account?
           <a href="#" className="text-blue-600 font-medium hover:underline">
+            {" "}
             Sign in
           </a>
         </p>
