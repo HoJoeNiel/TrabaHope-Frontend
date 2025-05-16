@@ -10,6 +10,7 @@ import SavedJobsPage from "@/pages/Applicant/SavedJobsPage";
 import MyApplications from "@/pages/Applicant/MyApplications";
 import CompanyProfilePage from "@/pages/Applicant/CompanyProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import JobPostingForm from "./pages/Recruiter/JobPostingForm";
 
 const router = createBrowserRouter([
   {
@@ -45,9 +46,7 @@ const router = createBrowserRouter([
         <Outlet />
       </ProtectedRoute>
     ),
-    children: [
-      { path: "create-new-job", element: <h1>Create new job page c===3</h1> },
-    ],
+    children: [{ path: "create-new-job", element: <JobPostingForm /> }],
   },
   {
     path: "/company/:companySlug",
