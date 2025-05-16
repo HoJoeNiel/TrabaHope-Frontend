@@ -1,4 +1,6 @@
+import { db } from "@/firebase";
 import { JobStatus, RawFirebaseUser, User } from "@/types";
+import { doc, getDoc } from "firebase/firestore";
 import { BarChart2, Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
 
 export const getDaysAgo = (date: string | Date): number => {
@@ -64,4 +66,18 @@ export const normalizeFirebaseUser = (user: RawFirebaseUser): User | null => {
     photoURL: user.photoURL,
     role: user.role,
   };
+};
+
+export const fetchUserDataFromFirestore = async (uid: string) => {
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
+
+  if (userSnap.exists()) {
+    const userData = userSnap.data();
+    console.log("User data:", userData);
+    return userData;
+  } else {
+    console.log("No such user document!");
+    return null;
+  }
 };

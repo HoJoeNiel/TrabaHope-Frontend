@@ -1,12 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/firebase";
+import { fetchUserDataFromFirestore } from "@/helpers";
+import { useUserStore } from "@/stores/useUserStore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function EmailLoginForm() {
   const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
   const [error, setError] = useState("");
   const [credentials, setCredentials] = useState({
     email: "",
@@ -21,19 +24,30 @@ export default function EmailLoginForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const { email, password } = credentials;
-      await signInWithEmailAndPassword(auth, email, password);
-      const currentUser = auth.currentUser;
-      const uid = currentUser?.uid;
-      const token = await currentUser?.getIdToken();
+    const { email, password } = credentials;
 
-      if (token && uid) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("uid", uid);
-        console.log("User successfully logged in!");
-        navigate("/applicant/job-posting");
-      }
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error("No authenticated user found.");
+
+      const userData = await fetchUserDataFromFirestore(currentUser.uid);
+      if (!userData)
+        throw new Error("Failed to fetch user data from firestore");
+
+      setUser({
+        displayName: userData.displayName,
+        email: userData.email,
+        photoURL: userData.photoURL,
+        role: userData.role,
+      });
+
+      const redirectPath =
+        userData.role === "applicant"
+          ? "/applicant/job-listing"
+          : "/recruiter/create-new-job";
+      navigate(redirectPath, { replace: true });
     } catch (error: unknown) {
       let errorMessage = "Something went wrong: ";
       if (error instanceof Error) {
