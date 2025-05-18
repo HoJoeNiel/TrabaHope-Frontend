@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { User } from "@/types";
+import { ApplicantAuth, CompanyAuth } from "@/types";
 
 type UserStore = {
-  user: User | null;
-  setUser: (user: User) => void;
+  user: ApplicantAuth | CompanyAuth | null;
+  setUser: (user: ApplicantAuth | CompanyAuth) => void;
   clearUser: () => void;
 };
 
@@ -19,4 +19,4 @@ const userStoreLogic = persist<UserStore>(
   }
 );
 
-export const useUserStore = create<UserStore>()(userStoreLogic);
+export const useLoggedInUserStore = create<UserStore>()(userStoreLogic);

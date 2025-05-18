@@ -10,11 +10,22 @@ export interface UserCredentials {
 
 export type Role = "applicant" | "recruiter";
 
-export type User = {
+export type ApplicantAuth = {
   displayName: string;
   email: string;
   photoURL: string | null;
   role: Role;
+};
+
+export type CompanyAuth = {
+  uid: string;
+  email: string;
+  companyName: string;
+  industry: string;
+  companyWebsite: string;
+  phoneNumber: string;
+  role: "recruiter";
+  createdAt: string;
 };
 
 export type RawFirebaseUser = {
@@ -97,6 +108,8 @@ export interface ApplicantSideJob extends CompanyPostedJob {
   nextStep?: string;
   actions: Action;
 }
+
+// export type ActiveJob = Pick<ApplicantSideJob, "id" | "jobTitle" | "location" >
 
 export type ActiveJob = {
   id: number;
