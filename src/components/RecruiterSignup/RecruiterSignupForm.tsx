@@ -2,17 +2,26 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
 
-import { RawFirebaseUser, CompanyCredentials } from "@/types";
+import { CompanyCredentials } from "@/types";
 import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
 import { auth, db } from "@/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
-import { normalizeFirebaseUser } from "@/helpers";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useUserStore } from "@/stores/useLoggedInUserStore";
+import {
+  doc,
+  FieldValue,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+import { CompanyAuth, useCompanyAuthStore } from "@/stores/useCompanyAuthStore";
+
+type CompanyAuthInput = Omit<CompanyAuth, "createdAt"> & {
+  createdAt: FieldValue;
+};
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",
@@ -45,7 +54,7 @@ const initialValues: CompanyCredentials = {
 export default function RecruiterSignupForm() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const setUser = useUserStore((state) => state.setUser);
+  const setCompanyAuth = useCompanyAuthStore((state) => state.setCompanyAuth);
 
   const handleAccountCreation = async (
     values: CompanyCredentials,
@@ -63,35 +72,30 @@ export default function RecruiterSignupForm() {
       );
       const currentUser = result.user;
 
-      await updateProfile(currentUser, {
-        displayName: values.companyName,
-      });
-
-      console.log(values);
-
-      const user: RawFirebaseUser = {
-        displayName: currentUser.displayName,
-        email: currentUser.email,
-        photoURL: currentUser.photoURL,
-        role: "recruiter",
-      };
-
-      const normalizeUser = normalizeFirebaseUser(user);
-
-      if (normalizeUser) setUser(normalizeUser);
-
       // Save sa firestore DB (temporary lang habang wala pa yung backend)
-      await setDoc(doc(db, "users", currentUser.uid), {
+      const companyInfo: CompanyAuthInput = {
         uid: currentUser.uid,
-        email: currentUser.email,
+        email: values.companyEmail,
         companyName: values.companyName,
         industry: values.industry,
         companyWebsite: values.companyWebsite,
         phoneNumber: values.phoneNumber,
         role: "recruiter",
         createdAt: serverTimestamp(),
-      });
-      console.log("done save sa firestore");
+      };
+      const docRef = doc(db, "users", currentUser.uid);
+      await setDoc(docRef, companyInfo);
+      console.log("Saved to Firestore");
+
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const company: CompanyAuth = {
+          ...data,
+          createdAt: data.createdAt.toDate().toISOString(),
+        };
+        setCompanyAuth(company);
+      }
 
       setLoading(false);
       // const token = await user.getIdToken();
