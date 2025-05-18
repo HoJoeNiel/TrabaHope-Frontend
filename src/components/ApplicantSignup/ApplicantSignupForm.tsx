@@ -12,7 +12,7 @@ import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Loader2 } from "lucide-react";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useUserStore } from "@/stores/useLoggedInUserStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { normalizeFirebaseUser } from "@/helpers";
 
 const initialValues: UserCredentials = {
@@ -26,7 +26,7 @@ const initialValues: UserCredentials = {
 
 export default function ApplicantSignupForm() {
   const [isLoading, setLoading] = useState<boolean>(false);
-  const setUser = useUserStore((state) => state.setUser);
+  const setUser = useLoggedInUserStore((state) => state.setUser);
   const navigate = useNavigate();
 
   const handleAccountCreation = async (

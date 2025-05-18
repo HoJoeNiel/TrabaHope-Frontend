@@ -1,4 +1,4 @@
-import { UserTestimonyType } from "@/constants/constants";
+import { UserTestimonyType } from "@/mocks/mock-data";
 
 export default function TestimonyCard({
   photo,

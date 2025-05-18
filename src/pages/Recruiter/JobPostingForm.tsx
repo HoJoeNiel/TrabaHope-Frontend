@@ -19,12 +19,15 @@ import JobBenefitsAndPerksInput from "@/components/JobPostingForm/JobBenefitsAnd
 import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeywordsInput";
 import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
 import { useNavigate } from "react-router-dom";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 export default function CreateJobPostPage() {
   const navigate = useNavigate();
   const company = useCompanyAuthStore((state) => state.company);
   const addJob = useCompanyJobsStore((state) => state.addJob);
   const jobs = useCompanyJobsStore((state) => state.jobs);
+  const user = useLoggedInUserStore((state) => state.user);
+  console.log(user);
   const {
     jobTitle,
     setJobTitle,

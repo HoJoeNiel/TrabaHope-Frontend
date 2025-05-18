@@ -4,7 +4,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ApplicantSideJob } from "@/types";
-import { JOBS } from "@/constants/constants";
+import { JOBS } from "@/mocks/mock-data";
 
 type JobStore = {
   jobs: ApplicantSideJob[];

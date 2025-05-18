@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { COLORS } from "@/constants/constants";
+import { COLORS } from "@/mocks/mock-data";
 import { ApplicantSideJob } from "@/types";
 
 import { FiCheckCircle } from "react-icons/fi";

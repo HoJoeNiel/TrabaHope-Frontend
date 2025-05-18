@@ -1,16 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export type CompanyAuth = {
-  uid: string;
-  email: string;
-  companyName: string;
-  industry: string;
-  companyWebsite: string;
-  phoneNumber: string;
-  role: "recruiter";
-  createdAt: string;
-};
+import { CompanyAuth } from "@/types";
 
 type CompanyAuthStore = {
   company: CompanyAuth | null;

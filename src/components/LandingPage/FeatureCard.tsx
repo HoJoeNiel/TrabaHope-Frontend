@@ -1,4 +1,4 @@
-import { FeatureType } from "@/constants/constants";
+import { FeatureType } from "@/mocks/mock-data";
 
 export default function FeatureCard({
   icon,

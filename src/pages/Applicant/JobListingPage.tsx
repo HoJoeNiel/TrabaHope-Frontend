@@ -5,8 +5,11 @@ import AIResumeMatchComponent from "@/components/JobListingPage/AIResumeMatchCom
 import ResumeTipsCard from "@/components/JobListingPage/ResumeTipsCard";
 import SavedJobsOverview from "@/components/JobListingPage/SavedJobsOverview";
 import ApplicantHeader from "@/components/ApplicantHeader";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 export default function JobListingPage() {
+  const user = useLoggedInUserStore((state) => state.user);
+  console.log(user);
   return (
     <div className="min-w-screen min-h-screen bg-blue-50">
       <ApplicantHeader />

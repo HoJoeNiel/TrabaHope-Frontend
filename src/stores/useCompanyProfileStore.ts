@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { COMPANIES } from "@/constants/constants";
+import { COMPANIES } from "@/mocks/mock-data";
 import { Company } from "@/types";
 
 type CompanyStore = {

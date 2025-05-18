@@ -1,4 +1,4 @@
-import { RECRUITERS_FEATURE } from "@/constants/constants";
+import { RECRUITERS_FEATURE } from "@/mocks/mock-data";
 
 import FeatureCard from "../FeatureCard";
 import peopleSearch from "@/assets/undraw_people-search_xpq4 (1).svg";
@@ -22,6 +22,7 @@ export default function RecruitersFeatures() {
           </p>
           {RECRUITERS_FEATURE.map(({ icon, feature, description }) => (
             <FeatureCard
+              key={description}
               icon={icon}
               feature={feature}
               description={description}

@@ -1,4 +1,4 @@
-import { JOB_SEEKERS_FEATURE } from "@/constants/constants";
+import { JOB_SEEKERS_FEATURE } from "@/mocks/mock-data";
 import FeatureCard from "../FeatureCard";
 import businessMan from "@/assets/undraw_business-man_0ifc (1).svg";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ export default function ApplicantsFeatures() {
           </p>
           {JOB_SEEKERS_FEATURE.map(({ icon, feature, description }) => (
             <FeatureCard
+              key={description}
               icon={icon}
               feature={feature}
               description={description}

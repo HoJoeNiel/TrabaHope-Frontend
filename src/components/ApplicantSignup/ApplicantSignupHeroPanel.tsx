@@ -1,4 +1,4 @@
-import { APPLICANT_SIGNUP_FEATURE } from "@/constants/constants";
+import { APPLICANT_SIGNUP_FEATURE } from "@/mocks/mock-data";
 import AuthFeatureCard from "../AuthFeatureCard";
 
 export default function ApplicantSignupHeroPanel() {

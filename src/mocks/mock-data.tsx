@@ -10,7 +10,7 @@ import { FaCheck } from "react-icons/fa6";
 import { GoGraph } from "react-icons/go";
 import { PiListChecksThin } from "react-icons/pi";
 import { FaRobot } from "react-icons/fa";
-import { category, Company, EmploymentType, Job } from "@/types";
+import { category, Company, EmploymentType, ApplicantSideJob } from "@/types";
 
 export interface FeatureType {
   icon: React.ReactNode;
@@ -226,10 +226,10 @@ export const salaryRange: category[] = [
   { value: "100001-above", label: "₱100,001 and above" },
 ];
 
-export const JOBS: Job[] = [
+export const JOBS: ApplicantSideJob[] = [
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
     jobTitle: "Frontend Developer",
     companyName: "Apple Inc.",
@@ -251,7 +251,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
     jobTitle: "Backend Engineer",
     companyName: "Google LLC",
@@ -273,7 +273,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
     jobTitle: "UI/UX Designer",
     companyName: "Microsoft Corporation",
@@ -295,7 +295,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
     jobTitle: "Data Analyst",
     companyName: "Amazon, Inc.",
@@ -317,7 +317,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://www.stocksbnb.com/wp-content/uploads/2022/08/meta-logo-1.png",
     jobTitle: "Customer Support Specialist",
     companyName: "Meta Platforms Inc.",
@@ -344,7 +344,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
     jobTitle: "UI/UX Designer",
     companyName: "Netflix, Inc.",
@@ -366,7 +366,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
     jobTitle: "Data Analyst",
     companyName: "Nike, Inc.",
@@ -388,7 +388,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
     jobTitle: "Mobile App Developer",
     companyName: "Tesla, Inc.",
@@ -410,7 +410,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://logos-world.net/wp-content/uploads/2020/04/Sony-Logo-1962-1969.png",
     jobTitle: "DevOps Engineer",
     companyName: "Sony Group Corporation",
@@ -432,7 +432,7 @@ export const JOBS: Job[] = [
   },
   {
     id: crypto.randomUUID(),
-    companyProfile:
+    companyProfileUrl:
       "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
     jobTitle: "Content Writer",
     companyName: "Samsung Electronics Co., Ltd.",

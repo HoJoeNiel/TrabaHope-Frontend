@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
 
-import { CompanyCredentials } from "@/types";
+import { CompanyCredentials, CompanyAuth } from "@/types";
 import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
-import { CompanyAuth, useCompanyAuthStore } from "@/stores/useCompanyAuthStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 type CompanyAuthInput = Omit<CompanyAuth, "createdAt"> & {
   createdAt: FieldValue;
@@ -54,15 +54,13 @@ const initialValues: CompanyCredentials = {
 export default function RecruiterSignupForm() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const setCompanyAuth = useCompanyAuthStore((state) => state.setCompanyAuth);
-
+  const setUser = useLoggedInUserStore((state) => state.setUser);
   const handleAccountCreation = async (
     values: CompanyCredentials,
     {
       setErrors,
     }: { setErrors: (errors: FormikErrors<CompanyCredentials>) => void }
   ) => {
-    // TODO: Add user role (applicant or recruiter) before authenticating
     setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(
@@ -94,7 +92,7 @@ export default function RecruiterSignupForm() {
           ...data,
           createdAt: data.createdAt.toDate().toISOString(),
         };
-        setCompanyAuth(company);
+        setUser(company);
       }
 
       setLoading(false);

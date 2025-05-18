@@ -2,14 +2,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/firebase";
 import { fetchUserDataFromFirestore } from "@/helpers";
-import { useUserStore } from "@/stores/useLoggedInUserStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function EmailLoginForm() {
   const navigate = useNavigate();
-  const setUser = useUserStore((state) => state.setUser);
+  const setUser = useLoggedInUserStore((state) => state.setUser);
   const [error, setError] = useState("");
   const [credentials, setCredentials] = useState({
     email: "",

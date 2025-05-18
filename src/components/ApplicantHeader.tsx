@@ -1,9 +1,9 @@
-import { useUserStore } from "@/stores/useLoggedInUserStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { MdPerson } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 export default function ApplicantHeader() {
-  const user = useUserStore((state) => state.user);
+  const user = useLoggedInUserStore((state) => state.user);
 
   return (
     <header className="bg-transparent w-full flex justify-center py-4 ">

@@ -1,4 +1,4 @@
-import { FEATURES } from "@/constants/constants";
+import { FEATURES } from "@/mocks/mock-data";
 import FeatureCard from "../FeatureCard";
 
 export default function Features() {
@@ -21,6 +21,7 @@ export default function Features() {
         <div className="grid grid-cols-3 gap-6 mt-16">
           {FEATURES.map(({ icon, feature, description }) => (
             <FeatureCard
+              key={description}
               icon={icon}
               feature={feature}
               description={description}

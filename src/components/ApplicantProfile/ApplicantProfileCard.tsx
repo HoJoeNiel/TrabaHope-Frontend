@@ -9,13 +9,13 @@ import { CiLocationOn } from "react-icons/ci";
 import { TbWorld } from "react-icons/tb";
 import { IoIosClose } from "react-icons/io";
 import { IoCheckmarkOutline } from "react-icons/io5";
-import { useUserStore } from "@/stores/useLoggedInUserStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { MdPerson } from "react-icons/md";
 
 export default function ApplicantProfileCard() {
   const [editing, setEditing] = useState(false);
   const [showFullBio, setShowFullBio] = useState(false);
-  const user = useUserStore((state) => state.user);
+  const user = useLoggedInUserStore((state) => state.user);
 
   const bio =
     "Passionate Frontend Developer with 7+ years of experience creating responsive, user-focused web applications. Specialized in React, TypeScript, and modern CSS frameworks. Strong advocate for accessible design and performance optimization. Previously worked at tech startups and enterprise companies, helping build products used by millions of users worldwide. Currently seeking opportunities to leverage my expertise in creating exceptional user experiences while continually expanding my skillset in emerging frontend technologies.";
@@ -30,9 +30,9 @@ export default function ApplicantProfileCard() {
             <div className="flex">
               <div className="relative">
                 <div className="bg-blue-100 rounded-full size-20 flex items-center justify-center overflow-hidden border">
-                  {user?.photoURL ? (
+                  {user && user.role === "applicant" && user.photoURL ? (
                     <img
-                      src={user?.photoURL}
+                      src={user.photoURL ?? undefined}
                       alt="applicant profile picture"
                       className="object-contain size-20"
                     />

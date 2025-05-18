@@ -6,8 +6,15 @@ import RecruitersFeatures from "@/components/LandingPage/sections/RecruitersFeat
 import CTA from "@/components/LandingPage/sections/CTA";
 import Testimonials from "@/components/LandingPage/sections/Testimonials";
 import Footer from "@/components/Footer";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+  const clearUser = useLoggedInUserStore((state) => state.clearUser);
+
+  useEffect(() => {
+    clearUser(); // clear user kapag nasa landing page sya
+  }, [clearUser]);
   return (
     <div>
       <Header />

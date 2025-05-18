@@ -1,4 +1,4 @@
-import { USER_TESTIMONY } from "@/constants/constants";
+import { USER_TESTIMONY } from "@/mocks/mock-data";
 import TestimonyCard from "../TestimonyCard";
 
 export default function Testimonials() {
@@ -15,6 +15,7 @@ export default function Testimonials() {
         <div className="grid grid-cols-3 gap-8">
           {USER_TESTIMONY.map((u) => (
             <TestimonyCard
+              key={u.name}
               photo={u.photo}
               name={u.name}
               jobTitle={u.jobTitle}

@@ -6,7 +6,7 @@ import {
   jobType,
   locations,
   salaryRange,
-} from "@/constants/constants";
+} from "@/mocks/mock-data";
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 
