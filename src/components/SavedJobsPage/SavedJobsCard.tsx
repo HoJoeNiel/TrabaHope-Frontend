@@ -1,4 +1,4 @@
-import { Job } from "@/types";
+import { ApplicantSideJob } from "@/types";
 import { CiClock1 } from "react-icons/ci";
 import { FiCheckCircle } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
@@ -7,9 +7,9 @@ import { FiExternalLink } from "react-icons/fi";
 import { CiTrash } from "react-icons/ci";
 import { getDaysAgo } from "@/helpers";
 
-export default function SavedJobsCard({ job }: { job: Job }) {
+export default function SavedJobsCard({ job }: { job: ApplicantSideJob }) {
   const {
-    companyProfile,
+    companyProfileUrl,
     jobTitle,
     remote,
     location,
@@ -39,7 +39,10 @@ export default function SavedJobsCard({ job }: { job: Job }) {
       <div className="px-6">
         <div className="flex space-x-4 mb-4">
           <div className="size-16 rounded-lg bg-gray-100 text-sm p-4 flex justify-center items-center">
-            <img src={companyProfile} className="object-contain" />
+            <img
+              src={companyProfileUrl ?? undefined}
+              className="object-contain"
+            />
           </div>
 
           <div className="w-full">

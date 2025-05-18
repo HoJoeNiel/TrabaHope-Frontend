@@ -1,12 +1,12 @@
-import { Job } from "@/types";
+import { CompanyPostedJob } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type CompanyJobsStore = {
   companyID: string | null;
-  jobs: Job[]; // jobs ng specific company na nakalogin
-  addJob: (job: Job) => void;
-  deleteJobs: (job: Job) => void;
+  jobs: CompanyPostedJob[]; // jobs ng specific company na nakalogin
+  addJob: (job: CompanyPostedJob) => void;
+  deleteJobs: (job: CompanyPostedJob) => void;
 };
 
 const companyJobsStoreLogic = persist<CompanyJobsStore>(

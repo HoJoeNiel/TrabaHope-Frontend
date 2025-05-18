@@ -72,14 +72,14 @@ export type JobStatus =
   | "Hired";
 
 export type TimeStamps = {
-  posted?: string;
+  posted: string;
   applied?: string;
   lastUpdate?: string;
 };
 
-export type Job = {
+export interface CompanyPostedJob {
   id: string;
-  companyProfile: string;
+  companyProfileUrl: string | null;
   companyName: string;
   jobTitle: string;
   location: string;
@@ -87,13 +87,16 @@ export type Job = {
   description: string;
   remote: boolean;
   salaryRange: string;
+  tags: string[];
+  timestamps: TimeStamps;
+}
+
+export interface ApplicantSideJob extends CompanyPostedJob {
   status?: JobStatus;
   matchPercentage: number;
   nextStep?: string;
-  tags: string[];
   actions: Action;
-  timestamps: TimeStamps;
-};
+}
 
 export type ActiveJob = {
   id: number;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { COLORS } from "@/constants/constants";
-import { Job } from "@/types";
+import { ApplicantSideJob } from "@/types";
 
 import { FiCheckCircle } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
@@ -19,7 +19,7 @@ import {
 import { getDaysAgo, slugify } from "@/helpers";
 import { useNavigate } from "react-router-dom";
 
-export default function JobCard({ job }: { job: Job }) {
+export default function JobCard({ job }: { job: ApplicantSideJob }) {
   const addJobToSaved = useApplicantJobsStore((state) => state.addJobToSaved);
   const removeJobToSaved = useApplicantJobsStore(
     (state) => state.removeJobToSaved
@@ -27,7 +27,7 @@ export default function JobCard({ job }: { job: Job }) {
   const applyToJob = useApplicantJobsStore((state) => state.applyToJob);
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
-    companyProfile,
+    companyProfileUrl,
     jobTitle,
     remote,
     employmentType,
@@ -73,7 +73,11 @@ export default function JobCard({ job }: { job: Job }) {
           <div
             className={`size-16 bg-gray-50 border border-gray-100 p-2 rounded-lg text-sm flex justify-center items-center`}
           >
-            <img src={companyProfile} className="object-contain" />
+            <img
+              src={companyProfileUrl ?? undefined}
+              alt="company profile picture"
+              className="object-contain"
+            />
           </div>
 
           <div className="w-full">

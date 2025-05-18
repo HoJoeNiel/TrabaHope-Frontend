@@ -3,16 +3,16 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Job } from "@/types";
+import { ApplicantSideJob } from "@/types";
 import { JOBS } from "@/constants/constants";
 
 type JobStore = {
-  jobs: Job[];
-  savedJobs: Job[];
-  appliedJobs: Job[];
-  addJobToSaved: (job: Job) => void;
-  removeJobToSaved: (job: Job) => void;
-  applyToJob: (job: Job) => void;
+  jobs: ApplicantSideJob[];
+  savedJobs: ApplicantSideJob[];
+  appliedJobs: ApplicantSideJob[];
+  addJobToSaved: (job: ApplicantSideJob) => void;
+  removeJobToSaved: (job: ApplicantSideJob) => void;
+  applyToJob: (job: ApplicantSideJob) => void;
 };
 
 const jobStoreLogic = persist<JobStore>(

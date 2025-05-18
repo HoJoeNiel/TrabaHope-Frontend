@@ -1,8 +1,8 @@
 import { getStatusColor, getStatusIcon } from "@/helpers";
-import { Job } from "@/types";
+import { ApplicantSideJob } from "@/types";
 import { Calendar, MessageSquare, XCircle } from "lucide-react";
 
-export default function JobApplicationCard({ job }: { job: Job }) {
+export default function JobApplicationCard({ job }: { job: ApplicantSideJob }) {
   return (
     <div
       key={job.id}
@@ -15,7 +15,7 @@ export default function JobApplicationCard({ job }: { job: Job }) {
             className={`size-16 rounded-md p-2 flex items-center justify-center bg-blue-100`}
           >
             <img
-              src={job.companyProfile}
+              src={job.companyProfileUrl ?? undefined}
               className="object-contain"
             />
           </div>
