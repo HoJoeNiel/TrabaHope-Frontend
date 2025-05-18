@@ -1,4 +1,4 @@
-import { useJobStore } from "@/stores/useJobStore";
+import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
 import { FaBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function SavedJobsOverview({ className }: Props) {
-  const savedJobs = useJobStore((state) => state.savedJobs);
+  const savedJobs = useApplicantJobsStore((state) => state.savedJobs);
   const lastThreeItems = savedJobs?.slice(-3).reverse();
   const navigate = useNavigate();
 

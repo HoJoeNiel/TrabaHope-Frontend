@@ -12,7 +12,7 @@ import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Loader2 } from "lucide-react";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 import { normalizeFirebaseUser } from "@/helpers";
 
 const initialValues: UserCredentials = {

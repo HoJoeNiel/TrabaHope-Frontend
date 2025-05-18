@@ -8,7 +8,7 @@ import { CiBookmark } from "react-icons/ci";
 import { FaBookmark } from "react-icons/fa";
 import { CiClock1 } from "react-icons/ci";
 import { LuBuilding } from "react-icons/lu";
-import { useJobStore } from "@/stores/useJobStore";
+import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
 
 import {
   Accordion,
@@ -20,9 +20,11 @@ import { getDaysAgo, slugify } from "@/helpers";
 import { useNavigate } from "react-router-dom";
 
 export default function JobCard({ job }: { job: Job }) {
-  const addJobToSaved = useJobStore((state) => state.addJobToSaved);
-  const removeJobToSaved = useJobStore((state) => state.removeJobToSaved);
-  const applyToJob = useJobStore((state) => state.applyToJob);
+  const addJobToSaved = useApplicantJobsStore((state) => state.addJobToSaved);
+  const removeJobToSaved = useApplicantJobsStore(
+    (state) => state.removeJobToSaved
+  );
+  const applyToJob = useApplicantJobsStore((state) => state.applyToJob);
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
     companyProfile,

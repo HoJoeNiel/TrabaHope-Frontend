@@ -1,3 +1,6 @@
+// This store is made just for managing the mock jobs data
+// it mimics the feature of fetching the jobs (that is suggested using the AI feature) from the database.
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Job } from "@/types";
@@ -54,4 +57,4 @@ const jobStoreLogic = persist<JobStore>(
   { name: "job-storage" }
 );
 
-export const useJobStore = create<JobStore>()(jobStoreLogic);
+export const useApplicantJobsStore = create<JobStore>()(jobStoreLogic);

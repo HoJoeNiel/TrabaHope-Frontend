@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/firebase";
 import { fetchUserDataFromFirestore } from "@/helpers";
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

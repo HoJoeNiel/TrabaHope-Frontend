@@ -6,12 +6,12 @@ import { Filter } from "lucide-react";
 import FilterButton from "@/components/MyApplications/FilterButton";
 import ApplicationStats from "@/components/MyApplications/ApplicationStats";
 import JobApplicationCard from "@/components/MyApplications/JobApplicationCard";
-import { useJobStore } from "@/stores/useJobStore";
+import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
 
 const FILTER = ["All", "Pending", "Review", "Interview", "Hired", "Rejected"];
 
 export default function MyApplications() {
-  const appliedJobs = useJobStore((state) => state.appliedJobs);
+  const appliedJobs = useApplicantJobsStore((state) => state.appliedJobs);
   const [statusFilter, setStatusFilter] = useState<string>("All");
 
   const filteredApplications =
@@ -62,7 +62,7 @@ export default function MyApplications() {
             </div>
           </div>
         </div>
-              
+
         <ApplicationStats stats={stats} />
 
         <div className="space-y-4 mt-6">

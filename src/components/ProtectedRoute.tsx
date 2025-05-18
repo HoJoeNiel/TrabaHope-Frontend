@@ -1,4 +1,4 @@
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 import { PropsWithChildren } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 

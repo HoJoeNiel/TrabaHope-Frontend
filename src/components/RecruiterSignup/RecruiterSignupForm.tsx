@@ -12,7 +12,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Loader2 } from "lucide-react";
 import { normalizeFirebaseUser } from "@/helpers";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",

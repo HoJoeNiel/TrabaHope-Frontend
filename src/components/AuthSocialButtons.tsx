@@ -7,7 +7,7 @@ import {
 } from "@/firebase";
 import { normalizeFirebaseUser } from "@/helpers";
 import { handleAuthError } from "@/helpers/authHelpers";
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 import { RawFirebaseUser, Role } from "@/types";
 import { signInWithPopup } from "firebase/auth";
 import { useState } from "react";

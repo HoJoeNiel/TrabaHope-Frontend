@@ -1,4 +1,4 @@
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 import { MdPerson } from "react-icons/md";
 import { Link } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useCompanyStore } from "@/stores/useCompanyStore";
+import { useCompanyProfileStore } from "@/stores/useCompanyProfileStore";
 import { Building, Star, ExternalLink } from "lucide-react";
 
 import HeaderSection from "@/components/CompanyProfile/HeaderSection";
@@ -9,7 +9,7 @@ import Loading from "@/components/Loading";
 
 export default function CompanyProfilePage() {
   const { companySlug } = useParams();
-  const companies = useCompanyStore((state) => state.companies);
+  const companies = useCompanyProfileStore((state) => state.companies);
   const selectedCompany = companies.find((c) => c.companySlug === companySlug);
 
   if (!selectedCompany) {

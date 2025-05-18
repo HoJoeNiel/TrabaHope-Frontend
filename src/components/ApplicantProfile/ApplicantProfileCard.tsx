@@ -9,7 +9,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { TbWorld } from "react-icons/tb";
 import { IoIosClose } from "react-icons/io";
 import { IoCheckmarkOutline } from "react-icons/io5";
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useLoggedInUserStore";
 import { MdPerson } from "react-icons/md";
 
 export default function ApplicantProfileCard() {

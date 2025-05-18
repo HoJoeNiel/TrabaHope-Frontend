@@ -2,11 +2,11 @@ import { FaBookmark } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { CiClock1 } from "react-icons/ci";
-import { useJobStore } from "@/stores/useJobStore";
+import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
 import { getDaysAgo } from "@/helpers";
 
 export default function SavedJobsStats() {
-  const savedJobs = useJobStore((state) => state.savedJobs);
+  const savedJobs = useApplicantJobsStore((state) => state.savedJobs);
   const remoteJobs = savedJobs.filter((job) => job.remote).length;
   const within7daysAgo = savedJobs.filter(
     (job) => job.timestamps.posted && getDaysAgo(job.timestamps.posted) < 8

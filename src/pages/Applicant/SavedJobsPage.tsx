@@ -3,11 +3,11 @@ import Footer from "@/components/Footer";
 import FilterSection from "@/components/SavedJobsPage/FilterSection";
 import SavedJobsCard from "@/components/SavedJobsPage/SavedJobsCard";
 import SavedJobsStats from "@/components/SavedJobsPage/SavedJobsStats";
-import { useJobStore } from "@/stores/useJobStore";
+import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
 
 export default function SavedJobsPage() {
-  const savedJobs = useJobStore((state) => state.savedJobs);
-  
+  const savedJobs = useApplicantJobsStore((state) => state.savedJobs);
+
   return (
     <div className="flex flex-col min-h-screen min-w-screen bg-blue-50">
       <ApplicantHeader />

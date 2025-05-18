@@ -8,7 +8,7 @@ type CompanyStore = {
 };
 
 const companyStoreLogic = persist<CompanyStore>(
-  (set) => ({
+  () => ({
     companies: COMPANIES,
   }),
   {
@@ -16,4 +16,4 @@ const companyStoreLogic = persist<CompanyStore>(
   }
 );
 
-export const useCompanyStore = create<CompanyStore>()(companyStoreLogic);
+export const useCompanyProfileStore = create<CompanyStore>()(companyStoreLogic);
