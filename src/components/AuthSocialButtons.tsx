@@ -7,26 +7,24 @@ import {
 } from "@/firebase";
 import { normalizeFirebaseUser } from "@/helpers";
 import { handleAuthError } from "@/helpers/authHelpers";
-import { useUserStore } from "@/stores/useLoggedInUserStore";
-import { RawFirebaseUser, Role } from "@/types";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { RawFirebaseUser } from "@/types";
 import { signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type action = "signup" | "login";
 
 export default function AuthSocialButtons({ action }: { action: action }) {
   const [isLoading, setLoading] = useState<boolean>(false);
-  const setUser = useUserStore((state) => state.setUser);
+  const setUser = useLoggedInUserStore((state) => state.setUser);
   const navigate = useNavigate();
-  const location = useLocation();
-  const role = location.pathname.split("/")[2] as Role;
 
-  const handleCreateAccountWithGoogle = async (): Promise<void> => {
+  const handleAuthenticateWithGoogle = async (): Promise<void> => {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -36,25 +34,23 @@ export default function AuthSocialButtons({ action }: { action: action }) {
         displayName: currentUser.displayName,
         email: currentUser.email,
         photoURL: currentUser.photoURL,
-        role,
+        role: "applicant",
       };
 
-      const normalizeUser = normalizeFirebaseUser(user);
-      if (normalizeUser) setUser(normalizeUser);
+      const normalizedUser = normalizeFirebaseUser(user);
 
-      setLoading(false);
-
-      if (role === "applicant")
+      if (normalizedUser) {
+        setUser(normalizedUser);
         navigate("/applicant/job-listing", { replace: true });
-      if (role === "recruiter")
-        navigate("/recruiter/create-new-job", { replace: true });
+      }
     } catch (error) {
-      setLoading(false);
       handleAuthError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleCreateAccountWithFacebook = async (): Promise<void> => {
+  const handleAuthenticateWithFacebook = async (): Promise<void> => {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, facebookProvider);
@@ -64,25 +60,23 @@ export default function AuthSocialButtons({ action }: { action: action }) {
         displayName: currentUser.displayName,
         email: currentUser.email,
         photoURL: currentUser.photoURL,
-        role,
+        role: "applicant",
       };
 
-      const normalizeUser = normalizeFirebaseUser(user);
-      if (normalizeUser) setUser(normalizeUser);
+      const normalizedUser = normalizeFirebaseUser(user);
 
-      setLoading(false);
-
-      if (role === "applicant")
+      if (normalizedUser) {
+        setUser(normalizedUser);
         navigate("/applicant/job-listing", { replace: true });
-      if (role === "recruiter")
-        navigate("/recruiter/create-new-job", { replace: true });
+      }
     } catch (error) {
-      setLoading(false);
       handleAuthError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleCreateAccountWithGithub = async (): Promise<void> => {
+  const handleAuthenticateWithGithub = async (): Promise<void> => {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, githubProvider);
@@ -92,21 +86,19 @@ export default function AuthSocialButtons({ action }: { action: action }) {
         displayName: currentUser.displayName,
         email: currentUser.email,
         photoURL: currentUser.photoURL,
-        role,
+        role: "applicant",
       };
 
-      const normalizeUser = normalizeFirebaseUser(user);
-      if (normalizeUser) setUser(normalizeUser);
+      const normalizedUser = normalizeFirebaseUser(user);
 
-      setLoading(false);
-
-      if (role === "applicant")
+      if (normalizedUser) {
+        setUser(normalizedUser);
         navigate("/applicant/job-listing", { replace: true });
-      if (role === "recruiter")
-        navigate("/recruiter/create-new-job", { replace: true });
+      }
     } catch (error) {
-      setLoading(false);
       handleAuthError(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -119,19 +111,19 @@ export default function AuthSocialButtons({ action }: { action: action }) {
         icon={<FaGoogle className="text-red-600 size-5" />}
         label={action === "login" ? "Continue with Google" : "Google"}
         isLoading={isLoading}
-        onClick={handleCreateAccountWithGoogle}
+        onClick={handleAuthenticateWithGoogle}
       />
       <ThirdPartyAuthButton
         icon={<FaFacebook className="text-[#1877F2] size-5" />}
         label={action === "login" ? "Continue with Facebook" : "Facebook"}
         isLoading={isLoading}
-        onClick={handleCreateAccountWithFacebook}
+        onClick={handleAuthenticateWithFacebook}
       />
       <ThirdPartyAuthButton
         icon={<FaGithub className="text-black size-5" />}
         label={action === "login" ? "Continue with Github" : "Github"}
         isLoading={isLoading}
-        onClick={handleCreateAccountWithGithub}
+        onClick={handleAuthenticateWithGithub}
       />
     </div>
   );
