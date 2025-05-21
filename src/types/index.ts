@@ -40,8 +40,8 @@ export type CompanyAuth = {
   specialties: string[] | null;
   mission: string | null;
   noOfEmployees: string | null;
-  location?: string | null;
-  yearFounded?: string | null;
+  location: string | null;
+  yearFounded: string | null;
 };
 
 export type CompanyCredentials = {
@@ -103,7 +103,7 @@ export interface CompanyPostedJob {
   benefits: string;
   requirements: string;
   remote: boolean;
-  salaryRange: string;
+  salaryRange: number[];
   tags: string[];
   timestamps: TimeStamps;
 }
