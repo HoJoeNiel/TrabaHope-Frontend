@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
 
-import { CompanyCredentials, CompanyAuth } from "@/types";
+import { CompanyAuth, CompanyCredentials } from "@/types";
 import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,18 +10,8 @@ import { Form, Formik, FormikErrors } from "formik";
 import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
-import {
-  doc,
-  FieldValue,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-
-type CompanyAuthInput = Omit<CompanyAuth, "createdAt"> & {
-  createdAt: FieldValue;
-};
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",
@@ -71,29 +61,31 @@ export default function RecruiterSignupForm() {
       const currentUser = result.user;
 
       // Save sa firestore DB (temporary lang habang wala pa yung backend)
-      const companyInfo: CompanyAuthInput = {
-        uid: currentUser.uid,
+      const companyInfo: CompanyAuth = {
+        companyID: currentUser.uid,
+        name: values.companyName,
         email: values.companyEmail,
-        companyName: values.companyName,
+        contactNumber: values.phoneNumber,
         industry: values.industry,
-        companyWebsite: values.companyWebsite,
-        phoneNumber: values.phoneNumber,
+        websiteURL: values.companyWebsite,
         role: "recruiter",
-        createdAt: serverTimestamp(),
+        createdAt: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        description: null,
+        photoURL: null,
+        specialties: null,
+        mission: null,
+        noOfEmployees: null,
+        location: null,
       };
+
       const docRef = doc(db, "users", currentUser.uid);
       await setDoc(docRef, companyInfo);
+      setUser(companyInfo);
       console.log("Saved to Firestore");
-
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const company: CompanyAuth = {
-          ...data,
-          createdAt: data.createdAt.toDate().toISOString(),
-        };
-        setUser(company);
-      }
 
       setLoading(false);
       // const token = await user.getIdToken();

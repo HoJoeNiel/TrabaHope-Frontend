@@ -3,17 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import AuthSocialButtons from "@/components/AuthSocialButtons";
 
-import { RawFirebaseUser, UserCredentials } from "@/types";
+import { ApplicantAuth, UserCredentials } from "@/types";
 import { newApplicantAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
 import { auth, db } from "@/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { normalizeFirebaseUser } from "@/helpers";
 
 const initialValues: UserCredentials = {
   firstName: "",
@@ -44,37 +43,30 @@ export default function ApplicantSignupForm() {
       );
       const currentUser = result.user;
 
-      await updateProfile(currentUser, {
-        displayName: `${values.firstName} ${values.lastName}`,
-      });
-
-      const user: RawFirebaseUser = {
-        displayName: currentUser.displayName,
-        email: currentUser.email,
-        photoURL: currentUser.photoURL,
+      // Save sa firestore DB (temporary lang habang wala pa yung backend)
+      const user: ApplicantAuth = {
+        applicantID: currentUser.uid,
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        location: null,
+        contactNumber: values.phoneNumber,
+        photoURL: null,
+        resumeFile: null,
+        jobTitle: null,
+        description: null,
+        createdAt: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        portfolioURL: null,
+        preferredEmploymentType: null,
         role: "applicant",
       };
 
-      const normalizeUser = normalizeFirebaseUser(user);
-
-      console.log(normalizeUser);
-      if (normalizeUser) setUser(normalizeUser);
-
-      // Save sa firestore DB (temporary lang habang wala pa yung backend)
-      await setDoc(doc(db, "users", currentUser.uid), {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        displayName: currentUser.displayName,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phoneNumber: values.phoneNumber,
-        role: "applicant",
-        createdAt: serverTimestamp(),
-      });
-      console.log("done save sa firestore");
-
+      await setDoc(doc(db, "users", currentUser.uid), user);
+      setUser(user);
       setLoading(false);
-      // const token = await user.getIdToken();
       navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
       setLoading(false);

@@ -5,10 +5,10 @@ import {
   githubProvider,
   googleProvider,
 } from "@/firebase";
-import { normalizeFirebaseUser } from "@/helpers";
+import { fetchUserDataFromFirestore } from "@/helpers";
 import { handleAuthError } from "@/helpers/authHelpers";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { RawFirebaseUser } from "@/types";
+import { ApplicantAuth } from "@/types";
 import { signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 
@@ -30,17 +30,49 @@ export default function AuthSocialButtons({ action }: { action: action }) {
       const result = await signInWithPopup(auth, googleProvider);
       const currentUser = result.user;
 
-      const user: RawFirebaseUser = {
-        displayName: currentUser.displayName,
-        email: currentUser.email,
-        photoURL: currentUser.photoURL,
-        role: "applicant",
-      };
+      if (!currentUser || !currentUser.displayName || !currentUser.email) {
+        throw new Error(
+          `Missing user data: ${
+            !currentUser
+              ? "currentUser is null/undefined"
+              : !currentUser.displayName
+              ? "displayName is missing"
+              : "email is missing"
+          }`
+        );
+      }
 
-      const normalizedUser = normalizeFirebaseUser(user);
+      if (action === "login") {
+        const user = await fetchUserDataFromFirestore(currentUser.uid);
+        if (user) {
+          setUser(user);
+          navigate("/applicant/job-listing", { replace: true });
+        }
+      }
 
-      if (normalizedUser) {
-        setUser(normalizedUser);
+      if (action === "signup") {
+        const user: ApplicantAuth = {
+          applicantID: currentUser.uid,
+          name: currentUser.displayName,
+          email: currentUser.email,
+          location: null,
+          contactNumber: currentUser.phoneNumber,
+          photoURL: null,
+          resumeFile: null,
+          savedJobs: null,
+          jobTitle: null,
+          description: null,
+          createdAt: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          portfolioURL: currentUser.photoURL,
+          preferredEmploymentType: null,
+          role: "applicant",
+        };
+
+        setUser(user);
         navigate("/applicant/job-listing", { replace: true });
       }
     } catch (error) {
@@ -56,17 +88,49 @@ export default function AuthSocialButtons({ action }: { action: action }) {
       const result = await signInWithPopup(auth, facebookProvider);
       const currentUser = result.user;
 
-      const user: RawFirebaseUser = {
-        displayName: currentUser.displayName,
-        email: currentUser.email,
-        photoURL: currentUser.photoURL,
-        role: "applicant",
-      };
+      if (!currentUser || !currentUser.displayName || !currentUser.email) {
+        throw new Error(
+          `Missing user data: ${
+            !currentUser
+              ? "currentUser is null/undefined"
+              : !currentUser.displayName
+              ? "displayName is missing"
+              : "email is missing"
+          }`
+        );
+      }
 
-      const normalizedUser = normalizeFirebaseUser(user);
+      if (action === "login") {
+        const user = await fetchUserDataFromFirestore(currentUser.uid);
+        if (user) {
+          setUser(user);
+          navigate("/applicant/job-listing", { replace: true });
+        }
+      }
 
-      if (normalizedUser) {
-        setUser(normalizedUser);
+      if (action === "signup") {
+        const user: ApplicantAuth = {
+          applicantID: currentUser.uid,
+          name: currentUser.displayName,
+          email: currentUser.email,
+          location: null,
+          contactNumber: currentUser.phoneNumber,
+          photoURL: null,
+          resumeFile: null,
+          savedJobs: null,
+          jobTitle: null,
+          description: null,
+          createdAt: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          portfolioURL: currentUser.photoURL,
+          preferredEmploymentType: null,
+          role: "applicant",
+        };
+
+        setUser(user);
         navigate("/applicant/job-listing", { replace: true });
       }
     } catch (error) {
@@ -82,17 +146,49 @@ export default function AuthSocialButtons({ action }: { action: action }) {
       const result = await signInWithPopup(auth, githubProvider);
       const currentUser = result.user;
 
-      const user: RawFirebaseUser = {
-        displayName: currentUser.displayName,
-        email: currentUser.email,
-        photoURL: currentUser.photoURL,
-        role: "applicant",
-      };
+      if (!currentUser || !currentUser.displayName || !currentUser.email) {
+        throw new Error(
+          `Missing user data: ${
+            !currentUser
+              ? "currentUser is null/undefined"
+              : !currentUser.displayName
+              ? "displayName is missing"
+              : "email is missing"
+          }`
+        );
+      }
 
-      const normalizedUser = normalizeFirebaseUser(user);
+      if (action === "login") {
+        const user = await fetchUserDataFromFirestore(currentUser.uid);
+        if (user) {
+          setUser(user);
+          navigate("/applicant/job-listing", { replace: true });
+        }
+      }
 
-      if (normalizedUser) {
-        setUser(normalizedUser);
+      if (action === "signup") {
+        const user: ApplicantAuth = {
+          applicantID: currentUser.uid,
+          name: currentUser.displayName,
+          email: currentUser.email,
+          location: null,
+          contactNumber: currentUser.phoneNumber,
+          photoURL: null,
+          resumeFile: null,
+          savedJobs: null,
+          jobTitle: null,
+          description: null,
+          createdAt: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          portfolioURL: currentUser.photoURL,
+          preferredEmploymentType: null,
+          role: "applicant",
+        };
+
+        setUser(user);
         navigate("/applicant/job-listing", { replace: true });
       }
     } catch (error) {

@@ -11,34 +11,38 @@ export interface UserCredentials {
 export type Role = "applicant" | "recruiter";
 
 export type ApplicantAuth = {
-  displayName: string;
+  applicantID: string;
+  name: string;
   email: string;
+  location: string | null;
+  contactNumber: string | null;
   photoURL: string | null;
-  role: Role;
+  resumeFile: string | null;
+  jobTitle: string | null;
+  description: string | null;
+  createdAt: string;
+  portfolioURL: string | null;
+  preferredEmploymentType: string | null;
+  role: "applicant";
 };
 
 export type CompanyAuth = {
-  uid: string;
+  companyID: string;
+  name: string;
   email: string;
-  companyName: string;
+  contactNumber: string;
   industry: string;
-  companyWebsite: string;
-  phoneNumber: string;
   role: "recruiter";
   createdAt: string;
-};
-
-export type RawFirebaseUser = {
-  displayName: string | null;
-  email: string | null;
+  websiteURL: string | null;
+  description: string | null;
   photoURL: string | null;
-  role: Role;
+  specialties: string[] | null;
+  mission: string | null;
+  noOfEmployees: string | null;
+  location?: string | null;
+  yearFounded?: string | null;
 };
-
-// export type RecruiterCredentials = Omit<UserCredentials, "email"> & {
-//   workEmail: string;
-//   companyName: string;
-// };
 
 export type CompanyCredentials = {
   companyName: string;
@@ -96,6 +100,8 @@ export interface CompanyPostedJob {
   location: string;
   employmentType: EmploymentType;
   description: string;
+  benefits: string;
+  requirements: string;
   remote: boolean;
   salaryRange: string;
   tags: string[];

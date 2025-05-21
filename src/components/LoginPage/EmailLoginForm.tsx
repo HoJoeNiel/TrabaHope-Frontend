@@ -33,18 +33,13 @@ export default function EmailLoginForm() {
       if (!currentUser) throw new Error("No authenticated user found.");
 
       const userData = await fetchUserDataFromFirestore(currentUser.uid);
-      if (!userData)
-        throw new Error("Failed to fetch user data from firestore");
 
-      setUser({
-        displayName: userData.displayName,
-        email: userData.email,
-        photoURL: userData.photoURL,
-        role: userData.role,
-      });
+      if (userData) {
+        setUser({ ...userData });
+      }
 
       const redirectPath =
-        userData.role === "applicant"
+        userData?.role === "applicant"
           ? "/applicant/job-listing"
           : "/recruiter/create-new-job";
       navigate(redirectPath, { replace: true });
