@@ -1,11 +1,11 @@
 import { CompanyPostedJob, EmploymentType } from "@/types";
 
-import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
 
 import { useJobPostingForm } from "@/hooks/useJobPostingForm";
-import { useCompanyAuthStore } from "@/stores/useCompanyAuthStore";
 import { useCompanyJobsStore } from "@/stores/useCompanyJobsStore";
 
+import { Label } from "@/components/ui/label";
 import JobTitleInput from "@/components/JobPostingForm/JobTitleInput";
 import LocationInput from "@/components/JobPostingForm/LocationInput";
 import RemoteInput from "@/components/JobPostingForm/RemoteInput";
@@ -18,16 +18,14 @@ import JobResponsibilitiesInput from "@/components/JobPostingForm/JobResponsibil
 import JobBenefitsAndPerksInput from "@/components/JobPostingForm/JobBenefitsAndPerksInput";
 import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeywordsInput";
 import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
-import { useNavigate } from "react-router-dom";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { isRecruiter } from "@/helpers";
 
 export default function CreateJobPostPage() {
   const navigate = useNavigate();
-  const company = useCompanyAuthStore((state) => state.company);
+  const company = useLoggedInUserStore((state) => state.user);
   const addJob = useCompanyJobsStore((state) => state.addJob);
-  const jobs = useCompanyJobsStore((state) => state.jobs);
-  const user = useLoggedInUserStore((state) => state.user);
-  console.log(user);
+
   const {
     jobTitle,
     setJobTitle,
@@ -55,26 +53,8 @@ export default function CreateJobPostPage() {
     setTags,
   } = useJobPostingForm();
 
-  // console.log({
-  //   jobTitle,
-  //   location,
-  //   remote,
-  //   employmentType,
-  //   salaryMin,
-  //   salaryMax,
-  //   description,
-  //   requirements,
-  //   responsibilities,
-  //   benefits,
-  //   tags,
-  // });
-
-  console.log(jobs);
-
-  // TODO: function that handles sending job data to the backend.
-
   const handlePostJob = () => {
-    if (!company) {
+    if (!company || company.role !== "recruiter" || !isRecruiter(company)) {
       alert("You must be logged in as a company/recruiter to post a job.");
       navigate("/signup/recruiter", { replace: true });
       return;
@@ -85,6 +65,8 @@ export default function CreateJobPostPage() {
       !location.trim() ||
       !employmentType.trim() ||
       !description.trim() ||
+      !responsibilities.trim() ||
+      !requirements.trim() ||
       !salaryMin.trim() ||
       !salaryMax.trim()
     ) {
@@ -105,13 +87,15 @@ export default function CreateJobPostPage() {
     const job: CompanyPostedJob = {
       id: crypto.randomUUID(),
       companyProfileUrl: null, // null muna kase wala pang profile page yung company/recruiter
-      companyName: company.companyName,
+      companyName: company.name,
       jobTitle,
       location,
       employmentType: employmentType as EmploymentType,
       description,
+      requirements,
+      benefits,
       remote,
-      salaryRange: `${salaryMin} - ${salaryMax}`,
+      salaryRange: [Number(salaryMin), Number(salaryMax)],
       tags,
       timestamps: {
         posted: new Date().toLocaleDateString("en-US", {
@@ -123,49 +107,12 @@ export default function CreateJobPostPage() {
     };
 
     addJob(job);
+    navigate("/recruiter/dashboard");
   };
 
   return (
-    <div className="min-h-screen bg-purple-50">
-      {/* Navbar */}
-      <nav className="">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                <div className="bg-indigo-600 w-8 h-8 flex items-center justify-center rounded-md text-white font-bold mr-2">
-                  T
-                </div>
-                <span className="text-xl font-semibold text-gray-800">
-                  TrabaHope
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-6">
-              <a
-                href="#"
-                className="text-gray-600 hover:text-indigo-600 px-3 py-2 text-sm font-medium"
-              >
-                Dashboard
-              </a>
-              <a
-                href="#"
-                className="text-indigo-600 border-b-2 border-indigo-600 px-3 py-2 text-sm font-medium"
-              >
-                Job Listings
-              </a>
-              <a
-                href="#"
-                className="text-gray-600 hover:text-indigo-600 px-3 py-2 text-sm font-medium"
-              >
-                Candidates
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen flex bg-gray-50">
+      <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
         <div className="md:flex md:items-start md:justify-between">
           <div className="md:w-2/3 pr-0 md:pr-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-6">

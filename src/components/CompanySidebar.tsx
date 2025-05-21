@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
 import { ChevronRight, ChevronLeft, LogOut } from "lucide-react";
 import { createContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 type SidebarProps = PropsWithChildren;
 type SidebarItemProps = {
@@ -8,6 +9,7 @@ type SidebarItemProps = {
   text: string;
   active?: boolean;
   alert?: boolean;
+  path: string;
 };
 type SidebarContextType = {
   isExpanded: boolean;
@@ -94,13 +96,17 @@ export default function CompanySidebar({ children }: SidebarProps) {
   );
 }
 
-export function SidebarItem({ icon, text, alert }: SidebarItemProps) {
+export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
   const { isExpanded, activeTab, setActiveTab } = useContext(SidebarContext);
   const isActive = activeTab === text;
+  const navigate = useNavigate();
 
   return (
     <li
-      onClick={() => setActiveTab(text)}
+      onClick={() => {
+        setActiveTab(text);
+        navigate(path);
+      }}
       className={`
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer

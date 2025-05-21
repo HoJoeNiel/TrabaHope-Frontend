@@ -11,6 +11,8 @@ import MyApplications from "@/pages/Applicant/MyApplications";
 import CompanyProfilePage from "@/pages/Applicant/CompanyProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import JobPostingForm from "./pages/Recruiter/JobPostingForm";
+import CompanyDashboard from "./pages/Recruiter/CompanyDashboard";
+import CompanyRootLayout from "./components/CompanyRootLayout";
 
 const router = createBrowserRouter([
   {
@@ -43,10 +45,19 @@ const router = createBrowserRouter([
     path: "/recruiter",
     element: (
       <ProtectedRoute>
-        <Outlet />
+        <CompanyRootLayout />
       </ProtectedRoute>
     ),
-    children: [{ path: "create-new-job", element: <JobPostingForm /> }],
+    children: [
+      { path: "dashboard", element: <CompanyDashboard /> },
+      { path: "create-new-job", element: <JobPostingForm /> },
+      { path: "job-listings", element: <h1>Jobs Listings</h1> },
+      { path: "applicants", element: <h1>Applicants</h1> },
+      { path: "edit-job/:jobId", element: <h1>Edit Job</h1> },
+      { path: "profile", element: <h1>Company Profile</h1> },
+      { path: "settings", element: <h1>Settings page</h1> },
+      { path: "interviews", element: <h1>Job Interviews</h1> },
+    ],
   },
   {
     path: "/company/:companySlug",
