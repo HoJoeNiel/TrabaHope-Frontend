@@ -87,9 +87,9 @@ export type JobStatus =
   | "Hired";
 
 export type TimeStamps = {
-  posted: string;
-  applied?: string;
-  lastUpdate?: string;
+  posted: string | Date;
+  applied?: string | Date;
+  lastUpdate?: string | Date;
 };
 
 export interface CompanyPostedJob {
@@ -103,7 +103,7 @@ export interface CompanyPostedJob {
   benefits: string;
   requirements: string;
   remote: boolean;
-  salaryRange: number[];
+  salaryRange: string; // palitan ulit ng min at max (number)
   tags: string[];
   timestamps: TimeStamps;
 }

@@ -16,7 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getDaysAgo, slugify } from "@/helpers";
+import { getRelativeTimeAgo, slugify } from "@/helpers";
 import { useNavigate } from "react-router-dom";
 
 export default function JobCard({ job }: { job: ApplicantSideJob }) {
@@ -100,7 +100,7 @@ export default function JobCard({ job }: { job: ApplicantSideJob }) {
                     <CiClock1 className="text-gray-700 size-5" />
                     <span className="text-gray-700 text-sm">
                       {timestamps?.posted
-                        ? getDaysAgo(timestamps.posted)
+                        ? getRelativeTimeAgo(timestamps.posted)
                         : "N/A"}{" "}
                       days ago
                     </span>
