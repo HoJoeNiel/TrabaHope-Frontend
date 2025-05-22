@@ -95,14 +95,10 @@ export default function CreateJobPostPage() {
       requirements,
       benefits,
       remote,
-      salaryRange: [Number(salaryMin), Number(salaryMax)],
+      salaryRange: `₱${salaryMin} - ₱${salaryMax}`,
       tags,
       timestamps: {
-        posted: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
+        posted: new Date(),
       },
     };
 
@@ -111,28 +107,28 @@ export default function CreateJobPostPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
-      <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+    <div className="flex min-h-screen bg-gray-50">
+      <div className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <div className="md:flex md:items-start md:justify-between">
-          <div className="md:w-2/3 pr-0 md:pr-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">
+          <div className="pr-0 md:w-2/3 md:pr-8">
+            <h1 className="mb-6 text-2xl font-bold text-gray-900">
               Create New Job Post
             </h1>
 
             <form className="space-y-6">
-              <div className="bg-white shadow rounded-lg p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 bg-white rounded-lg shadow">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <JobTitleInput value={jobTitle} onChange={setJobTitle} />
                   <LocationInput value={location} onChange={setLocation} />
                 </div>
 
                 <RemoteInput value={remote} onChange={setRemote} />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div className="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2">
                   <EmploymentTypeInput onChange={setEmploymentType} />
 
                   <div className="flex flex-col">
-                    <Label className="block text-sm font-medium text-gray-700 mb-1">
+                    <Label className="block mb-1 text-sm font-medium text-gray-700">
                       Salary Range<span className="text-red-500">*</span>
                     </Label>
 
@@ -176,13 +172,13 @@ export default function CreateJobPostPage() {
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
-                  className="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Save as Draft
                 </button>
                 <button
                   type="button"
-                  className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   onClick={handlePostJob}
                 >
                   Post Job

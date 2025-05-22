@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import JobPostingForm from "./pages/Recruiter/JobPostingForm";
 import CompanyDashboard from "./pages/Recruiter/CompanyDashboard";
 import CompanyRootLayout from "./components/CompanyRootLayout";
+import CompanyJobListing from "./pages/Recruiter/CompanyJobListing";
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <CompanyDashboard /> },
       { path: "create-new-job", element: <JobPostingForm /> },
-      { path: "job-listings", element: <h1>Jobs Listings</h1> },
+      { path: "job-listings", element: <CompanyJobListing /> },
       { path: "applicants", element: <h1>Applicants</h1> },
       { path: "edit-job/:jobId", element: <h1>Edit Job</h1> },
       { path: "profile", element: <h1>Company Profile</h1> },

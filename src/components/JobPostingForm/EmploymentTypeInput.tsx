@@ -20,7 +20,7 @@ function EmploymentTypeInput({ onChange }: EmploymentTypeInputProps) {
         </div>
         <SelectComponent
           className="pl-10 border border-gray-300"
-          options={Object.keys(EmploymentType).map((i) => i)}
+          options={Object.values(EmploymentType).map((i) => i)}
           setFn={onChange}
         />
 
