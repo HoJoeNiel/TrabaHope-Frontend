@@ -80,6 +80,7 @@ export default function RecruiterSignupForm() {
         mission: null,
         noOfEmployees: null,
         location: null,
+        yearFounded: null,
       };
 
       const docRef = doc(db, "users", currentUser.uid);
@@ -102,12 +103,12 @@ export default function RecruiterSignupForm() {
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen bg-white">
       <div className="px-24 mt-20 mb-12 w-full max-w-[720px]">
-        <h2 className="text-3xl max-lg:text-2xl font-bold text-gray-800 mb-2">
+        <h2 className="mb-2 text-3xl font-bold text-gray-800 max-lg:text-2xl">
           Create Recruiter Account
         </h2>
-        <p className="text-gray-600 mb-8 max-lg:text-sm">
+        <p className="mb-8 text-gray-600 max-lg:text-sm">
           Join thousands of recruiters using our AI-powered platform
         </p>
 
@@ -170,7 +171,7 @@ export default function RecruiterSignupForm() {
                 label="Phone Number"
               />
 
-              <div className="flex items-center space-x-2 mt-4 mb-1">
+              <div className="flex items-center mt-4 mb-1 space-x-2">
                 <Checkbox
                   id="terms"
                   required
@@ -189,7 +190,7 @@ export default function RecruiterSignupForm() {
               {isLoading && (
                 <Button
                   disabled
-                  className="w-full py-6 my-6 text-lg max-lg:text-base bg-indigo-700"
+                  className="w-full py-6 my-6 text-lg bg-indigo-700 max-lg:text-base"
                 >
                   <Loader2 className="animate-spin" />
                   Please wait
@@ -198,7 +199,7 @@ export default function RecruiterSignupForm() {
               {!isLoading && (
                 <Button
                   type="submit"
-                  className="w-full py-6 my-6 text-lg max-lg:text-base bg-indigo-500 hover:bg-indigo-700"
+                  className="w-full py-6 my-6 text-lg bg-indigo-500 max-lg:text-base hover:bg-indigo-700"
                 >
                   Sign Up as Recruiter
                 </Button>
@@ -207,15 +208,15 @@ export default function RecruiterSignupForm() {
           )}
         </Formik>
 
-        <p className="text-center mt-6 text-gray-600">
+        <p className="mt-6 text-center text-gray-600">
           Already have an account?
-          <a href="#" className="text-blue-600 font-medium hover:underline">
+          <a href="#" className="font-medium text-blue-600 hover:underline">
             {" "}
             Sign in
           </a>
         </p>
 
-        <div className="mt-12 text-center text-gray-500 text-sm">
+        <div className="mt-12 text-sm text-center text-gray-500">
           © 2025 TrabaHope. All rights reserved.
         </div>
       </div>
