@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 export default function Hero() {
   const navigate = useNavigate();
   return (
-    <section className="relative w-full h-[800px] overflow-hidden">
-      <div className="main-gradient-bg w-full h-full">
-        <div className="w-full max-w-[1440px] py-20 grid grid-cols-2 mx-auto">
+    <section className="relative w-full h-[900px] overflow-hidden">
+      <div className="w-full h-full main-gradient-bg">
+        <div className="w-full max-w-[1440px] py-32 grid grid-cols-2 mx-auto">
           <div>
-            <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-5xl lg:mt-6 xl:text-7xl">
+            <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-white sm:mt-5 sm:text-5xl lg:mt-6 xl:text-7xl">
               <span className="">Finding the perfect job</span>
               <span className="block">has never been smarter</span>
             </h1>
@@ -21,13 +21,13 @@ export default function Hero() {
             <div className="flex space-x-6">
               <button
                 onClick={() => navigate("/signup/applicant")}
-                className="text-dusty-sky-blue text-lg font-medium flex-1 rounded-lg bg-white py-2 shadow transition-transform duration-300 hover:scale-105"
+                className="flex-1 py-2 text-lg font-medium transition-transform duration-300 bg-white rounded-lg shadow text-dusty-sky-blue hover:scale-105"
               >
                 For Applicants
               </button>
               <button
                 onClick={() => navigate("/signup/recruiter")}
-                className="text-white text-lg font-medium flex-1 rounded-lg bg-blue-500 py-2 shadow transition-transform duration-300 hover:scale-105"
+                className="flex-1 py-2 text-lg font-medium text-white transition-transform duration-300 bg-blue-500 rounded-lg shadow hover:scale-105"
               >
                 For Recruiters
               </button>

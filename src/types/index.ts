@@ -145,3 +145,10 @@ export type Company = {
   reviewCount: number;
   activeJobs: ActiveJob[];
 };
+
+export type Application = {
+  name: string;
+  appliedAt: Date | string;
+  jobTitle: string;
+  jobId: string;
+};

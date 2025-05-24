@@ -6,50 +6,150 @@ import {
   CalendarClock,
   LayoutDashboard,
   Settings,
+  UserPlus,
   Users,
 } from "lucide-react";
+import { getRelativeTimeAgo } from "@/helpers";
+import { Application } from "@/types";
+
+const applicationNotifs: Application[] = [
+  {
+    name: "Jonel Villaver",
+    jobId: "job_01a2b3c",
+    jobTitle: "Frontend Developer",
+    appliedAt: new Date().toISOString(),
+  },
+  {
+    name: "Maria Santos",
+    jobId: "job_04d5e6f",
+    jobTitle: "Backend Developer",
+    appliedAt: new Date("2025-05-21T08:45:00"),
+  },
+  {
+    name: "Carlos Reyes",
+    jobId: "job_07g8h9i",
+    jobTitle: "UI/UX Designer",
+    appliedAt: new Date("2025-05-20T15:15:00"),
+  },
+  {
+    name: "Liza Dela Cruz",
+    jobId: "job_10j11k12",
+    jobTitle: "Data Analyst",
+    appliedAt: new Date("2025-05-19T13:05:00"),
+  },
+  {
+    name: "Arnold Mendoza",
+    jobId: "job_13l14m15",
+    jobTitle: "Software Engineer",
+    appliedAt: new Date("2025-05-18T09:20:00"),
+  },
+];
 
 export default function CompanyRootLayout() {
   return (
-    <div className="min-w-screen min-h-screen bg-gray-50 flex">
+    <div className="flex min-h-screen bg-stone-50 min-w-screen">
       <CompanySidebar>
         <SidebarItem
-          icon={<LayoutDashboard size={25} />}
+          icon={<LayoutDashboard className="font-thin" />}
           text="Dashboard"
           path="dashboard"
         />
         <SidebarItem
-          icon={<BriefcaseBusiness size={25} />}
+          icon={<BriefcaseBusiness className="font-thin" />}
           text="Job Listings"
           path="job-listings"
           alert
         />
         <SidebarItem
-          icon={<Users size={25} />}
+          icon={<Users className="font-thin" />}
           text="Applicants"
           path="applicants"
           alert
         />
         <SidebarItem
-          icon={<CalendarClock size={25} />}
+          icon={<CalendarClock className="font-thin" />}
           text="Interviews"
           path="interviews"
           alert
         />
         <SidebarItem
-          icon={<Building size={25} />}
+          icon={<Building className="font-thin" />}
           text="Company Profile"
           path="profile"
           alert
         />
         <SidebarItem
-          icon={<Settings size={30} />}
+          icon={<Settings className="font-thin" />}
           text="Settings"
           path="settings"
           alert
         />
       </CompanySidebar>
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
+      {/* Notification sidebar */}
+      <div className="max-h-screen overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
+        <h3 className="px-4 text-lg">Job Applications</h3>
+        <div className="px-6">
+          {applicationNotifs.map((application) => (
+            <ApplicationNotificationItem application={application} />
+          ))}
+        </div>
+        {/* sample lang muna to */}
+        <h3 className="px-4 text-lg">Interviews</h3>
+        <div className="px-6">
+          {applicationNotifs.map((application) => (
+            <InterviewNotificationItem application={application} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ApplicationNotificationItem({
+  application,
+}: {
+  application: Application;
+}) {
+  return (
+    <div className="flex my-4 space-x-3">
+      <div className="flex items-center justify-center p-3 bg-gray-100 rounded-full shadow size-10">
+        <UserPlus className="text-gray-500 size-6" />
+      </div>
+      <div className="text-sm">
+        <span>{application.name}</span>
+        <span className="font-light"> applied for the </span>
+        <span>{application.jobTitle}</span>
+        <span className="font-light"> role.</span>
+        <span className="block text-xs text-gray-600">
+          {getRelativeTimeAgo(application.appliedAt.toLocaleString())}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function InterviewNotificationItem({
+  application,
+}: {
+  application: Application;
+}) {
+  return (
+    <div className="flex my-4 space-x-3">
+      <div className="flex items-center justify-center p-3 bg-gray-100 rounded-full shadow size-10">
+        <UserPlus className="text-gray-500 size-6" />
+      </div>
+      <div className="text-sm">
+        <span className="font-light">Interview confirmed: </span>
+        <span>{application.name} </span>
+        <span className="font-light"> for </span>
+        <span>{application.jobTitle}</span>
+        <span className="block text-xs text-gray-600">
+          {getRelativeTimeAgo(application.appliedAt.toLocaleString())}
+        </span>
+      </div>
     </div>
   );
 }

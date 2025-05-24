@@ -25,11 +25,11 @@ const SidebarContext = createContext<SidebarContextType>({
 
 export default function CompanySidebar({ children }: SidebarProps) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   return (
-    <aside className="sticky top-0 left-0 h-screen">
-      <nav className="flex flex-col h-full bg-white border-r shadow-sm border-r-blue-100">
+    <aside className="sticky top-0 left-0 h-screen border-r bg-stone-50">
+      <nav className="flex flex-col h-full">
         <div
           className={`p-4 pb-2 flex  items-center overflow-hidden transition-all ${
             isExpanded ? "w-auto justify-between " : "w-auto justify-center"
@@ -63,7 +63,7 @@ export default function CompanySidebar({ children }: SidebarProps) {
         </SidebarContext.Provider>
 
         <div
-          className={`border-t border-t-blue-100 bg-blue-50 flex p-3 items-center ${
+          className={`border-t bg-stone-50 flex p-3 items-center ${
             isExpanded ? "justify-between" : "justify-center p-0 h-16"
           }`}
         >
@@ -107,9 +107,7 @@ export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
         navigate(path);
       }}
       className={`
-        relative flex items-center py-2 px-3 my-1
-        font-medium rounded-md cursor-pointer
-        transition-all group
+        relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
             ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
