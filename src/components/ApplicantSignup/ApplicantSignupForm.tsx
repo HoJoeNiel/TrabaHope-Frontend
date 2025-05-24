@@ -8,10 +8,9 @@ import { newApplicantAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { auth, db } from "@/firebase";
+import { auth } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
-import { doc, setDoc } from "firebase/firestore";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 const initialValues: UserCredentials = {
@@ -42,8 +41,10 @@ export default function ApplicantSignupForm() {
         values.password
       );
       const currentUser = result.user;
+      const token = await currentUser.getIdToken();
 
-      // Save sa firestore DB (temporary lang habang wala pa yung backend)
+      // localStorage.setItem("token", token); di na raw need sabi ni darren pero dito muna just in case
+
       const user: ApplicantAuth = {
         applicantID: currentUser.uid,
         name: `${values.firstName} ${values.lastName}`,
@@ -64,28 +65,43 @@ export default function ApplicantSignupForm() {
         role: "applicant",
       };
 
-      await setDoc(doc(db, "users", currentUser.uid), user);
+      const response = await fetch("url", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to save applicant info. Status ${response.status}`
+        );
+      }
+
       setUser(user);
       setLoading(false);
       navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
-      setLoading(false);
       let errorMessage = "Something went wrong: ";
       if (error instanceof Error) {
         errorMessage += error.message;
         setErrors({ email: error.message });
       }
       throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white min-h-screen flex justify-end">
+    <div className="flex justify-end min-h-screen bg-white">
       <div className="px-24 mt-28 mb-16 w-full max-w-[720px]">
-        <h2 className="text-3xl max-lg:text-2xl font-bold text-gray-800 mb-2">
+        <h2 className="mb-2 text-3xl font-bold text-gray-800 max-lg:text-2xl">
           Create Applicant Account
         </h2>
-        <p className="text-gray-600 mb-8 max-lg:text-sm">
+        <p className="mb-8 text-gray-600 max-lg:text-sm">
           Join thousands of job seekers using our AI-powered platform
         </p>
 
@@ -138,7 +154,7 @@ export default function ApplicantSignupForm() {
                 name="phoneNumber"
               />
 
-              <div className="flex items-center space-x-2 mt-4 mb-1">
+              <div className="flex items-center mt-4 mb-1 space-x-2">
                 <Checkbox
                   id="terms"
                   required
@@ -157,7 +173,7 @@ export default function ApplicantSignupForm() {
               {isLoading && (
                 <Button
                   disabled
-                  className="w-full py-6 my-6 text-lg max-lg:text-base bg-teal-700"
+                  className="w-full py-6 my-6 text-lg bg-teal-700 max-lg:text-base"
                 >
                   <Loader2 className="animate-spin" />
                   Please wait
@@ -166,7 +182,7 @@ export default function ApplicantSignupForm() {
               {!isLoading && (
                 <Button
                   type="submit"
-                  className="w-full py-6 my-6 text-lg max-lg:text-base bg-teal-500 hover:bg-teal-700"
+                  className="w-full py-6 my-6 text-lg bg-teal-500 max-lg:text-base hover:bg-teal-700"
                 >
                   Sign Up as Applicant
                 </Button>
@@ -183,14 +199,14 @@ export default function ApplicantSignupForm() {
 
         <AuthSocialButtons action="signup" />
 
-        <p className="text-center mt-6 text-gray-600">
+        <p className="mt-6 text-center text-gray-600">
           Already have an account?
-          <a href="#" className="text-blue-600 font-medium hover:underline">
+          <a href="#" className="font-medium text-blue-600 hover:underline">
             Sign in
           </a>
         </p>
 
-        <div className="mt-12 text-center text-gray-500 text-sm">
+        <div className="mt-12 text-sm text-center text-gray-500">
           © 2025 TrabaHope. All rights reserved.
         </div>
       </div>

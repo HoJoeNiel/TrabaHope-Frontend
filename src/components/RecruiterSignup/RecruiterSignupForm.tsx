@@ -5,12 +5,11 @@ import FormField from "@/components/FormField";
 import { CompanyAuth, CompanyCredentials } from "@/types";
 import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";   
 import { Form, Formik, FormikErrors } from "formik";
-import { auth, db } from "@/firebase";
+import { auth } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
-import { doc, setDoc } from "firebase/firestore";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 const INDUSTRY_OPTIONS = [
@@ -59,8 +58,10 @@ export default function RecruiterSignupForm() {
         values.password
       );
       const currentUser = result.user;
+      const token = await currentUser.getIdToken();
 
-      // Save sa firestore DB (temporary lang habang wala pa yung backend)
+      // localStorage.setItem("token", token); di na raw need sabi ni darren pero dito muna just in case
+
       const companyInfo: CompanyAuth = {
         companyID: currentUser.uid,
         name: values.companyName,
@@ -69,11 +70,7 @@ export default function RecruiterSignupForm() {
         industry: values.industry,
         websiteURL: values.companyWebsite,
         role: "recruiter",
-        createdAt: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
+        createdAt: new Date().toISOString(),
         description: null,
         photoURL: null,
         specialties: null,
@@ -83,22 +80,33 @@ export default function RecruiterSignupForm() {
         yearFounded: null,
       };
 
-      const docRef = doc(db, "users", currentUser.uid);
-      await setDoc(docRef, companyInfo);
-      setUser(companyInfo);
-      console.log("Saved to Firestore");
+      const response = await fetch("url", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(companyInfo),
+      });
 
+      if (!response.ok) {
+        throw new Error(
+          `Failed to save company info. Status: ${response.status}`
+      );
+      }
+
+      setUser(companyInfo);
       setLoading(false);
-      // const token = await user.getIdToken();
       navigate("/recruiter/create-new-job", { replace: true });
     } catch (error) {
-      setLoading(false);
       let errorMessage = "Something went wrong: ";
       if (error instanceof Error) {
         errorMessage += error.message;
         setErrors({ companyEmail: error.message });
       }
       throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 

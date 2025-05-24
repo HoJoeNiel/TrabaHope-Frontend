@@ -20,8 +20,11 @@ import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeyword
 import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { isRecruiter } from "@/helpers";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function CreateJobPostPage() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const company = useLoggedInUserStore((state) => state.user);
   const addJob = useCompanyJobsStore((state) => state.addJob);
@@ -53,7 +56,8 @@ export default function CreateJobPostPage() {
     setTags,
   } = useJobPostingForm();
 
-  const handlePostJob = () => {
+  const handlePostJob = async () => {
+    setLoading(true);
     if (!company || company.role !== "recruiter" || !isRecruiter(company)) {
       alert("You must be logged in as a company/recruiter to post a job.");
       navigate("/signup/recruiter", { replace: true });
@@ -102,8 +106,31 @@ export default function CreateJobPostPage() {
       },
     };
 
-    addJob(job);
-    navigate("/recruiter/dashboard");
+    // TODO: function for sending job to the backend api
+    try {
+      const response = await fetch("url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(job),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to post job. Status: ${response.status}`);
+      }
+
+      addJob(job);
+      navigate("/recruiter/dashboard");
+    } catch (error) {
+      let errorMessage = "Something went wrong: ";
+      if (error instanceof Error) {
+        errorMessage += error.message;
+        throw new Error(errorMessage);
+      }
+    } finally {
+      setLoading(true);
+    }
   };
 
   return (
@@ -176,13 +203,23 @@ export default function CreateJobPostPage() {
                 >
                   Save as Draft
                 </button>
-                <button
-                  type="button"
-                  className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={handlePostJob}
-                >
-                  Post Job
-                </button>
+                {loading ? (
+                  <button
+                    disabled
+                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Loading
+                    <Loader2 className="animate-spin" />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={handlePostJob}
+                  >
+                    Post Job
+                  </button>
+                )}
               </div>
             </form>
           </div>
