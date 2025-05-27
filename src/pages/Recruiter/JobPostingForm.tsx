@@ -1,4 +1,4 @@
-import { CompanyPostedJob, EmploymentType } from "@/types";
+import { CompanyPostedJob, EmploymentType, Job } from "@/types";
 import { parseMultilineInput } from "@/helpers";
 
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,6 @@ export default function CreateJobPostPage() {
   const navigate = useNavigate();
   const company = useLoggedInUserStore((state) => state.user);
   const addJob = useCompanyJobsStore((state) => state.addJob);
-
 
   // FOR TESTING LANG
   useEffect(() => {
@@ -151,29 +150,68 @@ export default function CreateJobPostPage() {
       return;
     }
 
-    const job: CompanyPostedJob = {
-      id: crypto.randomUUID(),
-      companyProfileUrl: null, // null muna kase wala pang profile page yung company/recruiter
-      companyName: company.name,
-      jobTitle,
+    const companyPostedJob: Job = {
+      companyId: company.id,
+      requirements,
+      title: jobTitle,
+      maxSalary: Number(salaryMax),
+      minSalary: Number(salaryMin),
       location,
       employmentType: employmentType as EmploymentType,
       description,
-      requirements: parseMultilineInput(requirements),
-      responsibilities: parseMultilineInput(responsibilities),
-      benefits: parseMultilineInput(benefits),
+      benefits,
+      responsibilities,
       remote,
-      salaryRange: {
-        min: Number(salaryMin),
-        max: Number(salaryMax),
-      },
       tags,
-      timestamps: {
-        posted: new Date(),
-      },
+      createdAt: new Date().toLocaleDateString(),
     };
 
-    addJob(job);
+    try {
+      const response = await fetch(
+        "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/api/web/jobs",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(companyPostedJob),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to save job. Status: ${response.status}`);
+      }
+
+      console.log("SUMAKSES");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+
+    // const job: CompanyPostedJob = {
+    //   id: crypto.randomUUID(),
+    //   companyProfileUrl: null, // null muna kase wala pang profile page yung company/recruiter
+    //   companyName: company.name,
+    //   jobTitle,
+    //   location,
+    //   employmentType: employmentType as EmploymentType,
+    //   description,
+    //   requirements: parseMultilineInput(requirements),
+    //   responsibilities: parseMultilineInput(responsibilities),
+    //   benefits: parseMultilineInput(benefits),
+    //   remote,
+    //   salaryRange: {
+    //     min: Number(salaryMin),
+    //     max: Number(salaryMax),
+    //   },
+    //   tags,
+    //   timestamps: {
+    //     posted: new Date(),
+    //   },
+    // };
+
+    // addJob(job);
     navigate("/recruiter/dashboard");
 
     // BACKEND JOB POSTING CONNECTION
