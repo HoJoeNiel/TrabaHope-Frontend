@@ -64,7 +64,7 @@ export default function RecruiterSignupForm() {
         id: currentUser.uid,
         name: values.companyName,
         email: values.companyEmail,
-        contactNumber: values.phoneNumber,
+        contactNumber: String(values.phoneNumber),
         industry: values.industry,
         websiteURL: values.companyWebsite,
         role: "recruiter",
@@ -75,25 +75,26 @@ export default function RecruiterSignupForm() {
         noOfEmployees: 10,
         location: "Divisoria",
         yearFounded: 1909,
+        mission: "djawjdopawdjwopajdaw",
       };
 
       // BACKEND AUTH CONNECTION
-      // const response = await fetch(
-      //   "https://917032dc9d14c4aac954a6a3837f27e9.serveo.net/recruiter/Sign-Up",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(companyInfo),
-      //   }
-      // );
+      const response = await fetch(
+        "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/recruiter/sign-up",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(companyInfo),
+        }
+      );
 
-      // if (!response.ok) {
-      //   throw new Error(
-      //     `Failed to save company info. Status: ${response.status}`
-      //   );
-      // }
+      if (!response.ok) {
+        throw new Error(
+          `Failed to save company info. Status: ${response.status}`
+        );
+      }
 
       // FIREBASE TEMPORARY
       const docRef = doc(db, "users", currentUser.uid);

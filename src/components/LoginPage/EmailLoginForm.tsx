@@ -31,6 +31,25 @@ export default function EmailLoginForm() {
 
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error("No authenticated user found.");
+      const token = await currentUser.getIdToken();
+
+      const response = await fetch(
+        "https://b1cbe663a89f8ce1f7baa8bec218125a.serveo.net/sign-in",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ token }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to save applicant info. Status ${response.status}`
+        );
+      }
 
       const userData = await fetchUserDataFromFirestore(currentUser.uid);
 
@@ -64,7 +83,7 @@ export default function EmailLoginForm() {
           value={credentials.email}
           onChange={handleInputChange}
         />
-        {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
+        {error && <p className="text-sm font-medium text-red-600">{error}</p>}
       </div>
 
       <div className="grid w-full items-center gap-1.5 mb-4">
@@ -79,14 +98,14 @@ export default function EmailLoginForm() {
         />
       </div>
 
-      <div className="flex space-x-2 mb-4">
+      <div className="flex mb-4 space-x-2">
         <input type="checkbox" id="remember-me" />
         <label htmlFor="remember-me">Remember me</label>
       </div>
 
       <button
         type="submit"
-        className="bg-blue-500 w-full py-2 text-lg text-center rounded-lg shadow text-white"
+        className="w-full py-2 text-lg text-center text-white bg-blue-500 rounded-lg shadow"
       >
         Log in
       </button>

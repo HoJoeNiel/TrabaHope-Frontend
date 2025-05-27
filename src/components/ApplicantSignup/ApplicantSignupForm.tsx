@@ -49,40 +49,40 @@ export default function ApplicantSignupForm() {
         name: `${values.firstName} ${values.lastName}`,
         email: values.email,
         location: null,
-        contactNumber: values.phoneNumber,
-        photoURL: null,
+        contactNumber: String(values.phoneNumber),
+        photoUrl: null,
         resumeFile: null,
         jobTitle: null,
         description: null,
-        createdAt: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-        portfolioURL: null,
+        createdAt: new Date().toISOString(),
+        portfolioUrl: null,
         preferredEmploymentType: null,
+        interests: null,
         role: "applicant",
       };
 
       // BACKEND AUTH CONNECTION
-      // const response = await fetch("url", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(user),
-      // });
+      const response = await fetch(
+        "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/applicant/sign-up",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
 
-      // if (!response.ok) {
-      //   throw new Error(
-      //     `Failed to save applicant info. Status ${response.status}`
-      //   );
-      // }
+      if (!response.ok) {
+        throw new Error(
+          `Failed to save applicant info. Status ${response.status}`
+        );
+      }
 
       // FIREBASE TEMPORARY
       const docRef = doc(db, "users", currentUser.uid);
       await setDoc(docRef, user);
-      setUser(user);
+      // setUser(user);
 
       setUser(user);
       setLoading(false);
