@@ -107,7 +107,7 @@ export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
         navigate(path);
       }}
       className={`
-        relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer h-[42px] transition-all group
+        relative flex items-center py-2 px-3 my-1  rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
             ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"

@@ -3,6 +3,7 @@ import CompanySidebar, { SidebarItem } from "./CompanySidebar";
 import {
   BriefcaseBusiness,
   Building,
+  CalendarCheck,
   CalendarClock,
   LayoutDashboard,
   Settings,
@@ -11,6 +12,7 @@ import {
 } from "lucide-react";
 import { getRelativeTimeAgo } from "@/helpers";
 import { Application } from "@/types";
+import ProtectedRoute from "./ProtectedRoute";
 
 const applicationNotifs: Application[] = [
   {
@@ -47,64 +49,72 @@ const applicationNotifs: Application[] = [
 
 export default function CompanyRootLayout() {
   return (
-    <div className="flex min-h-screen bg-stone-50 min-w-screen">
-      <CompanySidebar>
-        <SidebarItem
-          icon={<LayoutDashboard className="font-thin" />}
-          text="Dashboard"
-          path="dashboard"
-        />
-        <SidebarItem
-          icon={<BriefcaseBusiness className="font-thin" />}
-          text="Job Listings"
-          path="job-listings"
-          alert
-        />
-        <SidebarItem
-          icon={<Users className="font-thin" />}
-          text="Applicants"
-          path="applicants"
-          alert
-        />
-        <SidebarItem
-          icon={<CalendarClock className="font-thin" />}
-          text="Interviews"
-          path="interviews"
-          alert
-        />
-        <SidebarItem
-          icon={<Building className="font-thin" />}
-          text="Company Profile"
-          path="profile"
-          alert
-        />
-        <SidebarItem
-          icon={<Settings className="font-thin" />}
-          text="Settings"
-          path="settings"
-          alert
-        />
-      </CompanySidebar>
-      <div className="flex-1">
-        <Outlet />
-      </div>
-      {/* Notification sidebar */}
-      <div className="max-h-screen overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
-        <h3 className="px-4 text-lg">Job Applications</h3>
-        <div className="px-6">
-          {applicationNotifs.map((application) => (
-            <ApplicationNotificationItem application={application} />
-          ))}
+    <ProtectedRoute>
+      <div className="flex min-h-screen bg-stone-50 min-w-screen">
+        <CompanySidebar>
+          <SidebarItem
+            icon={<LayoutDashboard className="font-thin" />}
+            text="Dashboard"
+            path="dashboard"
+          />
+          <SidebarItem
+            icon={<BriefcaseBusiness className="font-thin" />}
+            text="Job Listings"
+            path="job-listings"
+            alert
+          />
+          <SidebarItem
+            icon={<Users className="font-thin" />}
+            text="Applicants"
+            path="applicants"
+            alert
+          />
+          <SidebarItem
+            icon={<CalendarClock className="font-thin" />}
+            text="Interviews"
+            path="interviews"
+            alert
+          />
+          <SidebarItem
+            icon={<Building className="font-thin" />}
+            text="Company Profile"
+            path="profile"
+            alert
+          />
+          <SidebarItem
+            icon={<Settings className="font-thin" />}
+            text="Settings"
+            path="settings"
+            alert
+          />
+        </CompanySidebar>
+        <div className="flex-1">
+          <Outlet />
         </div>
-        {/* sample lang muna to */}
-        <h3 className="px-4 text-lg">Interviews</h3>
-        <div className="px-6">
-          {applicationNotifs.map((application) => (
-            <InterviewNotificationItem application={application} />
-          ))}
+        {/* Notification sidebar */}
+        <div className="max-h-screen sticky top-0 right-0 overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
+          <h3 className="px-4 text-lg">Job Applications</h3>
+          <div className="px-6">
+            {applicationNotifs.map((application) => (
+              <ApplicationNotificationItem
+                key={application.jobId}
+                application={application}
+              />
+            ))}
+          </div>
+          {/* sample lang muna to */}
+          <h3 className="px-4 text-lg">Interviews</h3>
+          <div className="px-6">
+            {applicationNotifs.map((application) => (
+              <InterviewNotificationItem
+                key={application.jobId}
+                application={application}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }
 
@@ -114,7 +124,7 @@ function ApplicationNotificationItem({
   application: Application;
 }) {
   return (
-    <div className="flex my-4 space-x-3">
+    <div className="flex p-1 my-4 space-x-3 rounded hover:bg-gray-100">
       <div className="flex items-center justify-center p-3 bg-gray-100 rounded-full shadow size-10">
         <UserPlus className="text-gray-500 size-6" />
       </div>
@@ -137,9 +147,9 @@ function InterviewNotificationItem({
   application: Application;
 }) {
   return (
-    <div className="flex my-4 space-x-3">
+    <div className="flex p-1 my-4 space-x-3 hover:bg-gray-100">
       <div className="flex items-center justify-center p-3 bg-gray-100 rounded-full shadow size-10">
-        <UserPlus className="text-gray-500 size-6" />
+        <CalendarCheck className="text-gray-500 size-6" />
       </div>
       <div className="text-sm">
         <span className="font-light">Interview confirmed: </span>

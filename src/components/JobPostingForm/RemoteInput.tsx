@@ -3,11 +3,12 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 type RemoteInputProps = {
-  value: boolean;
+  value?: boolean;
+  defaultValue?: boolean;
   onChange: (value: boolean) => void;
 };
 
-function RemoteInput({ value, onChange }: RemoteInputProps) {
+function RemoteInput({ value, defaultValue, onChange }: RemoteInputProps) {
   return (
     <div className="mt-4">
       <div className="flex items-center">
@@ -15,11 +16,12 @@ function RemoteInput({ value, onChange }: RemoteInputProps) {
           id="remote"
           name="remote"
           type="checkbox"
-          className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
           checked={value}
+          defaultChecked={defaultValue}
           onChange={(e) => onChange(e.target.checked)}
         />
-        <Label htmlFor="remote" className="ml-2 block text-sm text-gray-700">
+        <Label htmlFor="remote" className="block ml-2 text-sm text-gray-700">
           Remote position
         </Label>
       </div>

@@ -4,19 +4,24 @@ import { Textarea } from "../ui/textarea";
 import { memo } from "react";
 
 type JobRequirementsInputProps = {
-  value: string;
+  value?: string;
+  defaultValue?: string;
   onChange: (value: string) => void;
 };
 
-function JobRequirementsInput({ value, onChange }: JobRequirementsInputProps) {
+function JobRequirementsInput({
+  value,
+  defaultValue,
+  onChange,
+}: JobRequirementsInputProps) {
   return (
-    <div className="bg-white shadow rounded-lg p-6">
+    <div className="p-6 bg-white rounded-lg shadow">
       <div className="flex items-start justify-between mb-1">
         <Label className="block text-sm font-medium text-gray-700">
           Requirements<span className="text-red-500">*</span>
         </Label>
         <div className="flex items-center text-xs text-gray-500">
-          <Info className="h-4 w-4 mr-1" />
+          <Info className="w-4 h-4 mr-1" />
           <span>
             This information helps our AI match qualified candidates to your job
             posting
@@ -26,8 +31,9 @@ function JobRequirementsInput({ value, onChange }: JobRequirementsInputProps) {
       <Textarea
         rows={4}
         placeholder="List the skills, qualifications, and experience required..."
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border py-2 px-3"
+        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         value={value}
+        defaultValue={defaultValue}
         onChange={(e) => onChange(e.target.value)}
       />
     </div>

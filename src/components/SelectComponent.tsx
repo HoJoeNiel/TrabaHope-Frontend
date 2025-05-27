@@ -11,16 +11,24 @@ import {
 export function SelectComponent({
   options,
   className,
+  defaultValue,
   setFn,
 }: {
   options: string[];
   className?: string;
+  defaultValue?: string;
   setFn?: (value: string) => void;
 }) {
   return (
-    <Select onValueChange={(value) => setFn?.(value)}>
+    <Select
+      defaultValue={defaultValue}
+      onValueChange={(value) => setFn?.(value)}
+    >
       <SelectTrigger className={`text-sm ${className}`}>
-        <SelectValue className="text-black" placeholder={options[0]} />
+        <SelectValue
+          className="text-black"
+          placeholder={defaultValue ?? options[0]}
+        />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
