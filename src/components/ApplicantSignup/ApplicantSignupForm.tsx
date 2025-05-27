@@ -3,13 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import AuthSocialButtons from "@/components/AuthSocialButtons";
 
-import { ApplicantAuth, UserCredentials } from "@/types";
-import { newApplicantAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { auth } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "@/firebase";
+import { doc, setDoc } from "firebase/firestore";
+
+import { ApplicantAuth, UserCredentials } from "@/types";
+import { newApplicantAccountSchema } from "@/schema";
 import { Loader2 } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
@@ -41,12 +43,9 @@ export default function ApplicantSignupForm() {
         values.password
       );
       const currentUser = result.user;
-      const token = await currentUser.getIdToken();
-
-      // localStorage.setItem("token", token); di na raw need sabi ni darren pero dito muna just in case
 
       const user: ApplicantAuth = {
-        applicantID: currentUser.uid,
+        id: currentUser.uid,
         name: `${values.firstName} ${values.lastName}`,
         email: values.email,
         location: null,
@@ -65,20 +64,25 @@ export default function ApplicantSignupForm() {
         role: "applicant",
       };
 
-      const response = await fetch("url", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+      // BACKEND AUTH CONNECTION
+      // const response = await fetch("url", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(user),
+      // });
 
-      if (!response.ok) {
-        throw new Error(
-          `Failed to save applicant info. Status ${response.status}`
-        );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     `Failed to save applicant info. Status ${response.status}`
+      //   );
+      // }
+
+      // FIREBASE TEMPORARY
+      const docRef = doc(db, "users", currentUser.uid);
+      await setDoc(docRef, user);
+      setUser(user);
 
       setUser(user);
       setLoading(false);

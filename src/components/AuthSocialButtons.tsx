@@ -68,7 +68,7 @@ export default function AuthSocialButtons({ action }: { action: Action }) {
 
       if (action === "signup") {
         const user: ApplicantAuth = {
-          applicantID: currentUser.uid,
+          id: currentUser.uid,
           name: currentUser.displayName,
           email: currentUser.email,
           location: null,

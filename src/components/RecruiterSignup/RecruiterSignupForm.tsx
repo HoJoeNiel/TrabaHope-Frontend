@@ -5,12 +5,13 @@ import FormField from "@/components/FormField";
 import { CompanyAuth, CompanyCredentials } from "@/types";
 import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";   
+import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { doc, setDoc } from "firebase/firestore";
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",
@@ -58,12 +59,9 @@ export default function RecruiterSignupForm() {
         values.password
       );
       const currentUser = result.user;
-      const token = await currentUser.getIdToken();
-
-      // localStorage.setItem("token", token); di na raw need sabi ni darren pero dito muna just in case
 
       const companyInfo: CompanyAuth = {
-        companyID: currentUser.uid,
+        id: currentUser.uid,
         name: values.companyName,
         email: values.companyEmail,
         contactNumber: values.phoneNumber,
@@ -71,29 +69,36 @@ export default function RecruiterSignupForm() {
         websiteURL: values.companyWebsite,
         role: "recruiter",
         createdAt: new Date().toISOString(),
-        description: null,
-        photoURL: null,
-        specialties: null,
-        mission: null,
-        noOfEmployees: null,
-        location: null,
-        yearFounded: null,
+        description: "We are a leading provider of tech solutions.",
+        photoURL: "https://example.com/logo.png",
+        specialties: ["Software Development", "AI", "Cloud Services"],
+        noOfEmployees: 10,
+        location: "Divisoria",
+        yearFounded: 1909,
       };
 
-      const response = await fetch("url", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(companyInfo),
-      });
+      // BACKEND AUTH CONNECTION
+      // const response = await fetch(
+      //   "https://917032dc9d14c4aac954a6a3837f27e9.serveo.net/recruiter/Sign-Up",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(companyInfo),
+      //   }
+      // );
 
-      if (!response.ok) {
-        throw new Error(
-          `Failed to save company info. Status: ${response.status}`
-      );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     `Failed to save company info. Status: ${response.status}`
+      //   );
+      // }
+
+      // FIREBASE TEMPORARY
+      const docRef = doc(db, "users", currentUser.uid);
+      await setDoc(docRef, companyInfo);
+      setUser(companyInfo);
 
       setUser(companyInfo);
       setLoading(false);
@@ -173,7 +178,7 @@ export default function RecruiterSignupForm() {
                 name="confirmPassword"
               />
               <FormField
-                type="number"
+                type="text"
                 name="phoneNumber"
                 id="phoneNumber"
                 label="Phone Number"
