@@ -16,13 +16,14 @@ export type ApplicantAuth = {
   email: string;
   location: string | null;
   contactNumber: string | null;
-  photoURL: string | null;
+  photoUrl: string | null;
   resumeFile: string | null;
   jobTitle: string | null;
   description: string | null;
   createdAt: string; // TATANGALIN DAW TO
-  portfolioURL: string | null;
+  portfolioUrl: string | null;
   preferredEmploymentType: string | null;
+  interests: string[] | null;
   role: "applicant";
 };
 
@@ -38,9 +39,10 @@ export type CompanyAuth = {
   noOfEmployees: number | null;
   websiteURL: string | null;
   yearFounded: number | null;
-  createdAt: string; //TATANGGALIN DAW TO 
+  createdAt: string; //TATANGGALIN DAW TO
   industry: string;
   role: "recruiter";
+  mission: string | null; // kakadagdag palang
 };
 
 export type CompanyCredentials = {
@@ -90,6 +92,22 @@ export type TimeStamps = {
   applied?: string | Date;
   lastUpdate?: string | Date;
 };
+
+export interface Job {
+  companyId: string;
+  requirements: string;
+  title: string;
+  maxSalary: number;
+  minSalary: number;
+  location: string;
+  employmentType: EmploymentType;
+  description: string;
+  benefits: string;
+  responsibilities: string;
+  remote: boolean;
+  tags: string[];
+  createdAt: string;
+}
 
 export interface CompanyPostedJob {
   id: string;
