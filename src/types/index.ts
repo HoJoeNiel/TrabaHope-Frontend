@@ -11,7 +11,7 @@ export interface UserCredentials {
 export type Role = "applicant" | "recruiter";
 
 export type ApplicantAuth = {
-  applicantID: string;
+  id: string;
   name: string;
   email: string;
   location: string | null;
@@ -20,28 +20,27 @@ export type ApplicantAuth = {
   resumeFile: string | null;
   jobTitle: string | null;
   description: string | null;
-  createdAt: string;
+  createdAt: string; // TATANGALIN DAW TO
   portfolioURL: string | null;
   preferredEmploymentType: string | null;
   role: "applicant";
 };
 
 export type CompanyAuth = {
-  companyID: string;
+  id: string;
   name: string;
+  description: string | null;
   email: string;
   contactNumber: string;
-  industry: string;
-  role: "recruiter";
-  createdAt: string;
-  websiteURL: string | null;
-  description: string | null;
+  location: string | null;
   photoURL: string | null;
   specialties: string[] | null;
-  mission: string | null;
-  noOfEmployees: string | null;
-  location: string | null;
-  yearFounded: string | null;
+  noOfEmployees: number | null;
+  websiteURL: string | null;
+  yearFounded: number | null;
+  createdAt: string; //TATANGGALIN DAW TO 
+  industry: string;
+  role: "recruiter";
 };
 
 export type CompanyCredentials = {
@@ -87,9 +86,9 @@ export type JobStatus =
   | "Hired";
 
 export type TimeStamps = {
-  posted: string;
-  applied?: string;
-  lastUpdate?: string;
+  posted: string | Date;
+  applied?: string | Date;
+  lastUpdate?: string | Date;
 };
 
 export interface CompanyPostedJob {
@@ -100,10 +99,14 @@ export interface CompanyPostedJob {
   location: string;
   employmentType: EmploymentType;
   description: string;
-  benefits: string;
-  requirements: string;
+  benefits: string[];
+  requirements: string[];
+  responsibilities: string[];
   remote: boolean;
-  salaryRange: number[];
+  salaryRange: {
+    min: number;
+    max: number;
+  };
   tags: string[];
   timestamps: TimeStamps;
 }
@@ -144,4 +147,11 @@ export type Company = {
   averageRating: number;
   reviewCount: number;
   activeJobs: ActiveJob[];
+};
+
+export type Application = {
+  name: string;
+  appliedAt: Date | string;
+  jobTitle: string;
+  jobId: string;
 };

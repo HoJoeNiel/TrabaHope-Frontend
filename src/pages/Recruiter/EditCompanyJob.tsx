@@ -1,7 +1,6 @@
 import { CompanyPostedJob, EmploymentType } from "@/types";
-import { parseMultilineInput } from "@/helpers";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useJobPostingForm } from "@/hooks/useJobPostingForm";
 import { useCompanyJobsStore } from "@/stores/useCompanyJobsStore";
@@ -18,80 +17,20 @@ import JobRequirementsInput from "@/components/JobPostingForm/JobRequirementsInp
 import JobResponsibilitiesInput from "@/components/JobPostingForm/JobResponsibilitiesInput";
 import JobBenefitsAndPerksInput from "@/components/JobPostingForm/JobBenefitsAndPerksInput";
 import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeywordsInput";
-import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { isRecruiter } from "@/helpers";
+import { isRecruiter, parseMultilineInput } from "@/helpers";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
-export default function CreateJobPostPage() {
+export default function EditCompanyJob() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const company = useLoggedInUserStore((state) => state.user);
-  const addJob = useCompanyJobsStore((state) => state.addJob);
+  const jobs = useCompanyJobsStore((state) => state.jobs);
+  const editJob = useCompanyJobsStore((state) => state.editJob);
+  const { jobId } = useParams();
 
-
-  // FOR TESTING LANG
-  useEffect(() => {
-    addJob({
-      id: crypto.randomUUID(),
-      companyProfileUrl: null,
-      companyName: "[Company Name]",
-      jobTitle: "Frontend Developer",
-      location: "[City, State or Remote]",
-      employmentType: "Full-Time" as EmploymentType,
-      description: `We are seeking a talented and passionate Frontend Developer to join our development team. You will be responsible for implementing visual elements that users see and interact with in a web application, working closely with designers, product managers, and backend developers to bring ideas to life.`,
-      requirements: [
-        "Proficiency in HTML5, CSS3, and JavaScript (ES6+)",
-        "Experience with React, Vue.js, or Angular",
-        "Familiarity with version control systems such as Git",
-        "Understanding of responsive design principles and cross-browser compatibility",
-        "Experience with CSS preprocessors (SASS, SCSS) and/or utility-first frameworks like Tailwind CSS",
-        "Knowledge of modern build tools and bundlers (Webpack, Vite, etc.)",
-        "Experience working with APIs (REST or GraphQL)",
-        "Strong problem-solving skills and attention to detail",
-        "Ability to work independently and in a team environment",
-      ],
-      responsibilities: [
-        "Develop new user-facing features using modern JavaScript frameworks (React, Vue, or Angular)",
-        "Write clean, reusable, and scalable code",
-        "Collaborate with UI/UX designers to translate designs into functional web components",
-        "Optimize web pages for maximum speed and scalability",
-        "Ensure the technical feasibility of UI/UX designs",
-        "Maintain and improve website performance and accessibility",
-        "Integrate RESTful APIs and work with backend developers",
-        "Participate in code reviews and team meetings",
-        "Stay up to date with emerging frontend technologies and best practices",
-      ],
-      benefits: [
-        "Competitive salary",
-        "Flexible work hours and remote options",
-        "Health, dental, and vision insurance",
-        "Paid time off and holidays",
-        "Learning & development budget",
-        "Collaborative and inclusive company culture",
-      ],
-      remote: true,
-      salaryRange: {
-        min: 60000,
-        max: 90000,
-      },
-      tags: [
-        "JavaScript",
-        "React",
-        "HTML",
-        "CSS",
-        "Frontend",
-        "Tailwind CSS",
-        "API Integration",
-        "Responsive Design",
-      ],
-      timestamps: {
-        posted: new Date(),
-      },
-    });
-  }, [addJob]);
-
+  const selectedJob = jobs.find((job) => job.id === jobId);
   const {
     jobTitle,
     setJobTitle,
@@ -118,6 +57,54 @@ export default function CreateJobPostPage() {
     tags,
     setTags,
   } = useJobPostingForm();
+
+  useEffect(() => {
+    if (selectedJob) {
+      setJobTitle(selectedJob.jobTitle);
+      setLocation(selectedJob.location);
+      setRemote(selectedJob.remote);
+      setEmploymentType(selectedJob.employmentType);
+      setSalaryMin(selectedJob.salaryRange.min.toString());
+      setSalaryMax(selectedJob.salaryRange.max.toString());
+      setDescription(selectedJob.description);
+      setRequirements(selectedJob.requirements.join());
+      setResponsibilities(selectedJob.responsibilities.join());
+      setBenefits(selectedJob.benefits.join());
+      setTags(selectedJob.tags);
+    }
+  }, [
+    selectedJob,
+    setBenefits,
+    setDescription,
+    setEmploymentType,
+    setJobTitle,
+    setLocation,
+    setRemote,
+    setRequirements,
+    setResponsibilities,
+    setSalaryMax,
+    setSalaryMin,
+    setTags,
+  ]);
+
+  console.log({
+    jobTitle,
+    location,
+    remote,
+    employmentType,
+    salaryMin,
+    salaryMax,
+    description,
+    requirements,
+    responsibilities,
+    benefits,
+    tag,
+    tags,
+  });
+
+  if (!selectedJob) {
+    return <p>Job not found.</p>;
+  }
 
   const handlePostJob = async () => {
     setLoading(true);
@@ -152,7 +139,7 @@ export default function CreateJobPostPage() {
     }
 
     const job: CompanyPostedJob = {
-      id: crypto.randomUUID(),
+      id: selectedJob.id,
       companyProfileUrl: null, // null muna kase wala pang profile page yung company/recruiter
       companyName: company.name,
       jobTitle,
@@ -173,10 +160,10 @@ export default function CreateJobPostPage() {
       },
     };
 
-    addJob(job);
+    editJob(job);
     navigate("/recruiter/dashboard");
 
-    // BACKEND JOB POSTING CONNECTION
+    // BACKEND EDITING JOB CONNECTION
     // try {
     //   const response = await fetch("url", {
     //     method: "POST",
@@ -190,17 +177,17 @@ export default function CreateJobPostPage() {
     //     throw new Error(`Failed to post job. Status: ${response.status}`);
     //   }
 
-    //     addJob(job);
-    //     navigate("/recruiter/dashboard");
-    //   } catch (error) {
-    //     let errorMessage = "Something went wrong: ";
-    //     if (error instanceof Error) {
-    //       errorMessage += error.message;
-    //       throw new Error(errorMessage);
-    //     }
-    //   } finally {
-    //     setLoading(true);
+    //   addJob(job);
+    //   navigate("/recruiter/dashboard");
+    // } catch (error) {
+    //   let errorMessage = "Something went wrong: ";
+    //   if (error instanceof Error) {
+    //     errorMessage += error.message;
+    //     throw new Error(errorMessage);
     //   }
+    // } finally {
+    //   setLoading(true);
+    // }
   };
 
   return (
@@ -208,21 +195,31 @@ export default function CreateJobPostPage() {
       <div className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <div className="md:flex md:items-start md:justify-between">
           <div className="pr-0 md:w-2/3 md:pr-8">
-            <h1 className="mb-6 text-2xl font-bold text-gray-900">
-              Create New Job Post
-            </h1>
+            <h1 className="mb-6 text-2xl font-bold text-gray-900">Edit</h1>
 
             <form className="space-y-6">
               <div className="p-6 bg-white rounded-lg shadow">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <JobTitleInput value={jobTitle} onChange={setJobTitle} />
-                  <LocationInput value={location} onChange={setLocation} />
+                  <JobTitleInput
+                    defaultValue={selectedJob.jobTitle}
+                    onChange={setJobTitle}
+                  />
+                  <LocationInput
+                    defaultValue={selectedJob.location}
+                    onChange={setLocation}
+                  />
                 </div>
 
-                <RemoteInput value={remote} onChange={setRemote} />
+                <RemoteInput
+                  defaultValue={selectedJob.remote}
+                  onChange={setRemote}
+                />
 
                 <div className="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2">
-                  <EmploymentTypeInput onChange={setEmploymentType} />
+                  <EmploymentTypeInput
+                    defaultValue={selectedJob.employmentType}
+                    onChange={setEmploymentType}
+                  />
 
                   <div className="flex flex-col">
                     <Label className="block mb-1 text-sm font-medium text-gray-700">
@@ -231,11 +228,11 @@ export default function CreateJobPostPage() {
 
                     <div className="flex space-x-4">
                       <MinSalaryInput
-                        value={salaryMin}
+                        defaultValue={selectedJob.salaryRange.min}
                         onChange={setSalaryMin}
                       />
                       <MaxSalaryInput
-                        value={salaryMax}
+                        defaultValue={selectedJob.salaryRange.max}
                         onChange={setSalaryMax}
                       />
                     </div>
@@ -244,24 +241,25 @@ export default function CreateJobPostPage() {
               </div>
 
               <JobDescriptionInput
-                value={description}
+                defaultValue={selectedJob.description}
                 onChange={setDescription}
               />
               <JobRequirementsInput
-                value={requirements}
+                defaultValue={selectedJob.requirements.join("")}
                 onChange={setRequirements}
               />
               <JobResponsibilitiesInput
-                value={responsibilities}
+                defaultValue={selectedJob.responsibilities.join("")}
                 onChange={setResponsibilities}
               />
               <JobBenefitsAndPerksInput
-                value={benefits}
+                defaultValue={selectedJob.benefits.join()}
                 onChange={setBenefits}
               />
               <SkillsAndKeywordsInput
                 tag={tag}
                 tags={tags}
+                defaultTags={selectedJob.tags}
                 setTags={setTags}
                 setTag={setTag}
               />
@@ -276,10 +274,10 @@ export default function CreateJobPostPage() {
                 {loading ? (
                   <button
                     disabled
-                    className="flex items-center px-4 py-2 space-x-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    <span className="">Loading</span>
-                    <Loader2 className="size-5 animate-spin" />
+                    Loading
+                    <Loader2 className="animate-spin" />
                   </button>
                 ) : (
                   <button
@@ -293,8 +291,8 @@ export default function CreateJobPostPage() {
               </div>
             </form>
           </div>
-
-          <AIAssistantPanel />
+          {/* If di pa complete company profile details tsaka to lalabas */}
+          {/* <AIAssistantPanel /> */}
         </div>
       </div>
     </div>

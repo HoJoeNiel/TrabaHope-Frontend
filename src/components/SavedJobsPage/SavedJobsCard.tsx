@@ -5,7 +5,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { LuBuilding } from "react-icons/lu";
 import { FiExternalLink } from "react-icons/fi";
 import { CiTrash } from "react-icons/ci";
-import { getDaysAgo } from "@/helpers";
+import { getRelativeTimeAgo } from "@/helpers";
 
 export default function SavedJobsCard({ job }: { job: ApplicantSideJob }) {
   const {
@@ -67,7 +67,7 @@ export default function SavedJobsCard({ job }: { job: ApplicantSideJob }) {
                     <span className="text-gray-700 text-sm">
                       Posted{" "}
                       {timestamps?.posted
-                        ? getDaysAgo(timestamps?.posted)
+                        ? getRelativeTimeAgo(timestamps?.posted)
                         : "N/A"}{" "}
                       days ago
                     </span>

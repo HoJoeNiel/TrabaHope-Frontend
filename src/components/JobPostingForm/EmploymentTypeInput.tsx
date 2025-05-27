@@ -6,27 +6,32 @@ import { SelectComponent } from "../SelectComponent";
 
 type EmploymentTypeInputProps = {
   onChange: (value: string) => void;
+  defaultValue?: string;
 };
 
-function EmploymentTypeInput({ onChange }: EmploymentTypeInputProps) {
+function EmploymentTypeInput({
+  onChange,
+  defaultValue,
+}: EmploymentTypeInputProps) {
   return (
     <div>
-      <Label className="block text-sm font-medium text-gray-700 mb-1">
+      <Label className="block mb-1 text-sm font-medium text-gray-700">
         Employment Type<span className="text-red-500">*</span>
       </Label>
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Briefcase className="h-5 w-5 text-gray-400" />
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <Briefcase className="w-5 h-5 text-gray-400" />
         </div>
         <SelectComponent
           className="pl-10 border border-gray-300"
-          options={Object.keys(EmploymentType).map((i) => i)}
+          options={Object.values(EmploymentType).map((i) => i)}
+          defaultValue={defaultValue}
           setFn={onChange}
         />
 
-        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
           <svg
-            className="h-5 w-5 text-gray-400"
+            className="w-5 h-5 text-gray-400"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"

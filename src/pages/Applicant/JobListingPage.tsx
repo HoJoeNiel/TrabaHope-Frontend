@@ -11,13 +11,13 @@ export default function JobListingPage() {
   const user = useLoggedInUserStore((state) => state.user);
   console.log(user);
   return (
-    <div className="min-w-screen min-h-screen bg-blue-50">
+    <div className="min-h-screen min-w-screen bg-blue-50">
       <ApplicantHeader />
       <main className="max-w-[1440px] mx-auto">
         <JobFilters />
-        <div className="flex space-x-12 mt-4">
+        <div className="flex mt-4 space-x-12">
           <JobList />
-          <div className="w-1/4 flex flex-col sticky top-2">
+          <div className="sticky flex flex-col w-1/4 top-2">
             <AIResumeMatchComponent />
             <ResumeTipsCard />
             <SavedJobsOverview />

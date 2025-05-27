@@ -19,18 +19,17 @@ type SidebarContextType = {
 
 const SidebarContext = createContext<SidebarContextType>({
   isExpanded: true,
-  activeTab: "Dashboard",
+  activeTab: "",
   setActiveTab: () => console.warn("No SidebarProvider found"),
 });
 
 export default function CompanySidebar({ children }: SidebarProps) {
-  console.log(children);
   const [isExpanded, setIsExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   return (
-    <aside className="sticky top-0 left-0 h-screen">
-      <nav className="h-full flex flex-col bg-white border-r border-r-blue-100 shadow-sm">
+    <aside className="sticky top-0 left-0 h-screen border-r bg-stone-50">
+      <nav className="flex flex-col h-full">
         <div
           className={`p-4 pb-2 flex  items-center overflow-hidden transition-all ${
             isExpanded ? "w-auto justify-between " : "w-auto justify-center"
@@ -41,11 +40,11 @@ export default function CompanySidebar({ children }: SidebarProps) {
               isExpanded ? "w-auto" : "hidden"
             }`}
           >
-            <div className="size-10 recruiter-gradient flex items-center justify-center rounded-xl">
-              <span className="text-white font-bold">T</span>
+            <div className="flex items-center justify-center size-10 recruiter-gradient rounded-xl">
+              <span className="font-bold text-white">T</span>
             </div>
             <div>
-              <span className="font-bold text-2xl text-blue-500">
+              <span className="text-2xl font-bold text-blue-500">
                 TrabaHope
               </span>
             </div>
@@ -64,14 +63,14 @@ export default function CompanySidebar({ children }: SidebarProps) {
         </SidebarContext.Provider>
 
         <div
-          className={`border-t border-t-blue-100 bg-blue-50 flex p-3 items-center ${
+          className={`border-t bg-stone-50 flex p-3 items-center ${
             isExpanded ? "justify-between" : "justify-center p-0 h-16"
           }`}
         >
           <img
             src="https://ui-avatars.com/api/?background=c7d2fe&color=3739a3&bold=true"
             alt="company profile picture"
-            className="size-10 rounded-full"
+            className="rounded-full size-10"
           />
           <div
             className={`flex justify-between items-center overflow-hidden transition-all ${
@@ -108,9 +107,7 @@ export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
         navigate(path);
       }}
       className={`
-        relative flex items-center py-2 px-3 my-1
-        font-medium rounded-md cursor-pointer
-        transition-all group
+        relative flex items-center py-2 px-3 my-1  rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
             ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
@@ -127,7 +124,7 @@ export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
         {text}
       </span>
       {alert && isExpanded && (
-        <div className="absolute right-2 w-2 h-2 rounded bg-indigo-400" />
+        <div className="absolute w-2 h-2 bg-indigo-400 rounded right-2" />
       )}
 
       {!isExpanded && (

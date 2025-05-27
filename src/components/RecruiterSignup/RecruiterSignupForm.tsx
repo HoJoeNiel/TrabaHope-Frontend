@@ -10,8 +10,8 @@ import { Form, Formik, FormikErrors } from "formik";
 import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
-import { doc, setDoc } from "firebase/firestore";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { doc, setDoc } from "firebase/firestore";
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",
@@ -60,54 +60,68 @@ export default function RecruiterSignupForm() {
       );
       const currentUser = result.user;
 
-      // Save sa firestore DB (temporary lang habang wala pa yung backend)
       const companyInfo: CompanyAuth = {
-        companyID: currentUser.uid,
+        id: currentUser.uid,
         name: values.companyName,
         email: values.companyEmail,
         contactNumber: values.phoneNumber,
         industry: values.industry,
         websiteURL: values.companyWebsite,
         role: "recruiter",
-        createdAt: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-        description: null,
-        photoURL: null,
-        specialties: null,
-        mission: null,
-        noOfEmployees: null,
-        location: null,
+        createdAt: new Date().toISOString(),
+        description: "We are a leading provider of tech solutions.",
+        photoURL: "https://example.com/logo.png",
+        specialties: ["Software Development", "AI", "Cloud Services"],
+        noOfEmployees: 10,
+        location: "Divisoria",
+        yearFounded: 1909,
       };
 
+      // BACKEND AUTH CONNECTION
+      // const response = await fetch(
+      //   "https://917032dc9d14c4aac954a6a3837f27e9.serveo.net/recruiter/Sign-Up",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(companyInfo),
+      //   }
+      // );
+
+      // if (!response.ok) {
+      //   throw new Error(
+      //     `Failed to save company info. Status: ${response.status}`
+      //   );
+      // }
+
+      // FIREBASE TEMPORARY
       const docRef = doc(db, "users", currentUser.uid);
       await setDoc(docRef, companyInfo);
       setUser(companyInfo);
-      console.log("Saved to Firestore");
 
+      setUser(companyInfo);
       setLoading(false);
-      // const token = await user.getIdToken();
       navigate("/recruiter/create-new-job", { replace: true });
     } catch (error) {
-      setLoading(false);
       let errorMessage = "Something went wrong: ";
       if (error instanceof Error) {
         errorMessage += error.message;
         setErrors({ companyEmail: error.message });
       }
       throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen bg-white">
       <div className="px-24 mt-20 mb-12 w-full max-w-[720px]">
-        <h2 className="text-3xl max-lg:text-2xl font-bold text-gray-800 mb-2">
+        <h2 className="mb-2 text-3xl font-bold text-gray-800 max-lg:text-2xl">
           Create Recruiter Account
         </h2>
-        <p className="text-gray-600 mb-8 max-lg:text-sm">
+        <p className="mb-8 text-gray-600 max-lg:text-sm">
           Join thousands of recruiters using our AI-powered platform
         </p>
 
@@ -164,13 +178,13 @@ export default function RecruiterSignupForm() {
                 name="confirmPassword"
               />
               <FormField
-                type="number"
+                type="text"
                 name="phoneNumber"
                 id="phoneNumber"
                 label="Phone Number"
               />
 
-              <div className="flex items-center space-x-2 mt-4 mb-1">
+              <div className="flex items-center mt-4 mb-1 space-x-2">
                 <Checkbox
                   id="terms"
                   required
@@ -189,7 +203,7 @@ export default function RecruiterSignupForm() {
               {isLoading && (
                 <Button
                   disabled
-                  className="w-full py-6 my-6 text-lg max-lg:text-base bg-indigo-700"
+                  className="w-full py-6 my-6 text-lg bg-indigo-700 max-lg:text-base"
                 >
                   <Loader2 className="animate-spin" />
                   Please wait
@@ -198,7 +212,7 @@ export default function RecruiterSignupForm() {
               {!isLoading && (
                 <Button
                   type="submit"
-                  className="w-full py-6 my-6 text-lg max-lg:text-base bg-indigo-500 hover:bg-indigo-700"
+                  className="w-full py-6 my-6 text-lg bg-indigo-500 max-lg:text-base hover:bg-indigo-700"
                 >
                   Sign Up as Recruiter
                 </Button>
@@ -207,15 +221,15 @@ export default function RecruiterSignupForm() {
           )}
         </Formik>
 
-        <p className="text-center mt-6 text-gray-600">
+        <p className="mt-6 text-center text-gray-600">
           Already have an account?
-          <a href="#" className="text-blue-600 font-medium hover:underline">
+          <a href="#" className="font-medium text-blue-600 hover:underline">
             {" "}
             Sign in
           </a>
         </p>
 
-        <div className="mt-12 text-center text-gray-500 text-sm">
+        <div className="mt-12 text-sm text-center text-gray-500">
           © 2025 TrabaHope. All rights reserved.
         </div>
       </div>

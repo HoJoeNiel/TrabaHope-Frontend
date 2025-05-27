@@ -10,7 +10,7 @@
 
 .main-gradient-bg {
   /* background: linear-gradient(90deg, #6096b4 0%, #93bfcf 100%); */
-  @apply bg-gradient-to-t from-blue-400 to-blue-500;
+  @apply bg-gradient-to-t from-blue-300 to-blue-400;
 }
 
 .applicant-gradient {
@@ -49,6 +49,25 @@
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #ccc transparent; /* For Firefox */
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
 }
 
 @layer base {
