@@ -1,5 +1,11 @@
-import { auth, db } from "@/firebase";
-import { AuthError } from "firebase/auth";
+import {
+  auth,
+  db,
+  facebookProvider,
+  githubProvider,
+  googleProvider,
+} from "@/firebase";
+import { AuthError, deleteUser, signInWithPopup } from "firebase/auth";
 import { mapAuthError } from "@/helpers/authHelpers";
 import {
   ApplicantAuth,
@@ -14,6 +20,15 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { verifyTokenWithBackend } from "./api";
+
+export const socialAuthProviders = {
+  google: googleProvider,
+  facebook: facebookProvider,
+  github: githubProvider,
+} as const;
+
+type SocialProvider = keyof typeof socialAuthProviders;
 
 // For local development, for testing lang din
 export const createCompanyAccountWithFirebase = async (
@@ -94,14 +109,16 @@ export const createCompanyAccountWithBackend = async (
 export const createApplicantAccountWithFirebase = async (
   values: ApplicantCredentials
 ): Promise<ApplicantAuth> => {
-  const user = await createUserWithEmailAndPassword(
+  const { user } = await createUserWithEmailAndPassword(
     auth,
     values.email,
     values.password
   );
   const applicantInfo: ApplicantAuth = {
-    id: user.user.uid,
-    name: `${values.firstName} ${values.lastName}`,
+    id: user.uid,
+    name: user.displayName
+      ? user.displayName
+      : `${values.firstName} ${values.lastName}`,
     email: values.email,
     location: null,
     contactNumber: String(values.phoneNumber),
@@ -115,7 +132,7 @@ export const createApplicantAccountWithFirebase = async (
     interests: null,
     role: "applicant",
   };
-  await setDoc(doc(db, "users", user.user.uid), applicantInfo);
+  await setDoc(doc(db, "users", user.uid), applicantInfo);
   return applicantInfo;
 };
 
@@ -123,14 +140,16 @@ export const createApplicantAccountWithFirebase = async (
 export const createApplicantAccountWithBackend = async (
   values: ApplicantCredentials
 ): Promise<ApplicantAuth> => {
-  const user = await createUserWithEmailAndPassword(
+  const { user } = await createUserWithEmailAndPassword(
     auth,
     values.email,
     values.password
   );
   const applicantInfo: ApplicantAuth = {
-    id: user.user.uid,
-    name: `${values.firstName} ${values.lastName}`,
+    id: user.uid,
+    name: user.displayName
+      ? user.displayName
+      : `${values.firstName} ${values.lastName}`,
     email: values.email,
     location: null,
     contactNumber: String(values.phoneNumber),
@@ -194,4 +213,74 @@ export const useAuth = () => {
   };
 
   return { login };
+};
+
+export const loginWithSocial = async (
+  provider: SocialProvider
+): Promise<LoginResult> => {
+  try {
+    const result = await signInWithPopup(auth, socialAuthProviders[provider]);
+    const token = await result.user.getIdToken();
+
+    return {
+      user: result.user,
+      token,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw mapAuthError(error as AuthError);
+    }
+    throw new Error("Social login failed");
+  }
+};
+
+export const registerWithSocial = async (
+  provider: SocialProvider
+): Promise<ApplicantAuth | CompanyAuth> => {
+  try {
+    const { user, token } = await loginWithSocial(provider);
+
+    const userData: ApplicantAuth = {
+      id: user.uid,
+      name: user.displayName ?? "Default name", // prolly not a gud solution. Will fix this later
+      email: user.email ?? "defaultemail@gmail.com", //
+      location: null,
+      contactNumber: user.phoneNumber,
+      photoUrl: null,
+      resumeFile: null,
+      jobTitle: null,
+      description: null,
+      createdAt: new Date().toISOString(),
+      portfolioUrl: null,
+      preferredEmploymentType: null,
+      role: "applicant",
+      interests: null,
+    };
+
+    if (import.meta.env.VITE_USE_FIREBASE === "true") {
+      await setDoc(doc(db, "users", user.uid), userData);
+    } else {
+      await verifyTokenWithBackend(token); // mali to, dapat service sya na nagpopost nung user data sa backend. Pag nag success, irereturn lang yung userData para mastore na sa zustand.
+    }
+
+    return userData;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw mapAuthError(error as AuthError);
+    }
+    throw new Error("Social sign up failed.");
+  }
+};
+
+export const deleteCurrentUser = async () => {
+  const user = auth.currentUser;
+
+  if (!user) throw new Error("No authenticated user found.");
+
+  try {
+    await deleteUser(user);
+    console.log("User deleted because user data cannot be found.");
+  } catch (error) {
+    console.error(error);
+  }
 };

@@ -48,15 +48,15 @@ export default function EmailLoginForm() {
         userData = await verifyTokenWithBackend(token);
       }
 
-      if (userData) {
-        setUser(userData);
-        navigate(
-          userData?.role === "applicant"
-            ? "/applicant/job-listing"
-            : "/recruiter/create-new-job",
-          { replace: true }
-        );
-      }
+      if (!userData) throw new Error("User data not found.");
+
+      setUser(userData);
+      navigate(
+        userData?.role === "applicant"
+          ? "/applicant/job-listing"
+          : "/recruiter/create-new-job",
+        { replace: true }
+      );
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "An unexpected error occurred"
