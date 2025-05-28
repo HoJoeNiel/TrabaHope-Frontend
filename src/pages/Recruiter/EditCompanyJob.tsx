@@ -245,15 +245,15 @@ export default function EditCompanyJob() {
                 onChange={setDescription}
               />
               <JobRequirementsInput
-                defaultValue={selectedJob.requirements.join("")}
+                defaultValue={selectedJob.requirements.join("\n")}
                 onChange={setRequirements}
               />
               <JobResponsibilitiesInput
-                defaultValue={selectedJob.responsibilities.join("")}
+                defaultValue={selectedJob.responsibilities.join("\n")}
                 onChange={setResponsibilities}
               />
               <JobBenefitsAndPerksInput
-                defaultValue={selectedJob.benefits.join()}
+                defaultValue={selectedJob.benefits.join("\n")}
                 onChange={setBenefits}
               />
               <SkillsAndKeywordsInput

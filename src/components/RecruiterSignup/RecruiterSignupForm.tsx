@@ -69,32 +69,32 @@ export default function RecruiterSignupForm() {
         websiteURL: values.companyWebsite,
         role: "recruiter",
         createdAt: new Date().toISOString(),
-        description: "We are a leading provider of tech solutions.",
-        photoURL: "https://example.com/logo.png",
-        specialties: ["Software Development", "AI", "Cloud Services"],
-        noOfEmployees: 10,
-        location: "Divisoria",
-        yearFounded: 1909,
-        mission: "djawjdopawdjwopajdaw",
+        description: null,
+        photoURL: null,
+        specialties: null,
+        noOfEmployees: 0,
+        location: null,
+        yearFounded: null,
+        mission: null,
       };
 
       // BACKEND AUTH CONNECTION
-      const response = await fetch(
-        "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/recruiter/sign-up",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(companyInfo),
-        }
-      );
+      // const response = await fetch(
+      //   "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/recruiter/sign-up",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(companyInfo),
+      //   }
+      // );
 
-      if (!response.ok) {
-        throw new Error(
-          `Failed to save company info. Status: ${response.status}`
-        );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     `Failed to save company info. Status: ${response.status}`
+      //   );
+      // }
 
       // FIREBASE TEMPORARY
       const docRef = doc(db, "users", currentUser.uid);

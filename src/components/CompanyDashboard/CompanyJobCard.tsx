@@ -133,11 +133,11 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
         </p>
       </div>
 
-      <div className="flex items-center justify-center mx-auto px-4 my-3 space-x-2 overflow-x-scroll max-w-[95%] no-scrollbar">
+      <div className="flex items-center justify-start mx-auto px-4 my-3 gap-2 overflow-x-auto max-w-[95%] no-scrollbar whitespace-nowrap">
         {tags.map((tag) => (
           <span
             key={tag}
-            className="block min-w-[100px] px-4 text-sm text-center text-gray-700 bg-gray-100 rounded-sm hover:bg-gray-200"
+            className="inline-block px-4 py-1 text-sm text-gray-700 bg-gray-100 rounded-sm hover:bg-gray-200"
           >
             {tag}
           </span>

@@ -19,6 +19,7 @@ import CompanyProfile from "./pages/Recruiter/CompanyProfile";
 import CompanySettings from "./pages/Recruiter/CompanySettings";
 import Interviews from "./pages/Recruiter/Interviews";
 import EditCompanyJob from "./pages/Recruiter/EditCompanyJob";
+import ViewCompanyJob from "./pages/Recruiter/ViewCompanyJob";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <CompanyDashboard /> },
       { path: "create-new-job", element: <JobPostingForm /> },
       { path: "job-listings", element: <CompanyJobListing /> },
-      { path: "job/:jobId", element: <p>Job</p> },
+      { path: "job/:jobId", element: <ViewCompanyJob /> },
       { path: "applicants", element: <JobApplicantsPage /> },
       { path: "edit-job/:jobId", element: <EditCompanyJob /> },
       { path: "profile", element: <CompanyProfile /> },

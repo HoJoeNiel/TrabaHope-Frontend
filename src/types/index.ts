@@ -107,7 +107,7 @@ export interface Job {
   remote: boolean;
   tags: string[];
   createdAt: string;
-}
+} 
 
 export interface CompanyPostedJob {
   id: string;

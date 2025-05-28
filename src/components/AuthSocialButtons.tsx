@@ -73,7 +73,7 @@ export default function AuthSocialButtons({ action }: { action: Action }) {
           email: currentUser.email,
           location: null,
           contactNumber: currentUser.phoneNumber,
-          photoURL: null,
+          photoUrl: null,
           resumeFile: null,
           jobTitle: null,
           description: null,
@@ -82,9 +82,10 @@ export default function AuthSocialButtons({ action }: { action: Action }) {
             month: "long",
             day: "numeric",
           }),
-          portfolioURL: currentUser.photoURL,
+          portfolioUrl: currentUser.photoURL,
           preferredEmploymentType: null,
           role: "applicant",
+          interests: null,
         };
 
         await setDoc(doc(db, "users", currentUser.uid), user);

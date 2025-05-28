@@ -131,7 +131,7 @@ export const formatDate = (date: string | Date) => {
 
 export function parseMultilineInput(input: string): string[] {
   return input
-    .split("\n")
+    .split(/\r?\n|\r/) // handles \n, \r\n, and \r
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 }
