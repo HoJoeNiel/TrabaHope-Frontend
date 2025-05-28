@@ -2,16 +2,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
 
-import { CompanyAuth, CompanyCredentials } from "@/types";
+import { CompanyCredentials } from "@/types";
 import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { auth, db } from "@/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Loader2 } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { doc, setDoc } from "firebase/firestore";
+import { createCompanyAccountWithFirebase } from "@/services/auth";
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",
@@ -45,6 +43,7 @@ export default function RecruiterSignupForm() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const setUser = useLoggedInUserStore((state) => state.setUser);
+
   const handleAccountCreation = async (
     values: CompanyCredentials,
     {
@@ -53,64 +52,15 @@ export default function RecruiterSignupForm() {
   ) => {
     setLoading(true);
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        values.companyEmail,
-        values.password
-      );
-      const currentUser = result.user;
-
-      const companyInfo: CompanyAuth = {
-        id: currentUser.uid,
-        name: values.companyName,
-        email: values.companyEmail,
-        contactNumber: String(values.phoneNumber),
-        industry: values.industry,
-        websiteURL: values.companyWebsite,
-        role: "recruiter",
-        createdAt: new Date().toISOString(),
-        description: null,
-        photoURL: null,
-        specialties: null,
-        noOfEmployees: 0,
-        location: null,
-        yearFounded: null,
-        mission: null,
-      };
-
-      // BACKEND AUTH CONNECTION
-      // const response = await fetch(
-      //   "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/recruiter/sign-up",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(companyInfo),
-      //   }
-      // );
-
-      // if (!response.ok) {
-      //   throw new Error(
-      //     `Failed to save company info. Status: ${response.status}`
-      //   );
-      // }
-
-      // FIREBASE TEMPORARY
-      const docRef = doc(db, "users", currentUser.uid);
-      await setDoc(docRef, companyInfo);
-      setUser(companyInfo);
+      const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
+      // const companyInfo = createCompanyAccountWithBackend(values); // for backend
 
       setUser(companyInfo);
-      setLoading(false);
       navigate("/recruiter/create-new-job", { replace: true });
     } catch (error) {
-      let errorMessage = "Something went wrong: ";
-      if (error instanceof Error) {
-        errorMessage += error.message;
-        setErrors({ companyEmail: error.message });
-      }
-      throw new Error(errorMessage);
+      const errorMessage =
+        error instanceof Error ? error.message : "Account creation failed";
+      setErrors({ companyEmail: errorMessage });
     } finally {
       setLoading(false);
     }
@@ -157,7 +107,7 @@ export default function RecruiterSignupForm() {
                 name="companyWebsite"
                 id="companyWebsite"
                 label="Company Website"
-                placeholder="https//yourcompany.com"
+                placeholder="https://yourcompany.com"
               />
               <FormField
                 type="email"
@@ -201,23 +151,20 @@ export default function RecruiterSignupForm() {
                 </label>
               </div>
 
-              {isLoading && (
-                <Button
-                  disabled
-                  className="w-full py-6 my-6 text-lg bg-indigo-700 max-lg:text-base"
-                >
-                  <Loader2 className="animate-spin" />
-                  Please wait
-                </Button>
-              )}
-              {!isLoading && (
-                <Button
-                  type="submit"
-                  className="w-full py-6 my-6 text-lg bg-indigo-500 max-lg:text-base hover:bg-indigo-700"
-                >
-                  Sign Up as Recruiter
-                </Button>
-              )}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-6 my-6 text-lg bg-indigo-500 max-lg:text-base hover:bg-indigo-700"
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="animate-spin" />
+                    <span>Please wait</span>
+                  </div>
+                ) : (
+                  "Sign Up as Recruiter"
+                )}
+              </Button>
             </Form>
           )}
         </Formik>

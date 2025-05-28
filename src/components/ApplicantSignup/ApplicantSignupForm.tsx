@@ -6,16 +6,14 @@ import AuthSocialButtons from "@/components/AuthSocialButtons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/firebase";
-import { doc, setDoc } from "firebase/firestore";
 
-import { ApplicantAuth, UserCredentials } from "@/types";
+import { ApplicantCredentials } from "@/types";
 import { newApplicantAccountSchema } from "@/schema";
 import { Loader2 } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { createApplicantAccountWithFirebase } from "@/services/auth";
 
-const initialValues: UserCredentials = {
+const initialValues: ApplicantCredentials = {
   firstName: "",
   lastName: "",
   email: "",
@@ -30,70 +28,22 @@ export default function ApplicantSignupForm() {
   const navigate = useNavigate();
 
   const handleAccountCreation = async (
-    values: UserCredentials,
+    values: ApplicantCredentials,
     {
       setErrors,
-    }: { setErrors: (errors: FormikErrors<UserCredentials>) => void }
+    }: { setErrors: (errors: FormikErrors<ApplicantCredentials>) => void }
   ) => {
     setLoading(true);
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
-      const currentUser = result.user;
+      // const applicantInfo = await createApplicantAccountWithBackend(values); // for backend
+      const applicantInfo = await createApplicantAccountWithFirebase(values); // for testing
 
-      const user: ApplicantAuth = {
-        id: currentUser.uid,
-        name: `${values.firstName} ${values.lastName}`,
-        email: values.email,
-        location: null,
-        contactNumber: String(values.phoneNumber),
-        photoUrl: null,
-        resumeFile: null,
-        jobTitle: null,
-        description: null,
-        createdAt: new Date().toISOString(),
-        portfolioUrl: null,
-        preferredEmploymentType: null,
-        interests: null,
-        role: "applicant",
-      };
-
-      // BACKEND AUTH CONNECTION
-      const response = await fetch(
-        "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/applicant/sign-up",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to save applicant info. Status ${response.status}`
-        );
-      }
-
-      // FIREBASE TEMPORARY
-      const docRef = doc(db, "users", currentUser.uid);
-      await setDoc(docRef, user);
-      // setUser(user);
-
-      setUser(user);
-      setLoading(false);
+      setUser(applicantInfo);
       navigate("/applicant/job-listing", { replace: true });
     } catch (error) {
-      let errorMessage = "Something went wrong: ";
-      if (error instanceof Error) {
-        errorMessage += error.message;
-        setErrors({ email: error.message });
-      }
-      throw new Error(errorMessage);
+      const errorMessage =
+        error instanceof Error ? error.message : "Account creation failed";
+      setErrors({ email: errorMessage });
     } finally {
       setLoading(false);
     }
@@ -174,23 +124,20 @@ export default function ApplicantSignupForm() {
                 </label>
               </div>
 
-              {isLoading && (
-                <Button
-                  disabled
-                  className="w-full py-6 my-6 text-lg bg-teal-700 max-lg:text-base"
-                >
-                  <Loader2 className="animate-spin" />
-                  Please wait
-                </Button>
-              )}
-              {!isLoading && (
-                <Button
-                  type="submit"
-                  className="w-full py-6 my-6 text-lg bg-teal-500 max-lg:text-base hover:bg-teal-700"
-                >
-                  Sign Up as Applicant
-                </Button>
-              )}
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="w-full py-6 my-6 text-lg bg-teal-500 max-lg:text-base hover:bg-teal-700"
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="animate-spin" />
+                    <span>Please wait</span>
+                  </div>
+                ) : (
+                  "Sign Up as Applicant"
+                )}
+              </Button>
             </Form>
           )}
         </Formik>

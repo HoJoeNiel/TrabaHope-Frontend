@@ -1,5 +1,5 @@
 // applicant's creds
-export interface UserCredentials {
+export interface ApplicantCredentials {
   firstName: string;
   lastName: string;
   email: string;
@@ -107,7 +107,7 @@ export interface Job {
   remote: boolean;
   tags: string[];
   createdAt: string;
-} 
+}
 
 export interface CompanyPostedJob {
   id: string;
