@@ -1,20 +1,25 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { auth } from "@/firebase";
+import { Button } from "../ui/button";
 import { fetchUserDataFromFirestore } from "@/helpers";
+import { verifyTokenWithBackend } from "@/services/api";
+import { useAuth } from "@/services/auth";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 export default function EmailLoginForm() {
-  const navigate = useNavigate();
   const setUser = useLoggedInUserStore((state) => state.setUser);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,51 +28,41 @@ export default function EmailLoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const { email, password } = credentials;
+    setLoading(true);
+    setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { email, password } = credentials;
 
-      const currentUser = auth.currentUser;
-      if (!currentUser) throw new Error("No authenticated user found.");
-      const token = await currentUser.getIdToken();
-
-      const response = await fetch(
-        "https://b1cbe663a89f8ce1f7baa8bec218125a.serveo.net/sign-in",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ token }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to save applicant info. Status ${response.status}`
-        );
+      if (!email.trim() || !password.trim()) {
+        setError("Email and password are required.");
+        return;
       }
 
-      const userData = await fetchUserDataFromFirestore(currentUser.uid);
+      const { token, user } = await login(email, password);
 
-      if (userData) {
-        setUser({ ...userData });
+      let userData;
+      if (import.meta.env.VITE_USE_FIREBASE === "true") {
+        userData = await fetchUserDataFromFirestore(user.uid);
+      } else {
+        userData = await verifyTokenWithBackend(token);
       }
 
-      const redirectPath =
+      if (!userData) throw new Error("User data not found.");
+
+      setUser(userData);
+      navigate(
         userData?.role === "applicant"
           ? "/applicant/job-listing"
-          : "/recruiter/create-new-job";
-      navigate(redirectPath, { replace: true });
-    } catch (error: unknown) {
-      let errorMessage = "Something went wrong: ";
-      if (error instanceof Error) {
-        errorMessage += error.message;
-      }
-      setError(errorMessage);
+          : "/recruiter/create-new-job",
+        { replace: true }
+      );
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,6 +75,7 @@ export default function EmailLoginForm() {
           id="email-address"
           name="email"
           placeholder="Email Address"
+          required
           value={credentials.email}
           onChange={handleInputChange}
         />
@@ -93,6 +89,7 @@ export default function EmailLoginForm() {
           name="password"
           id="password"
           placeholder="Password"
+          required
           value={credentials.password}
           onChange={handleInputChange}
         />
@@ -103,12 +100,20 @@ export default function EmailLoginForm() {
         <label htmlFor="remember-me">Remember me</label>
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="w-full py-2 text-lg text-center text-white bg-blue-500 rounded-lg shadow"
+        className="w-full py-2 text-lg text-center text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600"
+        disabled={loading}
       >
-        Log in
-      </button>
+        {loading ? (
+          <div className="flex items-center space-x-2">
+            <Loader2 className="animate-spin" />
+            <span>Please wait</span>
+          </div>
+        ) : (
+          "Log in"
+        )}
+      </Button>
     </form>
   );
 }

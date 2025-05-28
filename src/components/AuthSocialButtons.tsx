@@ -1,18 +1,11 @@
 import ThirdPartyAuthButton from "@/components/ThirdPartyAuthButton";
-import {
-  auth,
-  db,
-  facebookProvider,
-  githubProvider,
-  googleProvider,
-} from "@/firebase";
+
 import { fetchUserDataFromFirestore } from "@/helpers";
 import { handleAuthError } from "@/helpers/authHelpers";
+import { verifyTokenWithBackend } from "@/services/api";
+import { loginWithSocial, registerWithSocial } from "@/services/auth";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { ApplicantAuth } from "@/types";
-import { signInWithPopup } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
@@ -20,25 +13,28 @@ import { FaGithub } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 type Action = "signup" | "login";
-type Provider =
-  | typeof googleProvider
-  | typeof facebookProvider
-  | typeof githubProvider;
+type Provider = "google" | "facebook" | "github";
 
-const PROVIDERS = [
+type ProviderItem = {
+  icon: ReactNode;
+  provider: Provider;
+  label: string;
+};
+
+const PROVIDERS: ProviderItem[] = [
   {
     icon: <FaGoogle className="text-red-600 size-5" />,
-    provider: googleProvider,
+    provider: "google",
     label: "Google",
   },
   {
     icon: <FaFacebook className="text-[#1877F2] size-5" />,
-    provider: facebookProvider,
+    provider: "facebook",
     label: "Facebook",
   },
   {
     icon: <FaGithub className="text-black size-5" />,
-    provider: githubProvider,
+    provider: "github",
     label: "Github",
   },
 ];
@@ -50,47 +46,36 @@ export default function AuthSocialButtons({ action }: { action: Action }) {
 
   const authenticate = async (provider: Provider) => {
     setLoading(true);
+    let userData;
     try {
-      const result = await signInWithPopup(auth, provider);
-      const currentUser = result.user;
-
-      if (!currentUser || !currentUser.email || !currentUser.displayName) {
-        throw new Error("Invalid user data.");
+      if (action === "signup") {
+        userData = await registerWithSocial(provider);
       }
 
       if (action === "login") {
-        const user = await fetchUserDataFromFirestore(currentUser.uid);
-        if (user) {
-          setUser(user);
-          navigate("/applicant/job-listing", { replace: true });
-        }
+        const { token, user } = await loginWithSocial(provider);
+
+        // PROBLEM: naglogin yung user pero wala pa syang existing account, magssucess yung login pero wala yung userData, dahil dito, hindi sya tatagos.
+        // Solution na naiisip: suggest sa backend na kapag ganito yung case, gawan nalang nila ng default values yung data.
+        // kaso yung mga email pala pano yun hahahaha
+        // since nagagawa yung account bago macheck if existing na yung account sa db, pag nag fail nalang yung last step idedelete nalang yung account na nacreate.
+        userData =
+          import.meta.env.VITE_USE_FIREBASE === "true"
+            ? (userData = await fetchUserDataFromFirestore(user.uid))
+            : (userData = await verifyTokenWithBackend(token));
       }
 
-      if (action === "signup") {
-        const user: ApplicantAuth = {
-          id: currentUser.uid,
-          name: currentUser.displayName,
-          email: currentUser.email,
-          location: null,
-          contactNumber: currentUser.phoneNumber,
-          photoUrl: null,
-          resumeFile: null,
-          jobTitle: null,
-          description: null,
-          createdAt: new Date().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }),
-          portfolioUrl: currentUser.photoURL,
-          preferredEmploymentType: null,
-          role: "applicant",
-          interests: null,
-        };
-
-        await setDoc(doc(db, "users", currentUser.uid), user);
-        setUser(user);
-        navigate("/applicant/job-listing", { replace: true });
+      if (userData) {
+        setUser(userData);
+        navigate(
+          userData?.role === "applicant"
+            ? "/applicant/job-listing"
+            : "/recruiter/create-new-job",
+          { replace: true }
+        );
+      } else {
+        // Hindi rin pala to safe kasi kung mag falsy yung userData for some reason, magrrun tong else block at madedelete yung account na yun. Kung sakali, ako ay fucked. Comment nalang muna to tapos isip solution next time.
+        // deleteCurrentUser();
       }
     } catch (error) {
       handleAuthError(error);
