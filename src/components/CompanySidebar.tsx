@@ -1,11 +1,13 @@
-import { PropsWithChildren, ReactNode, useContext, useState } from "react";
+import { PropsWithChildren, useContext, useEffect, useState } from "react";
 import { ChevronRight, ChevronLeft, LogOut } from "lucide-react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { isRecruiter } from "@/helpers";
 
 type SidebarProps = PropsWithChildren;
 type SidebarItemProps = {
-  icon: ReactNode;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   text: string;
   active?: boolean;
   alert?: boolean;
@@ -26,9 +28,39 @@ const SidebarContext = createContext<SidebarContextType>({
 export default function CompanySidebar({ children }: SidebarProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const company = useLoggedInUserStore((state) => state.user);
+
+  if (!company) throw new Error("There's no authenticated user.");
+
+  if (!isRecruiter(company)) throw new Error("User is not a recruiter.");
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        if (window.innerWidth < 1280) {
+          setIsExpanded(false);
+        }
+      }, 1000);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    if (window.innerWidth < 1280) {
+      setIsExpanded(false);
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   return (
-    <aside className="sticky top-0 left-0 h-screen border-r bg-stone-50">
+    <aside className="sticky top-0 left-0 h-screen bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0">
       <nav className="flex flex-col h-full">
         <div
           className={`p-4 pb-2 flex  items-center overflow-hidden transition-all ${
@@ -62,40 +94,54 @@ export default function CompanySidebar({ children }: SidebarProps) {
           </ul>
         </SidebarContext.Provider>
 
+        {/* start ng profile sidebar section */}
         <div
           className={`border-t bg-stone-50 flex p-3 items-center ${
-            isExpanded ? "justify-between" : "justify-center p-0 h-16"
+            isExpanded && "justify-between"
           }`}
         >
-          <img
-            src="https://ui-avatars.com/api/?background=c7d2fe&color=3739a3&bold=true"
-            alt="company profile picture"
-            className="rounded-full size-10"
-          />
+          <div className="flex items-center justify-center overflow-hidden bg-black rounded-full size-10">
+            {company.photoURL ? (
+              <img
+                src={company.photoURL}
+                alt="company profile picture"
+                className="rounded-full size-10"
+              />
+            ) : (
+              <span className="text-xl font-semibold text-white">
+                {company.name
+                  .split(" ")
+                  .map((word) => word[0]?.toUpperCase())
+                  .join("")}
+              </span>
+            )}
+          </div>
           <div
             className={`flex justify-between items-center overflow-hidden transition-all ${
-              isExpanded ? "w-auto ml-3" : "w-0"
+              isExpanded ? "flex-1 ml-3" : "w-0"
             }`}
           >
             <div>
               {/* Company name */}
-              <h4 className="font-semibold text-gray-800">
-                National University
-              </h4>
+              <h4 className="font-semibold text-gray-800">{company.name}</h4>
               {/* Company email */}
-              <span className="text-xs text-gray-600">
-                national-university@gmail.com
-              </span>
+              <span className="text-xs text-gray-600">{company.email}</span>
             </div>
           </div>
           {isExpanded && <LogOut size={20} />}
         </div>
+        {/* end ng profile section */}
       </nav>
     </aside>
   );
 }
 
-export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
+export function SidebarItem({
+  icon: Icon,
+  text,
+  alert,
+  path,
+}: SidebarItemProps) {
   const { isExpanded, activeTab, setActiveTab } = useContext(SidebarContext);
   const isActive = activeTab === text;
   const navigate = useNavigate();
@@ -107,15 +153,17 @@ export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
         navigate(path);
       }}
       className={`
-        relative flex items-center py-2 px-3 my-1  rounded-md cursor-pointer h-[42px] transition-all group
+        relative flex items-center py-2 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
-            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-            : "hover:bg-indigo-50 text-gray-600"
+            ? "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200"
+            : "hover:bg-fuchsia-50 text-gray-600 border-transparent"
         }
     `}
     >
-      {icon}
+      <Icon
+        className={`size-5 ${isActive ? "text-fuchsia-600" : "text-gray-400"}`}
+      />
       <span
         className={`overflow-hidden transition-all ${
           isExpanded ? "w-52 ml-3" : "w-0"
@@ -123,13 +171,14 @@ export function SidebarItem({ icon, text, alert, path }: SidebarItemProps) {
       >
         {text}
       </span>
+      {/* Palitan to ng number of something */}
       {alert && isExpanded && (
-        <div className="absolute w-2 h-2 bg-indigo-400 rounded right-2" />
+        <div className="absolute w-2 h-2-fuchsia bg-cyan-400 right-2" />
       )}
 
       {!isExpanded && (
         <div
-          className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+          className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-fuchsia-100 text-fuchsia-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
         >
           {text}
         </div>
