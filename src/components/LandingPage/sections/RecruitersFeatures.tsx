@@ -7,16 +7,16 @@ import { useNavigate } from "react-router-dom";
 export default function RecruitersFeatures() {
   const navigate = useNavigate();
   return (
-    <section className="w-full bg-indigo-500/20 h-[600px] py-12">
+    <section className="w-full bg-fuchsia-100 h-[600px] py-12">
       <div className="max-w-[1440px] mx-auto grid grid-cols-2">
         <div className="flex ">
           <img src={peopleSearch} alt="Business man" className="w-[430px]" />
         </div>
         <div>
-          <h1 className="text-3xl mt-1 font-extrabold text-gray-900">
+          <h1 className="mt-1 text-3xl font-extrabold text-gray-900">
             For Recruiters
           </h1>
-          <p className="mt-3 mb-8 mx-auto text-xl text-gray-500">
+          <p className="mx-auto mt-3 mb-8 text-xl text-gray-500">
             Find the perfect candidates and streamline your hiring process with
             TrabaHope.
           </p>
@@ -26,12 +26,12 @@ export default function RecruitersFeatures() {
               icon={icon}
               feature={feature}
               description={description}
-              className="recruiter-gradient"
+              className="bg-fuchsia-500"
             />
           ))}
           <button
             onClick={() => navigate("/signup/recruiter")}
-            className="recruiter-gradient text-white font-bold px-4 py-2 rounded-lg mt-6 transition-transform duration-300 hover:scale-105"
+            className="px-4 py-2 mt-6 font-bold text-white transition-transform duration-300 rounded-lg bg-fuchsia-500 hover:scale-105"
           >
             Sign up as Recruiter
           </button>

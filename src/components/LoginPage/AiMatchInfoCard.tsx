@@ -2,8 +2,8 @@ import { GoGraph } from "react-icons/go";
 
 export default function AiMatchInfoCard() {
   return (
-    <div className="bg-gradient-to-t from-blue-500 to-blue-700 rounded-2xl p-8 shadow-xl text-white">
-      <h3 className="text-xl font-bold mb-4">
+    <div className="p-8 text-white shadow-xl bg-gradient-to-br from-cyan-600 to-cyan-500 rounded-2xl">
+      <h3 className="mb-4 text-xl font-bold">
         Smart job matching powered by AI
       </h3>
       <p className="mb-6">
@@ -11,15 +11,15 @@ export default function AiMatchInfoCard() {
         and experience.
       </p>
 
-      <div className="bg-white/10 border border-white/20 p-4 rounded-lg backdrop-blur-sm">
+      <div className="p-4 border rounded-lg bg-white/10 border-white/20 backdrop-blur-sm">
         <div className="flex items-center mb-3">
-          <div className="h-8 w-8 bg-white/20 shadow rounded-full flex items-center justify-center">
+          <div className="flex items-center justify-center w-8 h-8 rounded-full shadow bg-white/20">
             <GoGraph className="text-white" />
           </div>
           <div className="ml-3 text-sm font-medium">Resume Match Score</div>
         </div>
 
-        <div className="w-full bg-white/20 rounded-full h-3 mb-3">
+        <div className="w-full h-3 mb-3 rounded-full bg-white/20">
           <div className="bg-green-400 h-3 w-[85%] rounded-full"></div>
         </div>
 

@@ -1,5 +1,3 @@
-import BottomWave from "@/components/LoginPage/BottomWave";
-import TopWave from "@/components/LoginPage/TopWave";
 import AIRecommendedCard from "@/components/LoginPage/AIRecommendedCard";
 import AiMatchInfoCard from "@/components/LoginPage/AiMatchInfoCard";
 import AuthSocialButtons from "@/components/AuthSocialButtons";
@@ -9,18 +7,18 @@ import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
-    <div className="flex flex-col h-screen">
-      <main className="flex-1 bg-white relative">
-        <div className="bg-white h-full flex justify-center items-center">
+    <div className="flex flex-col h-screen bg-stone-100">
+      <main className="relative flex-1 ">
+        <div className="flex items-center justify-center h-full">
           <div className="w-full max-w-[1440px] flex justify-between">
             <div className="bg-white border border-gray-100 w-[550px] h-[630px] p-8 shadow-lg rounded-lg">
-              <h1 className="text-2xl text-gray-800 text-center font-bold mb-6">
+              <h1 className="mb-6 text-2xl font-bold text-center text-gray-800">
                 Welcome back
               </h1>
 
               <AuthSocialButtons action="login" />
 
-              <div className="flex items-center space-x-4 my-4">
+              <div className="flex items-center my-4 space-x-4">
                 <div className="h-0.5 bg-gray-200 flex-1" />
                 <p>Or login with email</p>
                 <div className="h-0.5 bg-gray-200 flex-1" />
@@ -28,11 +26,11 @@ export default function Login() {
 
               <EmailLoginForm />
 
-              <p className="text-center my-4">
+              <p className="my-4 text-center">
                 Don't have an account?
                 <Link
                   to="/signup/applicant"
-                  className="text-dusty-sky-blue hover:underline pl-1"
+                  className="pl-1 text-dusty-sky-blue hover:underline"
                 >
                   Create one now
                 </Link>
@@ -45,9 +43,6 @@ export default function Login() {
             </div>
           </div>
         </div>
-
-        <TopWave />
-        <BottomWave />
       </main>
     </div>
   );

@@ -53,48 +53,45 @@ export default function CompanyRootLayout() {
       <div className="flex min-h-screen bg-stone-50 min-w-screen">
         <CompanySidebar>
           <SidebarItem
-            icon={<LayoutDashboard className="font-thin" />}
+            icon={LayoutDashboard}
             text="Dashboard"
             path="dashboard"
           />
           <SidebarItem
-            icon={<BriefcaseBusiness className="font-thin" />}
+            icon={BriefcaseBusiness}
             text="Job Listings"
             path="job-listings"
             alert
           />
+          <SidebarItem icon={Users} text="Applicants" path="applicants" alert />
           <SidebarItem
-            icon={<Users className="font-thin" />}
-            text="Applicants"
-            path="applicants"
-            alert
-          />
-          <SidebarItem
-            icon={<CalendarClock className="font-thin" />}
+            icon={CalendarClock}
             text="Interviews"
             path="interviews"
             alert
           />
           <SidebarItem
-            icon={<Building className="font-thin" />}
+            icon={Building}
             text="Company Profile"
             path="profile"
             alert
           />
-          <SidebarItem
-            icon={<Settings className="font-thin" />}
-            text="Settings"
-            path="settings"
-            alert
-          />
+          <SidebarItem icon={Settings} text="Settings" path="settings" alert />
         </CompanySidebar>
-        <div className="flex-1">
+        <div className="flex-1 max-h-screen overflow-y-scroll thin-scrollbar max-xl:pl-16">
           <Outlet />
         </div>
         {/* Notification sidebar */}
-        <div className="max-h-screen sticky top-0 right-0 overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
-          <h3 className="px-4 text-lg">Job Applications</h3>
-          <div className="px-6">
+        <div className="max-h-screen bg-white px-4 sticky top-0 right-0 overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
+          <div className="flex justify-between">
+            <h3 className="text-lg font-bold text-gray-900">
+              Recent Applications
+            </h3>
+            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+              View All
+            </button>
+          </div>
+          <div>
             {applicationNotifs.map((application) => (
               <ApplicationNotificationItem
                 key={application.jobId}
@@ -103,8 +100,15 @@ export default function CompanyRootLayout() {
             ))}
           </div>
           {/* sample lang muna to */}
-          <h3 className="px-4 text-lg">Interviews</h3>
-          <div className="px-6">
+          <div className="flex justify-between">
+            <h3 className="text-lg font-bold text-gray-900">
+              Upcoming Interviews
+            </h3>
+            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+              View All
+            </button>
+          </div>
+          <div>
             {applicationNotifs.map((application) => (
               <InterviewNotificationItem
                 key={application.jobId}

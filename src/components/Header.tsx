@@ -20,7 +20,7 @@ export default function Header() {
             </button>
           </Link>
           <Link to="/signup/applicant">
-            <button className="px-4 py-2 font-medium text-white transition-transform duration-300 bg-blue-300 rounded shadow hover:scale-105">
+            <button className="px-4 py-2 font-medium text-white transition-transform duration-300 rounded shadow bg-cyan-500 hover:scale-105">
               Sign up
             </button>
           </Link>

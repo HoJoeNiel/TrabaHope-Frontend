@@ -102,7 +102,7 @@ export default function EmailLoginForm() {
 
       <Button
         type="submit"
-        className="w-full py-2 text-lg text-center text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600"
+        className="w-full py-2 text-lg text-center text-white rounded-lg shadow bg-cyan-500 hover:bg-cyan-600"
         disabled={loading}
       >
         {loading ? (

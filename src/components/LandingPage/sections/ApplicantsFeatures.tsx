@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 export default function ApplicantsFeatures() {
   const navigate = useNavigate();
   return (
-    <section className="w-full h-[600px] bg-teal-500/20 py-12">
+    <section className="w-full h-[600px] bg-cyan-500/30 py-12">
       <div className="max-w-[1440px] mx-auto grid grid-cols-2">
         <div>
-          <h1 className="text-3xl mt-1 font-extrabold text-gray-900">
+          <h1 className="mt-1 text-3xl font-extrabold text-gray-900">
             For Job Seekers
           </h1>
-          <p className="mt-3 mb-8 mx-auto text-xl text-gray-500">
+          <p className="mx-auto mt-3 mb-8 text-xl text-gray-600">
             Find your dream job faster with TrabaHope's smart tools designed for
             applicants.
           </p>
@@ -22,12 +22,12 @@ export default function ApplicantsFeatures() {
               icon={icon}
               feature={feature}
               description={description}
-              className="applicant-gradient"
+              className="bg-cyan-500"
             />
           ))}
           <button
             onClick={() => navigate("/signup/applicant")}
-            className="applicant-gradient text-white font-bold px-4 py-2 rounded-lg mt-6 transition-transform duration-300 hover:scale-105"
+            className="px-4 py-2 mt-6 font-bold text-white transition-transform duration-300 rounded-lg bg-cyan-500 hover:scale-105"
           >
             Sign up as Applicant
           </button>

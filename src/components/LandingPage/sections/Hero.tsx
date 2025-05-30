@@ -6,10 +6,11 @@ export default function Hero() {
   const navigate = useNavigate();
   return (
     <section className="relative w-full h-[900px] overflow-hidden">
-      <div className="w-full h-full main-gradient-bg">
+      {/* bg-cyan-700/80 change main theme color to this color */}
+      <div className="w-full h-full bg-cyan-700/80">
         <div className="w-full max-w-[1440px] py-32 grid grid-cols-2 mx-auto">
           <div>
-            <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-white sm:mt-5 sm:text-5xl lg:mt-6 xl:text-7xl">
+            <h1 className="block mt-4 text-4xl font-extrabold tracking-tight text-white sm:mt-5 sm:text-5xl lg:mt-6 xl:text-8xl">
               <span className="">Finding the perfect job</span>
               <span className="block">has never been smarter</span>
             </h1>
@@ -27,7 +28,7 @@ export default function Hero() {
               </button>
               <button
                 onClick={() => navigate("/signup/recruiter")}
-                className="flex-1 py-2 text-lg font-medium text-white transition-transform duration-300 bg-blue-500 rounded-lg shadow hover:scale-105"
+                className="flex-1 py-2 text-lg font-medium text-white transition-transform duration-300 rounded-lg shadow bg-cyan-500 hover:scale-105"
               >
                 For Recruiters
               </button>
