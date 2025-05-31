@@ -63,7 +63,12 @@ export default function CompanyRootLayout() {
             path="job-listings"
             alert
           />
-          <SidebarItem icon={Users} text="Applicants" path="applicants" alert />
+          <SidebarItem
+            icon={Users}
+            text="Applications"
+            path="applications"
+            alert
+          />
           <SidebarItem
             icon={CalendarClock}
             text="Interviews"

@@ -11,7 +11,7 @@ import { ApplicantCredentials } from "@/types";
 import { newApplicantAccountSchema } from "@/schema";
 import { Loader2 } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { createApplicantAccountWithFirebase } from "@/services/auth";
+import { createApplicantAccountWithBackend } from "@/services/auth";
 
 const initialValues: ApplicantCredentials = {
   firstName: "",
@@ -35,8 +35,8 @@ export default function ApplicantSignupForm() {
   ) => {
     setLoading(true);
     try {
-      // const applicantInfo = await createApplicantAccountWithBackend(values); // for backend
-      const applicantInfo = await createApplicantAccountWithFirebase(values); // for testing
+      const applicantInfo = await createApplicantAccountWithBackend(values); // for backend
+      // const applicantInfo = await createApplicantAccountWithFirebase(values); // for testing
 
       setUser(applicantInfo);
       navigate("/applicant/job-listing", { replace: true });
@@ -127,7 +127,7 @@ export default function ApplicantSignupForm() {
               <Button
                 disabled={isLoading}
                 type="submit"
-                className="w-full py-6 my-6 text-lg bg-teal-500 max-lg:text-base hover:bg-teal-700"
+                className="w-full py-6 my-6 text-lg bg-cyan-500 max-lg:text-base hover:bg-cyan-600"
               >
                 {isLoading ? (
                   <div className="flex items-center space-x-2">

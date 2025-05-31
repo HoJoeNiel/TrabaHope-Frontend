@@ -71,31 +71,6 @@ export const slugify = (text: string) =>
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "");
 
-// export const normalizeFirebaseUser = (
-//   user: RawFirebaseUser
-// ): ApplicantAuth | null => {
-//   // it's okay to return null here if the displayName is null
-//   // because I manually set the displayName based on user credentials when they sign up using email and password
-//   // when using third party provider it is automatic
-//   // lapag ko lang dito para note pag nagkaroon ng problema
-//   if (!user.email || !user.role || !user.name || !user.applicantID) return null;
-
-//   return {
-//     applicantID: user.applicantID,
-//     name: user.name,
-//     email: user.email,
-//     location: null,
-//     contactNumber?: ,
-//     photoURL: user.photoURL,
-//     createdAt: new Date().toLocaleDateString("en-US", {
-//       year: "numeric",
-//       month: "long",
-//       day: "numeric",
-//     }),
-//     role: "applicant",
-//   };
-// };
-
 export const fetchUserDataFromFirestore = async (
   uid: string
 ): Promise<ApplicantAuth | CompanyAuth | null> => {

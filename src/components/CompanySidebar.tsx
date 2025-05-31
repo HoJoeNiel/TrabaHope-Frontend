@@ -60,7 +60,7 @@ export default function CompanySidebar({ children }: SidebarProps) {
   }, []);
 
   return (
-    <aside className="sticky top-0 left-0 h-screen bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0">
+    <aside className="sticky top-0 left-0 z-20 h-screen bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0">
       <nav className="flex flex-col h-full">
         <div
           className={`p-4 pb-2 flex  items-center overflow-hidden transition-all ${

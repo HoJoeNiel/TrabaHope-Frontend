@@ -9,7 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
 import { Loader2 } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { createCompanyAccountWithFirebase } from "@/services/auth";
+import {
+  createCompanyAccountWithBackend,
+  createCompanyAccountWithFirebase,
+} from "@/services/auth";
 
 const INDUSTRY_OPTIONS = [
   "Information Technology (IT)",
@@ -52,8 +55,8 @@ export default function RecruiterSignupForm() {
   ) => {
     setLoading(true);
     try {
-      const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
-      // const companyInfo = createCompanyAccountWithBackend(values); // for backend
+      // const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
+      const companyInfo = await createCompanyAccountWithBackend(values); // for backend
 
       setUser(companyInfo);
       navigate("/recruiter/create-new-job", { replace: true });
@@ -101,7 +104,6 @@ export default function RecruiterSignupForm() {
                   setFn={(value) => setFieldValue("industry", value)}
                 />
               </div>
-
               <FormField
                 type="text"
                 name="companyWebsite"
@@ -154,7 +156,7 @@ export default function RecruiterSignupForm() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-6 my-6 text-lg bg-indigo-500 max-lg:text-base hover:bg-indigo-700"
+                className="w-full py-6 my-6 text-lg bg-fuchsia-500 max-lg:text-base hover:bg-fuchsia-600"
               >
                 {isLoading ? (
                   <div className="flex items-center space-x-2">

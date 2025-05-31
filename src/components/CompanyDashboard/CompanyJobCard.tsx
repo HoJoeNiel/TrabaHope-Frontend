@@ -1,5 +1,5 @@
-import { formatDate, getRelativeTimeAgo } from "@/helpers";
-import { CompanyPostedJob } from "@/types";
+import { formatDate, getRelativeTimeAgo, isRecruiter } from "@/helpers";
+import { JobWithId } from "@/types";
 import {
   Clock,
   Edit,
@@ -13,29 +13,36 @@ import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
 import DeleteJobDialog from "../DeleteJobDialog";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 type CompanyJobsCardProps = {
-  job: CompanyPostedJob;
+  job: JobWithId;
 };
 
 export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
   const navigate = useNavigate();
+  const company = useLoggedInUserStore((state) => state.user);
+
+  if (!isRecruiter(company))
+    throw new Error("User logged in is not a recruiter account.");
+
+  const { name, photoURL } = company;
+
   const {
-    companyName,
     id,
-    companyProfileUrl,
     description,
     employmentType,
-    jobTitle,
+    title,
     location,
     remote,
-    salaryRange,
+    maxSalary,
+    minSalary,
     tags,
-    timestamps,
+    createdAt,
   } = job;
   const [showMenu, setShowMenu] = useState(false);
 
-  const avatar = companyProfileUrl ?? companyName.charAt(0).toUpperCase();
+  const avatar = photoURL ?? name.charAt(0).toUpperCase();
 
   return (
     <div className="w-full pt-4 bg-white border rounded border-md">
@@ -47,8 +54,8 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
           </div>
 
           <div className="flex flex-col">
-            <h2 className="text-lg font-medium">{jobTitle}</h2>
-            <span className="text-sm text-gray-600">{companyName}</span>
+            <h2 className="text-lg font-medium">{title}</h2>
+            <span className="text-sm text-gray-600">{name}</span>
           </div>
         </div>
 
@@ -98,7 +105,7 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
           </Badge>
         )}
         <Clock />
-        <span>Posted {getRelativeTimeAgo(timestamps.posted)}</span>
+        <span>Posted {getRelativeTimeAgo(createdAt)}</span>
       </div>
 
       <div className="flex px-4 my-3">
@@ -110,7 +117,7 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
       <div className="flex justify-between px-4 my-3">
         <div>
           <span className="block text-xs text-gray-600">Salary Range</span>
-          <span className="block font-medium">{`₱${salaryRange.min} - ₱${salaryRange.min}`}</span>
+          <span className="block font-medium">{`₱${minSalary} - ₱${maxSalary}`}</span>
         </div>
 
         <div>
@@ -120,9 +127,7 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
 
         <div>
           <span className="block text-xs text-gray-600">Last Updated</span>
-          <span className="block font-medium">
-            {formatDate(timestamps.posted)}
-          </span>
+          <span className="block font-medium">{formatDate(createdAt)}</span>
           {/* Last updated field (kapag inedit ng recruiter) */}
         </div>
       </div>
@@ -145,7 +150,10 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
       </div>
 
       <div className="flex justify-between p-3 bg-gray-100">
-        <button className="flex px-4 py-2 space-x-2 font-medium text-blue-500 transition-colors bg-white border border-blue-400 rounded hover:bg-gray-50">
+        <button
+          onClick={() => navigate(`/recruiter/job/${job.id}/applicants`)}
+          className="flex px-4 py-2 space-x-2 font-medium text-blue-500 transition-colors bg-white border border-blue-400 rounded hover:bg-gray-50"
+        >
           <Eye />
           <span> View Applicants (14)</span>
         </button>

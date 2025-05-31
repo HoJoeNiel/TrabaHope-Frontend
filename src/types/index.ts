@@ -105,10 +105,15 @@ export interface Job {
   benefits: string;
   responsibilities: string;
   remote: boolean;
-  tags: string[];
+  tags: string[]; // binago, from array to string lang
   createdAt: string;
 }
 
+export interface JobWithId extends Job {
+  id: number;
+}
+
+//  GET Jobs endpoint shape
 export interface CompanyPostedJob {
   id: string;
   companyProfileUrl: string | null;
@@ -172,4 +177,24 @@ export type Application = {
   appliedAt: Date | string;
   jobTitle: string;
   jobId: string;
+};
+
+// type/model ng job applications sa company / recruiter side
+export type CompanyFetchedApplication = {
+  id: string;
+  name: string;
+  title: string;
+  email: string;
+  contactNumber: string;
+  location: string;
+  resumeFile: string;
+  photoUrl: string;
+  jobApplied: {
+    id: number;
+    title: string;
+    employmentType: string;
+    tags: string[];
+  };
+  status: string;
+  appliedDate: Date | string;
 };

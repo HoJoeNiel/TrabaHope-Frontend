@@ -1,4 +1,8 @@
-import { getRelativeTimeAgo, isRecruiter } from "@/helpers";
+import {
+  getRelativeTimeAgo,
+  isRecruiter,
+  parseMultilineInput,
+} from "@/helpers";
 import { useCompanyJobsStore } from "@/stores/useCompanyJobsStore";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { useParams } from "react-router-dom";
@@ -11,7 +15,7 @@ export default function ViewCompanyJob() {
 
   if (!isRecruiter(user)) throw new Error("User is not a recruiter/company.");
 
-  const selectedJob = jobs.find((job) => job.id === jobId);
+  const selectedJob = jobs.find((job) => String(job.id) === jobId);
 
   if (!selectedJob) {
     return <p>Job not found.</p>;
@@ -19,13 +23,11 @@ export default function ViewCompanyJob() {
 
   return (
     <div className="h-full py-12 mx-12">
-      <h1 className="text-3xl font-bold text-gray-800">
-        {selectedJob.jobTitle}
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-800">{selectedJob.title}</h1>
       <div className="flex my-2 space-x-2 text-lg">
         <span className="text-gray-600">{selectedJob.location}</span>
         <span className="text-green-700">
-          Posted {getRelativeTimeAgo(selectedJob.timestamps.posted)}
+          Posted {getRelativeTimeAgo(selectedJob.createdAt)}
         </span>
       </div>
       <span className="w-auto px-3 py-1 text-center bg-gray-200 rounded-lg shadow">
@@ -57,7 +59,7 @@ export default function ViewCompanyJob() {
           )}
           {selectedJob.requirements.length > 1 && (
             <ul className="list-disc list-inside indent-6">
-              {selectedJob.requirements.map((r) => (
+              {parseMultilineInput(selectedJob.requirements).map((r) => (
                 <li key={r}>{r}</li>
               ))}
             </ul>
@@ -72,7 +74,7 @@ export default function ViewCompanyJob() {
           )}
           {selectedJob.responsibilities.length > 1 && (
             <ul className="list-disc list-inside indent-6">
-              {selectedJob.responsibilities.map((r) => (
+              {parseMultilineInput(selectedJob.responsibilities).map((r) => (
                 <li key={r}>{r}</li>
               ))}
             </ul>
@@ -85,7 +87,7 @@ export default function ViewCompanyJob() {
           {selectedJob.benefits.length === 1 && <p>{selectedJob.benefits}</p>}
           {selectedJob.benefits.length > 1 && (
             <ul className="list-disc list-inside indent-6">
-              {selectedJob.benefits.map((r) => (
+              {parseMultilineInput(selectedJob.benefits).map((r) => (
                 <li key={r}>{r}</li>
               ))}
             </ul>

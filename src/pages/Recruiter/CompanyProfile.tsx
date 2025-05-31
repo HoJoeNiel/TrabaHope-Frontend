@@ -150,7 +150,7 @@ export default function CompanyProfile() {
   return (
     <div className="flex-1 p-4 space-y-6">
       <div className="relative w-full overflow-hidden bg-white border rounded-lg">
-        <div className="h-[200px] overflow-hidden relative bg-gradient-to-r from-cyan-300 to-fuchsia-300">
+        <div className="h-[200px] overflow-hidden relative bg-gradient-to-r from-cyan-400 to-fuchsia-400">
           {company.photoURL || // cover photo dapat to pero since wala pa, eto nalang muna
             (previewCoverPhotoURL && (
               <img
