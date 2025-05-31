@@ -9,10 +9,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { deleteJobBackend } from "@/services/api";
 import { useCompanyJobsStore } from "@/stores/useCompanyJobsStore";
 import { Trash2 } from "lucide-react";
 
-export default function DeleteJobDialog({ id }: { id: string }) {
+export default function DeleteJobDialog({ id }: { id: number }) {
   const deleteJob = useCompanyJobsStore((state) => state.deleteJob);
 
   return (
@@ -33,7 +34,10 @@ export default function DeleteJobDialog({ id }: { id: string }) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => deleteJob(id)}
+            onClick={() => {
+              deleteJobBackend(id);
+              deleteJob(id);
+            }}
             className="bg-red-500 hover:bg-red-600"
           >
             Delete
