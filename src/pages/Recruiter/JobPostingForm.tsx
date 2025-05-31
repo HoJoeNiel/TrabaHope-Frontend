@@ -1,5 +1,4 @@
-import { CompanyPostedJob, EmploymentType, Job } from "@/types";
-import { parseMultilineInput } from "@/helpers";
+import { EmploymentType, Job } from "@/types";
 
 import { useNavigate } from "react-router-dom";
 
@@ -21,75 +20,16 @@ import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeyword
 import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { isRecruiter } from "@/helpers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { postJob } from "@/services/api";
 
 export default function CreateJobPostPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const company = useLoggedInUserStore((state) => state.user);
   const addJob = useCompanyJobsStore((state) => state.addJob);
-
-  // FOR TESTING LANG
-  useEffect(() => {
-    addJob({
-      id: crypto.randomUUID(),
-      companyProfileUrl: null,
-      companyName: "[Company Name]",
-      jobTitle: "Frontend Developer",
-      location: "[City, State or Remote]",
-      employmentType: "Full-Time" as EmploymentType,
-      description: `We are seeking a talented and passionate Frontend Developer to join our development team. You will be responsible for implementing visual elements that users see and interact with in a web application, working closely with designers, product managers, and backend developers to bring ideas to life.`,
-      requirements: [
-        "Proficiency in HTML5, CSS3, and JavaScript (ES6+)",
-        "Experience with React, Vue.js, or Angular",
-        "Familiarity with version control systems such as Git",
-        "Understanding of responsive design principles and cross-browser compatibility",
-        "Experience with CSS preprocessors (SASS, SCSS) and/or utility-first frameworks like Tailwind CSS",
-        "Knowledge of modern build tools and bundlers (Webpack, Vite, etc.)",
-        "Experience working with APIs (REST or GraphQL)",
-        "Strong problem-solving skills and attention to detail",
-        "Ability to work independently and in a team environment",
-      ],
-      responsibilities: [
-        "Develop new user-facing features using modern JavaScript frameworks (React, Vue, or Angular)",
-        "Write clean, reusable, and scalable code",
-        "Collaborate with UI/UX designers to translate designs into functional web components",
-        "Optimize web pages for maximum speed and scalability",
-        "Ensure the technical feasibility of UI/UX designs",
-        "Maintain and improve website performance and accessibility",
-        "Integrate RESTful APIs and work with backend developers",
-        "Participate in code reviews and team meetings",
-        "Stay up to date with emerging frontend technologies and best practices",
-      ],
-      benefits: [
-        "Competitive salary",
-        "Flexible work hours and remote options",
-        "Health, dental, and vision insurance",
-        "Paid time off and holidays",
-        "Learning & development budget",
-        "Collaborative and inclusive company culture",
-      ],
-      remote: true,
-      salaryRange: {
-        min: 60000,
-        max: 90000,
-      },
-      tags: [
-        "JavaScript",
-        "React",
-        "HTML",
-        "CSS",
-        "Frontend",
-        "Tailwind CSS",
-        "API Integration",
-        "Responsive Design",
-      ],
-      timestamps: {
-        posted: new Date(),
-      },
-    });
-  }, [addJob]);
+  const jobs = useCompanyJobsStore((state) => state.jobs);
 
   const {
     jobTitle,
@@ -118,6 +58,8 @@ export default function CreateJobPostPage() {
     setTags,
   } = useJobPostingForm();
 
+  console.log(jobs);
+
   const handlePostJob = async () => {
     setLoading(true);
     if (!company || company.role !== "recruiter" || !isRecruiter(company)) {
@@ -132,9 +74,7 @@ export default function CreateJobPostPage() {
       !employmentType.trim() ||
       !description.trim() ||
       !responsibilities.trim() ||
-      !requirements.trim() ||
-      !salaryMin.trim() ||
-      !salaryMax.trim()
+      !requirements.trim()
     ) {
       alert("Please fill out all required fields.");
       return;
@@ -166,79 +106,11 @@ export default function CreateJobPostPage() {
       createdAt: new Date().toLocaleDateString(),
     };
 
-    try {
-      const response = await fetch(
-        "https://943eb37ac2c45846abb79dfb912fb52b.serveo.net/api/web/jobs",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(companyPostedJob),
-        }
-      );
+    const id = await postJob(companyPostedJob); // the backend api returns the created id if successful
+    console.log({ ...companyPostedJob, id });
 
-      if (!response.ok) {
-        throw new Error(`Failed to save job. Status: ${response.status}`);
-      }
-
-      console.log("SUMAKSES");
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-
-    // const job: CompanyPostedJob = {
-    //   id: crypto.randomUUID(),
-    //   companyProfileUrl: null, // null muna kase wala pang profile page yung company/recruiter
-    //   companyName: company.name,
-    //   jobTitle,
-    //   location,
-    //   employmentType: employmentType as EmploymentType,
-    //   description,
-    //   requirements: parseMultilineInput(requirements),
-    //   responsibilities: parseMultilineInput(responsibilities),
-    //   benefits: parseMultilineInput(benefits),
-    //   remote,
-    //   salaryRange: {
-    //     min: Number(salaryMin),
-    //     max: Number(salaryMax),
-    //   },
-    //   tags,
-    //   timestamps: {
-    //     posted: new Date(),
-    //   },
-    // };
-
-    // addJob(job);
+    addJob({ ...companyPostedJob, id }); // array kasi yung nirereturn na id gago kaya ganito muna ginawa ko, check later
     navigate("/recruiter/dashboard");
-
-    // BACKEND JOB POSTING CONNECTION
-    // try {
-    //   const response = await fetch("url", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(job),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error(`Failed to post job. Status: ${response.status}`);
-    //   }
-
-    //     addJob(job);
-    //     navigate("/recruiter/dashboard");
-    //   } catch (error) {
-    //     let errorMessage = "Something went wrong: ";
-    //     if (error instanceof Error) {
-    //       errorMessage += error.message;
-    //       throw new Error(errorMessage);
-    //     }
-    //   } finally {
-    //     setLoading(true);
-    //   }
   };
 
   return (
