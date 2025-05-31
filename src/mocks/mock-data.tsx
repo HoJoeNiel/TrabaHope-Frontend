@@ -10,7 +10,13 @@ import { FaCheck } from "react-icons/fa6";
 import { GoGraph } from "react-icons/go";
 import { PiListChecksThin } from "react-icons/pi";
 import { FaRobot } from "react-icons/fa";
-import { category, Company, EmploymentType, ApplicantSideJob } from "@/types";
+import {
+  category,
+  Company,
+  EmploymentType,
+  ApplicantSideJob,
+  CompanyFetchedApplication,
+} from "@/types";
 
 export interface FeatureType {
   icon: React.ReactNode;
@@ -25,6 +31,294 @@ export interface UserTestimonyType {
   jobTitle: string;
   testimony: string;
 }
+
+export const applications: CompanyFetchedApplication[] = [
+  {
+    id: "dawdawdwa",
+    name: "Jonel Villaver",
+    title: "Aspiring Frontend Developer",
+    email: "jonelvillaver735@gmail.com",
+    contactNumber: "09708075290",
+    location: "San Nicolas, Manila",
+    resumeFile: "jonel_villaver_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 1,
+      title: "Frontend Developer",
+      employmentType: "Full-time",
+      tags: "React,Tailwind CSS,JavaScript",
+    },
+    status: "Pending",
+    appliedDate: "5/30/2025",
+  },
+  {
+    id: "sjdajdaopw",
+    name: "Maria Santos",
+    title: "Senior Full Stack Developer",
+    email: "maria.santos@email.com",
+    contactNumber: "09171234567",
+    location: "Quezon City, Metro Manila",
+    resumeFile: "maria_santos_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 2,
+      title: "Backend Developer",
+      employmentType: "Full-time",
+      tags: "Node.js,MongoDB,Express.js",
+    },
+    status: "Interview",
+    appliedDate: "5/27/2025",
+  },
+  {
+    id: "snrfjepofjwaopda",
+    name: "Carlos Reyes",
+    title: "Creative UI/UX Designer",
+    email: "carlos.reyes@design.com",
+    contactNumber: "09087776666",
+    location: "Makati City, Metro Manila",
+    resumeFile: "carlos_reyes_portfolio.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 3,
+      title: "UI/UX Designer",
+      employmentType: "Contract",
+      tags: "Figma,Adobe XD,Prototyping",
+    },
+    status: "Hired",
+    appliedDate: "5/22/2025",
+  },
+  {
+    id: "dawjdawjopdjawpodaw",
+    name: "Liza Dela Cruz",
+    title: "Data Science Specialist",
+    email: "liza.delacruz@analytics.com",
+    contactNumber: "09054443333",
+    location: "Pasig City, Metro Manila",
+    resumeFile: "liza_delacruz_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 4,
+      title: "Data Analyst",
+      employmentType: "Remote",
+      tags: "Python,SQL,Tableau",
+    },
+    status: "Rejected",
+    appliedDate: "5/20/2025",
+  },
+  {
+    id: "dawjdopawjdopawjodaw",
+    name: "Arnold Mendoza",
+    title: "Senior Software Engineer",
+    email: "arnold.mendoza@tech.com",
+    contactNumber: "09021112222",
+    location: "Taguig City, Metro Manila",
+    resumeFile: "arnold_mendoza_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 6,
+      title: "Software Engineer",
+      employmentType: "Full-time",
+      tags: "Java,Spring Boot,Microservices",
+    },
+    status: "Pending",
+    appliedDate: "5/18/2025",
+  },
+  {
+    id: "Dwadjopawjdawjdopaw",
+    name: "Jennifer Cruz",
+    title: "Digital Marketing Strategist",
+    email: "jen.cruz@marketing.ph",
+    contactNumber: "09123456789",
+    location: "Mandaluyong City, Metro Manila",
+    resumeFile: "jennifer_cruz_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 9,
+      title: "Marketing Manager",
+      employmentType: "Full-time",
+      tags: "SEO,Social Media,Analytics",
+    },
+    status: "Interview",
+    appliedDate: "5/25/2025",
+  },
+  {
+    id: "AWDawjodpawjdoawjdopawd",
+    name: "Miguel Torres",
+    title: "DevOps Engineer",
+    email: "miguel.torres@cloud.com",
+    contactNumber: "09987654321",
+    location: "Paranaque City, Metro Manila",
+    resumeFile: "miguel_torres_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 10,
+      title: "DevOps Engineer",
+      employmentType: "Full-time",
+      tags: "AWS,Docker, Kubernetes",
+    },
+    status: "Pending",
+    appliedDate: "5/26/2025",
+  },
+  {
+    id: "wajdoawjdpowjdawdawdawd",
+    name: "Sofia Ramos",
+    title: "QA Automation Engineer",
+    email: "sofia.ramos@testing.ph",
+    contactNumber: "09456789123",
+    location: "Las Pinas City, Metro Manila",
+    resumeFile: "sofia_ramos_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 91,
+      title: "QA Engineer",
+      employmentType: "Full-time",
+      tags: "Selenium,Cypress,Automation",
+    },
+    status: "Interview",
+    appliedDate: "5/24/2025",
+  },
+  {
+    id: "dawjdjawodjawdjpawjdawjdojdpoawjdaw",
+    name: "Robert Garcia",
+    title: "Mobile App Developer",
+    email: "robert.garcia@mobile.ph",
+    contactNumber: "09234567890",
+    location: "Muntinlupa City, Metro Manila",
+    resumeFile: "robert_garcia_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 102,
+      title: "Mobile Developer",
+      employmentType: "Contract",
+      tags: "React Native,Flutter,iOS",
+    },
+    status: "Hired",
+    appliedDate: "5/15/2025",
+  },
+  {
+    id: "Sdjoejdpadjoawjdopwjdwaa",
+    name: "Ana Gonzales",
+    title: "Product Manager",
+    email: "ana.gonzales@product.com",
+    contactNumber: "09345678901",
+    location: "Marikina City, Metro Manila",
+    resumeFile: "ana_gonzales_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 1099,
+      title: "Product Manager",
+      employmentType: "Full-time",
+      tags: "Agile,Scrum,Product Strategy",
+    },
+    status: "Pending",
+    appliedDate: "5/28/2025",
+  },
+  {
+    id: "dawjopdjawodjawdjopawjdpawjdoawd",
+    name: "David Lee",
+    title: "Cybersecurity Specialist",
+    email: "david.lee@security.ph",
+    contactNumber: "09567890123",
+    location: "Caloocan City, Metro Manila",
+    resumeFile: "david_lee_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 1311,
+      title: "Security Engineer",
+      employmentType: "Full-time",
+      tags: "Penetration Testing,CISSP,Network Security",
+    },
+    status: "Rejected",
+    appliedDate: "5/19/2025",
+  },
+  {
+    id: "Dawdjopawjdopawdjopawjdopawjdpvg",
+    name: "Grace Kim",
+    title: "Business Analyst",
+    email: "grace.kim@business.ph",
+    contactNumber: "09678901234",
+    location: "Valenzuela City, Metro Manila",
+    resumeFile: "grace_kim_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 242,
+      title: "Business Analyst",
+      employmentType: "Full-time",
+      tags: "Requirements Analysis,Process Improvement,SQL",
+    },
+    status: "Interview",
+    appliedDate: "5/23/2025",
+  },
+  {
+    id: "tkd[pbkdogdrkp",
+    name: "Paolo Martinez",
+    title: "Cloud Solutions Architect",
+    email: "paolo.martinez@cloud.ph",
+    contactNumber: "09789012345",
+    location: "Malabon City, Metro Manila",
+    resumeFile: "paolo_martinez_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 2342,
+      title: "Solutions Architect",
+      employmentType: "Full-time",
+      tags: "Azure,Cloud Architecture,Enterprise Solutions",
+    },
+    status: "Pending",
+    appliedDate: "5/29/2025",
+  },
+  {
+    id: "awjdojawopdjawodwahyhyh",
+    name: "Kristine Aquino",
+    title: "Content Writer & SEO Specialist",
+    email: "kristine.aquino@content.ph",
+    contactNumber: "09890123456",
+    location: "Navotas City, Metro Manila",
+    resumeFile: "kristine_aquino_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 928,
+      title: "Content Marketing Specialist",
+      employmentType: "Remote",
+      tags: "Content Writing,SEO,WordPress",
+    },
+    status: "Hired",
+    appliedDate: "5/17/2025",
+  },
+  {
+    id: "frsopjrfopsejfsoefj",
+    name: "Mark Johnson",
+    title: "Database Administrator",
+    email: "mark.johnson@database.ph",
+    contactNumber: "09901234567",
+    location: "San Juan City, Metro Manila",
+    resumeFile: "mark_johnson_resume.pdf",
+    photoUrl:
+      "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=150&h=150&fit=crop&crop=face",
+    jobApplied: {
+      id: 34242,
+      title: "Database Administrator",
+      employmentType: "Full-time",
+      tags: "PostgreSQL,MySQL,Database Optimization",
+    },
+    status: "Pending",
+    appliedDate: "5/21/2025",
+  },
+];
 
 export const FEATURES: FeatureType[] = [
   {
