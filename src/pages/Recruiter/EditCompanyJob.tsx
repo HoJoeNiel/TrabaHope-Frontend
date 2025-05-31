@@ -1,4 +1,4 @@
-import { CompanyPostedJob, EmploymentType } from "@/types";
+import { EmploymentType, JobWithId } from "@/types";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -18,9 +18,10 @@ import JobResponsibilitiesInput from "@/components/JobPostingForm/JobResponsibil
 import JobBenefitsAndPerksInput from "@/components/JobPostingForm/JobBenefitsAndPerksInput";
 import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeywordsInput";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { isRecruiter, parseMultilineInput } from "@/helpers";
+import { isRecruiter } from "@/helpers";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { editJobBackend } from "@/services/api";
 
 export default function EditCompanyJob() {
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,10 @@ export default function EditCompanyJob() {
   const editJob = useCompanyJobsStore((state) => state.editJob);
   const { jobId } = useParams();
 
-  const selectedJob = jobs.find((job) => job.id === jobId);
+  if (!isRecruiter(company))
+    throw new Error("User is not a recruiter/company.");
+
+  const selectedJob = jobs.find((job) => String(job.id) === jobId);
   const {
     jobTitle,
     setJobTitle,
@@ -58,18 +62,20 @@ export default function EditCompanyJob() {
     setTags,
   } = useJobPostingForm();
 
+  console.log(selectedJob);
+
   useEffect(() => {
     if (selectedJob) {
-      setJobTitle(selectedJob.jobTitle);
+      setJobTitle(selectedJob.title);
       setLocation(selectedJob.location);
       setRemote(selectedJob.remote);
       setEmploymentType(selectedJob.employmentType);
-      setSalaryMin(selectedJob.salaryRange.min.toString());
-      setSalaryMax(selectedJob.salaryRange.max.toString());
+      setSalaryMin(selectedJob.minSalary.toString());
+      setSalaryMax(selectedJob.maxSalary.toString());
       setDescription(selectedJob.description);
-      setRequirements(selectedJob.requirements.join());
-      setResponsibilities(selectedJob.responsibilities.join());
-      setBenefits(selectedJob.benefits.join());
+      setRequirements(selectedJob.requirements);
+      setResponsibilities(selectedJob.responsibilities);
+      setBenefits(selectedJob.benefits);
       setTags(selectedJob.tags);
     }
   }, [
@@ -87,26 +93,11 @@ export default function EditCompanyJob() {
     setTags,
   ]);
 
-  console.log({
-    jobTitle,
-    location,
-    remote,
-    employmentType,
-    salaryMin,
-    salaryMax,
-    description,
-    requirements,
-    responsibilities,
-    benefits,
-    tag,
-    tags,
-  });
-
   if (!selectedJob) {
     return <p>Job not found.</p>;
   }
 
-  const handlePostJob = async () => {
+  const handleEditJob = async () => {
     setLoading(true);
     if (!company || company.role !== "recruiter" || !isRecruiter(company)) {
       alert("You must be logged in as a company/recruiter to post a job.");
@@ -138,56 +129,26 @@ export default function EditCompanyJob() {
       return;
     }
 
-    const job: CompanyPostedJob = {
+    const job: JobWithId = {
       id: selectedJob.id,
-      companyProfileUrl: null, // null muna kase wala pang profile page yung company/recruiter
-      companyName: company.name,
-      jobTitle,
+      companyId: company.id,
+      title: jobTitle,
       location,
       employmentType: employmentType as EmploymentType,
       description,
-      requirements: parseMultilineInput(requirements),
-      responsibilities: parseMultilineInput(responsibilities),
-      benefits: parseMultilineInput(benefits),
+      requirements,
+      responsibilities,
+      benefits,
       remote,
-      salaryRange: {
-        min: Number(salaryMin),
-        max: Number(salaryMax),
-      },
+      maxSalary: Number(salaryMax),
+      minSalary: Number(salaryMin),
       tags,
-      timestamps: {
-        posted: new Date(),
-      },
+      createdAt: selectedJob.createdAt,
     };
 
+    await editJobBackend(job);
     editJob(job);
     navigate("/recruiter/dashboard");
-
-    // BACKEND EDITING JOB CONNECTION
-    // try {
-    //   const response = await fetch("url", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(job),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error(`Failed to post job. Status: ${response.status}`);
-    //   }
-
-    //   addJob(job);
-    //   navigate("/recruiter/dashboard");
-    // } catch (error) {
-    //   let errorMessage = "Something went wrong: ";
-    //   if (error instanceof Error) {
-    //     errorMessage += error.message;
-    //     throw new Error(errorMessage);
-    //   }
-    // } finally {
-    //   setLoading(true);
-    // }
   };
 
   return (
@@ -201,7 +162,7 @@ export default function EditCompanyJob() {
               <div className="p-6 bg-white rounded-lg shadow">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <JobTitleInput
-                    defaultValue={selectedJob.jobTitle}
+                    defaultValue={selectedJob.title}
                     onChange={setJobTitle}
                   />
                   <LocationInput
@@ -228,11 +189,11 @@ export default function EditCompanyJob() {
 
                     <div className="flex space-x-4">
                       <MinSalaryInput
-                        defaultValue={selectedJob.salaryRange.min}
+                        defaultValue={selectedJob.minSalary}
                         onChange={setSalaryMin}
                       />
                       <MaxSalaryInput
-                        defaultValue={selectedJob.salaryRange.max}
+                        defaultValue={selectedJob.maxSalary}
                         onChange={setSalaryMax}
                       />
                     </div>
@@ -245,15 +206,15 @@ export default function EditCompanyJob() {
                 onChange={setDescription}
               />
               <JobRequirementsInput
-                defaultValue={selectedJob.requirements.join("\n")}
+                defaultValue={selectedJob.requirements}
                 onChange={setRequirements}
               />
               <JobResponsibilitiesInput
-                defaultValue={selectedJob.responsibilities.join("\n")}
+                defaultValue={selectedJob.responsibilities}
                 onChange={setResponsibilities}
               />
               <JobBenefitsAndPerksInput
-                defaultValue={selectedJob.benefits.join("\n")}
+                defaultValue={selectedJob.benefits}
                 onChange={setBenefits}
               />
               <SkillsAndKeywordsInput
@@ -283,7 +244,7 @@ export default function EditCompanyJob() {
                   <button
                     type="button"
                     className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={handlePostJob}
+                    onClick={handleEditJob}
                   >
                     Post Job
                   </button>
