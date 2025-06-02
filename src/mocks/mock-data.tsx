@@ -34,7 +34,8 @@ export interface UserTestimonyType {
 
 export const applications: CompanyFetchedApplication[] = [
   {
-    id: "dawdawdwa",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Jonel Villaver",
     title: "Aspiring Frontend Developer",
     email: "jonelvillaver735@gmail.com",
@@ -53,7 +54,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/30/2025",
   },
   {
-    id: "sjdajdaopw",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Maria Santos",
     title: "Senior Full Stack Developer",
     email: "maria.santo s@email.com",
@@ -72,7 +74,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/27/2025",
   },
   {
-    id: "snrfjepofjwaopda",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Carlos Reyes",
     title: "Creative UI/UX Designer",
     email: "carlos.reyes@design.com",
@@ -91,7 +94,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/22/2025",
   },
   {
-    id: "dawjdawjopdjawpodaw",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Liza Dela Cruz",
     title: "Data Science Specialist",
     email: "liza.delacruz@analytics.com",
@@ -110,7 +114,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/20/2025",
   },
   {
-    id: "dawjdopawjdopawjodaw",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Arnold Mendoza",
     title: "Senior Software Engineer",
     email: "arnold.mendoza@tech.com",
@@ -129,7 +134,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/18/2025",
   },
   {
-    id: "Dwadjopawjdawjdopaw",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Jennifer Cruz",
     title: "Digital Marketing Strategist",
     email: "jen.cruz@marketing.ph",
@@ -148,7 +154,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/25/2025",
   },
   {
-    id: "AWDawjodpawjdoawjdopawd",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Miguel Torres",
     title: "DevOps Engineer",
     email: "miguel.torres@cloud.com",
@@ -167,7 +174,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/26/2025",
   },
   {
-    id: "wajdoawjdpowjdawdawdawd",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Sofia Ramos",
     title: "QA Automation Engineer",
     email: "sofia.ramos@testing.ph",
@@ -186,7 +194,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/24/2025",
   },
   {
-    id: "dawjdjawodjawdjpawjdawjdojdpoawjdaw",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Robert Garcia",
     title: "Mobile App Developer",
     email: "robert.garcia@mobile.ph",
@@ -205,7 +214,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/15/2025",
   },
   {
-    id: "Sdjoejdpadjoawjdopwjdwaa",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Ana Gonzales",
     title: "Product Manager",
     email: "ana.gonzales@product.com",
@@ -224,7 +234,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/28/2025",
   },
   {
-    id: "dawjopdjawodjawdjopawjdpawjdoawd",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "David Lee",
     title: "Cybersecurity Specialist",
     email: "david.lee@security.ph",
@@ -243,7 +254,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/19/2025",
   },
   {
-    id: "Dawdjopawjdopawdjopawjdopawjdpvg",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Grace Kim",
     title: "Business Analyst",
     email: "grace.kim@business.ph",
@@ -262,7 +274,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/23/2025",
   },
   {
-    id: "tkd[pbkdogdrkp",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Paolo Martinez",
     title: "Cloud Solutions Architect",
     email: "paolo.martinez@cloud.ph",
@@ -281,7 +294,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/29/2025",
   },
   {
-    id: "awjdojawopdjawodwahyhyh",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Kristine Aquino",
     title: "Content Writer & SEO Specialist",
     email: "kristine.aquino@content.ph",
@@ -300,7 +314,8 @@ export const applications: CompanyFetchedApplication[] = [
     appliedDate: "5/17/2025",
   },
   {
-    id: "frsopjrfopsejfsoefj",
+    applicantId: "dawdawdwa",
+    companyId: "dawdawd",
     name: "Mark Johnson",
     title: "Database Administrator",
     email: "mark.johnson@database.ph",

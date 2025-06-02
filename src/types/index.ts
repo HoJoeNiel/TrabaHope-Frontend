@@ -181,8 +181,11 @@ export type Application = {
 };
 
 // type/model ng job applications sa company / recruiter side
+// NOTE: pag mag popost ako ng application as applicant, ang need ko lang ay 
+//       applicantId, jobId, companyId
 export type CompanyFetchedApplication = {
-  id: string;
+  applicantId: string; //
+  companyId: string;
   name: string;
   title: string;
   email: string;

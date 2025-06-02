@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext, useEffect, useState } from "react";
-import { ChevronRight, ChevronLeft, LogOut } from "lucide-react";
+import { LogOut, PanelRight } from "lucide-react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
@@ -86,7 +86,7 @@ export default function CompanySidebar({ children }: SidebarProps) {
             </div>
           </div>
           <button onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
-            {isExpanded ? <ChevronLeft /> : <ChevronRight />}
+            <PanelRight strokeWidth={1} className="text-gray-500" />
           </button>
         </div>
 

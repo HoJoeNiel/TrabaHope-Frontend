@@ -21,13 +21,28 @@ import {
   Search,
   X,
 } from "lucide-react";
+import { useState } from "react";
 
+type StatusType = "Pending" | "Interview" | "Hired" | "Rejected";
 type ApplicantsTableProps = {
   applications: CompanyFetchedApplication[];
 };
 
 export function ApplicantsTable({ applications }: ApplicantsTableProps) {
-  type StatusType = "Pending" | "Interview" | "Hired" | "Rejected";
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTab, setSelectedTab] = useState("all");
+
+  const filteredApplicants = applications.filter((application) => {
+    const matchesTab =
+      selectedTab === "all" || application.status === selectedTab;
+    const matchesSearch =
+      application.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      application.jobApplied.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      application.email.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
 
   const getStatusBadge = (status: StatusType) => {
     const statusConfig: Record<
@@ -78,6 +93,8 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
                 <input
                   type="text"
                   placeholder="Search applicants..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-64 py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
@@ -101,15 +118,20 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
           <nav className="flex px-6 -mb-px space-x-8">
             {[
               { key: "all", label: "All Applications" },
-              { key: "pending", label: "Pending Review" },
-              { key: "interview", label: "Interview Scheduled" },
-              { key: "hired", label: "Hired" },
-              { key: "rejected", label: "Rejected" },
-              { key: "ai-score", label: "Sort by AI Score" },
+              { key: "Pending", label: "Pending Review" },
+              { key: "Interview", label: "Interview Scheduled" },
+              { key: "Hired", label: "Hired" },
+              { key: "Rejected", label: "Rejected" },
+              { key: "AI-score", label: "Sort by AI Score" },
             ].map((tab) => (
               <button
                 key={tab.key}
-                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap`}
+                onClick={() => setSelectedTab(tab.key)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                  selectedTab === tab.key
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
                 {tab.label}
                 <span
@@ -143,12 +165,12 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
           </div>
         )}
         <TableBody>
-          {applications?.map((applicant) => (
-            <TableRow className="w-full" key={applicant.id}>
+          {filteredApplicants?.map((applicant) => (
+            <TableRow className="w-full" key={applicant.applicantId}>
               <TableCell className="flex items-start py-2">
                 <div className="flex space-x-2">
                   {applicant.photoUrl ? (
-                  <img
+                    <img
                       src={applicant.photoUrl}
                       className="border-2 border-white rounded-full size-12"
                     />
