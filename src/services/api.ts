@@ -51,7 +51,7 @@ export const editJobBackend = async (editedJob: JobWithId) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ editedJob }),
+        body: JSON.stringify(editedJob),
       }
     );
 
@@ -83,5 +83,30 @@ export const deleteJobBackend = async (id: number) => {
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const fetchCompanyJobs = async (
+  companyId: string
+): Promise<JobWithId[] | undefined> => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/web/${companyId}/jobs`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch jobs. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return undefined;
   }
 };

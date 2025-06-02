@@ -60,16 +60,20 @@ export default function CompanySidebar({ children }: SidebarProps) {
   }, []);
 
   return (
-    <aside className="sticky top-0 left-0 z-20 h-screen bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0">
+    <aside
+      className={`sticky top-0 left-0 z-20 h-screen text-sm bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0 ${
+        isExpanded ? "w-[250px]" : "w-auto"
+      }`}
+    >
       <nav className="flex flex-col h-full">
         <div
           className={`p-4 pb-2 flex  items-center overflow-hidden transition-all ${
-            isExpanded ? "w-auto justify-between " : "w-auto justify-center"
+            isExpanded ? "justify-between " : " justify-center"
           }`}
         >
           <div
             className={`flex space-x-4 items-center mr-4 overflow-hidden transition-all ${
-              isExpanded ? "w-auto" : "hidden"
+              isExpanded ? "w-[250px]" : "hidden"
             }`}
           >
             <div className="flex items-center justify-center size-10 recruiter-gradient rounded-xl">
@@ -94,7 +98,6 @@ export default function CompanySidebar({ children }: SidebarProps) {
           </ul>
         </SidebarContext.Provider>
 
-        {/* start ng profile sidebar section */}
         <div
           className={`border-t bg-stone-50 flex p-3 items-center ${
             isExpanded && "justify-between"
@@ -122,15 +125,16 @@ export default function CompanySidebar({ children }: SidebarProps) {
             }`}
           >
             <div>
-              {/* Company name */}
-              <h4 className="font-semibold text-gray-800">{company.name}</h4>
-              {/* Company email */}
-              <span className="text-xs text-gray-600">{company.email}</span>
+              <h4 className="font-semibold text-gray-800 line-clamp-1">
+                {company.name}
+              </h4>
+              <span className="text-xs text-gray-600 line-clamp-1">
+                {company.email}
+              </span>
             </div>
           </div>
           {isExpanded && <LogOut size={20} />}
         </div>
-        {/* end ng profile section */}
       </nav>
     </aside>
   );
@@ -153,7 +157,7 @@ export function SidebarItem({
         navigate(path);
       }}
       className={`
-        relative flex items-center py-2 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
+        relative text-base flex items-center py-2 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
             ? "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200"
@@ -166,7 +170,7 @@ export function SidebarItem({
       />
       <span
         className={`overflow-hidden transition-all ${
-          isExpanded ? "w-52 ml-3" : "w-0"
+          isExpanded ? "w-40 ml-3" : "w-0"
         }`}
       >
         {text}

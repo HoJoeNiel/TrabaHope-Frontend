@@ -1,3 +1,5 @@
+export type Role = "applicant" | "recruiter";
+
 // applicant's creds
 export interface ApplicantCredentials {
   firstName: string;
@@ -8,8 +10,18 @@ export interface ApplicantCredentials {
   phoneNumber: string;
 }
 
-export type Role = "applicant" | "recruiter";
+// company's creds
+export type CompanyCredentials = {
+  companyName: string;
+  industry: string;
+  companyWebsite: string;
+  companyEmail: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+};
 
+// Applicant details
 export type ApplicantAuth = {
   id: string;
   name: string;
@@ -27,6 +39,7 @@ export type ApplicantAuth = {
   role: "applicant";
 };
 
+// Company / Recruiter details
 export type CompanyAuth = {
   id: string;
   name: string;
@@ -39,21 +52,31 @@ export type CompanyAuth = {
   noOfEmployees: number | null;
   websiteURL: string | null;
   yearFounded: number | null;
-  createdAt: string; //TATANGGALIN DAW TO
+  createdAt: string;
   industry: string;
   role: "recruiter";
   mission: string | null; // kakadagdag palang
 };
 
-export type CompanyCredentials = {
-  companyName: string;
-  industry: string;
-  companyWebsite: string;
-  companyEmail: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-};
+export interface Job {
+  companyId: string;
+  requirements: string;
+  title: string;
+  maxSalary: number;
+  minSalary: number;
+  location: string;
+  employmentType: EmploymentType;
+  description: string;
+  benefits: string;
+  responsibilities: string;
+  remote: boolean;
+  tags: string[];
+  createdAt: string;
+}
+
+export interface JobWithId extends Job {
+  id: number;
+}
 
 export type category = {
   value: string;
@@ -93,26 +116,6 @@ export type TimeStamps = {
   lastUpdate?: string | Date;
 };
 
-export interface Job {
-  companyId: string;
-  requirements: string;
-  title: string;
-  maxSalary: number;
-  minSalary: number;
-  location: string;
-  employmentType: EmploymentType;
-  description: string;
-  benefits: string;
-  responsibilities: string;
-  remote: boolean;
-  tags: string[]; // binago, from array to string lang
-  createdAt: string;
-}
-
-export interface JobWithId extends Job {
-  id: number;
-}
-
 //  GET Jobs endpoint shape
 export interface CompanyPostedJob {
   id: string;
@@ -140,8 +143,6 @@ export interface ApplicantSideJob extends CompanyPostedJob {
   nextStep?: string;
   actions: Action;
 }
-
-// export type ActiveJob = Pick<ApplicantSideJob, "id" | "jobTitle" | "location" >
 
 export type ActiveJob = {
   id: number;

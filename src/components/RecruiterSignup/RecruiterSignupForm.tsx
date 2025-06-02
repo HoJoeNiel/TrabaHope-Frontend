@@ -55,8 +55,8 @@ export default function RecruiterSignupForm() {
   ) => {
     setLoading(true);
     try {
-      // const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
-      const companyInfo = await createCompanyAccountWithBackend(values); // for backend
+      const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
+      // const companyInfo = await createCompanyAccountWithBackend(values); // for backend
 
       setUser(companyInfo);
       navigate("/recruiter/create-new-job", { replace: true });
@@ -95,6 +95,7 @@ export default function RecruiterSignupForm() {
                   id="companyName"
                   label="Company Name"
                 />
+
                 <FormField
                   id="industry"
                   name="industry"
@@ -104,6 +105,7 @@ export default function RecruiterSignupForm() {
                   setFn={(value) => setFieldValue("industry", value)}
                 />
               </div>
+
               <FormField
                 type="text"
                 name="companyWebsite"
@@ -111,12 +113,14 @@ export default function RecruiterSignupForm() {
                 label="Company Website"
                 placeholder="https://yourcompany.com"
               />
+
               <FormField
                 type="email"
                 name="companyEmail"
                 id="companyEmail"
                 label="company@example.com"
               />
+
               <FormField
                 type="password"
                 name="password"
@@ -124,12 +128,14 @@ export default function RecruiterSignupForm() {
                 label="Password"
                 placeholder="Create Password (min. 8 characters)"
               />
+
               <FormField
                 type="password"
                 id="confirmPassword"
                 label="Confirm Password"
                 name="confirmPassword"
               />
+
               <FormField
                 type="text"
                 name="phoneNumber"

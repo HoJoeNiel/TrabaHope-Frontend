@@ -114,7 +114,6 @@ export default function CompanyProfile() {
     }
 
     const newURL = URL.createObjectURL(file);
-    console.log(newURL);
     setPreviewCoverPhotoURL(newURL);
     prevCoverPhotoURLRef.current = newURL;
 
@@ -223,7 +222,9 @@ export default function CompanyProfile() {
                 />
               )}
               {!isEditingMain && (
-                <h1 className="text-3xl font-bold">{company.name}</h1>
+                <h1 className="text-3xl font-bold truncate max-w-[30ch]">
+                  {company.name}
+                </h1>
               )}
 
               <div className="flex flex-wrap gap-4 my-2 text-gray-600">

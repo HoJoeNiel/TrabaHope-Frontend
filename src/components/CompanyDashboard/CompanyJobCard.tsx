@@ -46,7 +46,6 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
 
   return (
     <div className="w-full pt-4 bg-white border rounded border-md">
-      {/* header area */}
       <div className="flex justify-between px-4">
         <div className="flex items-center space-x-2">
           <div className="flex items-center justify-center bg-black rounded-md size-12">
@@ -54,8 +53,8 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
           </div>
 
           <div className="flex flex-col">
-            <h2 className="text-lg font-medium">{title}</h2>
-            <span className="text-sm text-gray-600">{name}</span>
+            <h2 className="text-lg font-medium truncate max-w-[30ch]">{title}</h2>
+            <span className="text-sm text-gray-600 truncate max-w-[30ch]">{name}</span>
           </div>
         </div>
 

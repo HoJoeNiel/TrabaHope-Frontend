@@ -257,6 +257,17 @@ export const registerWithSocial = async (
       interests: null,
     };
 
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/applicant/sign-up`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to create account.");
+
     if (import.meta.env.VITE_USE_FIREBASE === "true") {
       await setDoc(doc(db, "users", user.uid), userData);
     } else {

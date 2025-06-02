@@ -8,6 +8,7 @@ type CompanyJobsStore = {
   addJob: (job: JobWithId) => void;
   editJob: (job: JobWithId) => void;
   deleteJob: (id: number) => void;
+  setJobs: (jobs: JobWithId[]) => void;
 };
 
 const companyJobsStoreLogic = persist<CompanyJobsStore>(
@@ -28,6 +29,11 @@ const companyJobsStoreLogic = persist<CompanyJobsStore>(
     deleteJob: (id) => {
       set((state) => ({ jobs: state.jobs.filter((j) => j.id !== id) }));
     },
+
+    setJobs: (job) =>
+      set({
+        jobs: job,
+      }),
   }),
 
   { name: "company-job-storage" }

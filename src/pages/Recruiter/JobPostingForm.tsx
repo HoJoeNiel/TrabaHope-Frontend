@@ -121,7 +121,7 @@ export default function CreateJobPostPage() {
             <h1 className="mb-6 text-2xl font-bold text-gray-900">
               Create New Job Post
             </h1>
-
+            
             <form className="space-y-6">
               <div className="p-6 bg-white rounded-lg shadow">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -130,7 +130,6 @@ export default function CreateJobPostPage() {
                 </div>
 
                 <RemoteInput value={remote} onChange={setRemote} />
-
                 <div className="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2">
                   <EmploymentTypeInput onChange={setEmploymentType} />
 

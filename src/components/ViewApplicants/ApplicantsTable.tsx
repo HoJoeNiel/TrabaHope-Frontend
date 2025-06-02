@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { applications } from "@/mocks/mock-data";
+import { CompanyFetchedApplication } from "@/types";
 import {
   ArrowRight,
   Calendar,
@@ -22,7 +22,11 @@ import {
   X,
 } from "lucide-react";
 
-export function ApplicantsTable() {
+type ApplicantsTableProps = {
+  applications: CompanyFetchedApplication[];
+};
+
+export function ApplicantsTable({ applications }: ApplicantsTableProps) {
   type StatusType = "Pending" | "Interview" | "Hired" | "Rejected";
 
   const getStatusBadge = (status: StatusType) => {
@@ -62,10 +66,6 @@ export function ApplicantsTable() {
       </span>
     );
   };
-
-  // const getSplittedTags = (tags: string): string[] => {
-  //   return tags.split(",").map((i) => i);
-  // };
 
   return (
     <div className="min-w-[1900px]">
@@ -134,13 +134,21 @@ export function ApplicantsTable() {
             <TableHead className="min-w-[600px]">ACTIONS</TableHead>
           </TableRow>
         </TableHeader>
+        {applications?.length === 0 && (
+          <div className="w-[1200px] h-[600px] flex justify-center items-center">
+            <span className="block max-w-[500px] text-center text-xl">
+              No applications received for this job yet. Check back later or
+              promote your listing to attract applicants.
+            </span>
+          </div>
+        )}
         <TableBody>
-          {applications.map((applicant) => (
+          {applications?.map((applicant) => (
             <TableRow className="w-full" key={applicant.id}>
               <TableCell className="flex items-start py-2">
                 <div className="flex space-x-2">
-                  {applicant.name === "d" ? (
-                    <img
+                  {applicant.photoUrl ? (
+                  <img
                       src={applicant.photoUrl}
                       className="border-2 border-white rounded-full size-12"
                     />
