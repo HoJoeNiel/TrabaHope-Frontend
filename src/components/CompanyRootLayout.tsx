@@ -87,7 +87,7 @@ export default function CompanyRootLayout() {
           <Outlet />
         </div>
         {/* Notification sidebar */}
-        <div className="max-h-screen bg-white px-4 sticky top-0 right-0 overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
+        <div className="max-h-screen max-md:hidden bg-white px-4 sticky top-0 right-0 overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
           <div className="flex justify-between">
             <h3 className="text-lg font-bold text-gray-900">
               Recent Applications
