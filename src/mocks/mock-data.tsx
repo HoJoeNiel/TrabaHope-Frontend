@@ -16,6 +16,7 @@ import {
   EmploymentType,
   ApplicantSideJob,
   CompanyFetchedApplication,
+  Interview,
 } from "@/types";
 
 export interface FeatureType {
@@ -31,6 +32,104 @@ export interface UserTestimonyType {
   jobTitle: string;
   testimony: string;
 }
+
+export const interviews: Interview[] = [
+  {
+    applicant: {
+      name: "Jonel Villaver",
+      title: "Frontend Developer",
+      email: "jonelvillaver735@gmail.com",
+      id: "1",
+      contactNumber: "09708075290",
+    },
+    status: "Confirmed",
+    duration: "1 hour",
+    date: "Thursday, June 5, 2025",
+    time: "10:00 AM",
+    type: "Video Call",
+    location: "Online, through zoom meeting",
+    interviewer: {
+      name: "Sarah Johnson",
+      title: "Senior Frontend Developer",
+    },
+  },
+  {
+    applicant: {
+      name: "Marianne Cruz",
+      title: "UI/UX Designer",
+      email: "marianne.cruz@example.com",
+      id: "2",
+      contactNumber: "09708075290",
+    },
+    status: "Scheduled",
+    duration: "45 minutes",
+    date: "Friday, June 6, 2025",
+    time: "2:30 PM",
+    type: "On-site",
+    location: "Company HQ, Room 203",
+    interviewer: {
+      name: "Mark Lee",
+      title: "Lead Product Designer",
+    },
+  },
+  {
+    applicant: {
+      name: "Daniel Reyes",
+      title: "Backend Developer",
+      email: "daniel.reyes@example.com",
+      id: "3",
+      contactNumber: "09708075290",
+    },
+    status: "Rescheduled",
+    duration: "1 hour",
+    date: "Monday, June 9, 2025",
+    time: "11:00 AM",
+    type: "Video Call",
+    location: "Online, Google Meet",
+    interviewer: {
+      name: "Angela Torres",
+      title: "Senior Backend Developer",
+    },
+  },
+  {
+    applicant: {
+      name: "Catherine Lim",
+      title: "Fullstack Developer",
+      email: "catherine.lim@example.com",
+      id: "4",
+      contactNumber: "09708075290",
+    },
+    status: "Confirmed",
+    duration: "1 hour 30 minutes",
+    date: "Wednesday, June 11, 2025",
+    time: "9:00 AM",
+    type: "Video Call",
+    location: "Online, through Zoom meeting",
+    interviewer: {
+      name: "Robert Young",
+      title: "Engineering Manager",
+    },
+  },
+  {
+    applicant: {
+      name: "Kevin Dela Cruz",
+      title: "Mobile App Developer",
+      email: "kevin.delacruz@example.com",
+      id: "5",
+      contactNumber: "09708075290",
+    },
+    status: "Cancelled",
+    duration: "30 minutes",
+    date: "Tuesday, June 10, 2025",
+    time: "4:00 PM",
+    type: "On-site",
+    location: "Company HQ, Room 105",
+    interviewer: {
+      name: "Liza Tan",
+      title: "Senior Mobile Developer",
+    },
+  },
+];
 
 export const applications: CompanyFetchedApplication[] = [
   {

@@ -181,7 +181,7 @@ export type Application = {
 };
 
 // type/model ng job applications sa company / recruiter side
-// NOTE: pag mag popost ako ng application as applicant, ang need ko lang ay 
+// NOTE: pag mag popost ako ng application as applicant, ang need ko lang ay
 //       applicantId, jobId, companyId
 export type CompanyFetchedApplication = {
   applicantId: string; //
@@ -202,3 +202,27 @@ export type CompanyFetchedApplication = {
   status: string;
   appliedDate: Date | string;
 };
+
+type Applicant = {
+  name: string;
+  title: string;
+  email: string;
+  id: string;
+  contactNumber: string;
+};
+
+type Interviewer = {
+  name: string;
+  title: string;
+};
+
+export interface Interview {
+  applicant: Applicant;
+  status: string;
+  duration: string;
+  date: Date | string;
+  time: Date | string;
+  type: string;
+  location: string;
+  interviewer: Interviewer;
+}
