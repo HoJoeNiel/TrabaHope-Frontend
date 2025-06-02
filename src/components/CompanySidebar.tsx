@@ -4,6 +4,7 @@ import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { isRecruiter } from "@/helpers";
+import Logo from "@/assets/TrabahopeLogoPNG.png";
 
 type SidebarProps = PropsWithChildren;
 type SidebarItemProps = {
@@ -72,17 +73,14 @@ export default function CompanySidebar({ children }: SidebarProps) {
           }`}
         >
           <div
-            className={`flex space-x-4 items-center mr-4 overflow-hidden transition-all ${
+            className={`flex space-x-1 items-center mr-2 overflow-hidden transition-all ${
               isExpanded ? "w-[250px]" : "hidden"
             }`}
           >
-            <div className="flex items-center justify-center size-10 recruiter-gradient rounded-xl">
-              <span className="font-bold text-white">T</span>
-            </div>
-            <div>
-              <span className="text-2xl font-bold text-blue-500">
-                TrabaHope
-              </span>
+            <img src={Logo} alt="Trabahope logo" className="size-12" />
+            <div className="flex">
+              <span className="text-2xl font-bold text-fuchsia-700">Traba</span>
+              <span className="text-2xl font-bold text-cyan-700">Hope</span>
             </div>
           </div>
           <button onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
