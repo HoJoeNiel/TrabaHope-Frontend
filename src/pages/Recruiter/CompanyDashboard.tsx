@@ -1,19 +1,13 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as Chart from "chart.js";
-import {
-  Calendar,
-  Search,
-  Filter,
-  MoreHorizontal,
-  ChevronRight,
-  BarChart3,
-} from "lucide-react";
-import { UPCOMING_INTERVIEWS } from "@/mocks/mock-data";
+import { Search, Filter, ChevronRight, BarChart3 } from "lucide-react";
 import { useApplicationsStore } from "@/stores/useApplicationsStore";
-import { sortApplicationsByDate } from "@/helpers";
+import { sortApplicationsByDate, sortInterviewsByDate } from "@/helpers";
 import { useNavigate } from "react-router-dom";
 import JobStats from "@/components/CompanyDashboard/JobStats";
 import RecentApplications from "@/components/CompanyDashboard/RecentApplications";
+import { useInterviewsStore } from "@/stores/useInterviewsStore";
+import UpcomingInterview from "@/components/CompanyDashboard/UpcomingInterview";
 
 const Dashboard = () => {
   const chartRef = useRef<HTMLCanvasElement>(null);
@@ -27,6 +21,9 @@ const Dashboard = () => {
     0,
     4
   );
+
+  const interviews = useInterviewsStore((state) => state.interviews);
+  const upcomingInterviews = sortInterviewsByDate(interviews ?? []).slice(0, 3);
 
   const navigate = useNavigate();
 
@@ -181,55 +178,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="self-start mt-6 bg-white border border-gray-200 rounded-md shadow-sm">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Upcoming Interviews
-                </h2>
-              </div>
-
-              <div className="divide-y divide-gray-200 ">
-                {UPCOMING_INTERVIEWS.map((interview) => (
-                  <div key={interview.id} className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-gray-900">
-                          {interview.candidate}
-                        </h3>
-                        <p className="mt-1 text-xs text-gray-600">
-                          {interview.position}
-                        </p>
-                        <div className="flex items-center mt-2 space-x-4 text-xs text-gray-500">
-                          <div className="flex items-center">
-                            <Calendar className="w-3 h-3 mr-1" />
-                            {interview.date} at {interview.time}
-                          </div>
-                        </div>
-                        <div className="flex items-center mt-1 space-x-2">
-                          <span className="text-xs text-gray-500">
-                            {interview.type}
-                          </span>
-                          <span className="text-xs text-gray-400">•</span>
-                          <span className="text-xs text-gray-500">
-                            with {interview.interviewer}
-                          </span>
-                        </div>
-                      </div>
-                      <button className="p-1 text-gray-400 rounded mdver:text-gray-600">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="px-6 py-4 border-t border-gray-200">
-                <button className="flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
-                  View all interviews
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </button>
-              </div>
-            </div>
+            <UpcomingInterview interviews={upcomingInterviews} />
           </div>
 
           <div>

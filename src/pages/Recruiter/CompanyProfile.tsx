@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { isRecruiter } from "@/helpers";
+import { editCompanyAuth } from "@/services/api";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { CompanyAuth } from "@/types";
 import {
@@ -19,12 +20,10 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function CompanyProfile() {
-  const company = useLoggedInUserStore(
-    (state) => state.user
-  ) as CompanyAuth | null;
+  const company = useLoggedInUserStore((state) => state.user);
   const setUser = useLoggedInUserStore((state) => state.setUser);
 
-  if (!company) throw new Error("Company data not loaded");
+  if (!isRecruiter(company)) throw new Error("Company data not loaded");
 
   const coverPhotoRef = useRef<HTMLInputElement>(null);
   const profilePhotoRef = useRef<HTMLInputElement>(null);
@@ -46,19 +45,20 @@ export default function CompanyProfile() {
   const [specialtyInput, setSpecialtyInput] = useState("");
   const [companyInfo, setCompanyInfo] = useState<CompanyAuth>({
     id: company.id,
-    name: company?.name,
-    description: company?.description,
-    email: company?.email,
-    contactNumber: company?.contactNumber,
-    location: company?.location,
-    photoURL: company?.photoURL,
-    specialties: company?.specialties,
-    noOfEmployees: company?.noOfEmployees,
-    websiteURL: company?.websiteURL,
-    yearFounded: company?.yearFounded,
+    name: company.name,
+    description: company.description,
+    email: company.email,
+    contactNumber: company.contactNumber,
+    location: company.location,
+    photoURL: previewProfilePhotoURL || company.photoURL,
+    coverPhotoURL: previewCoverPhotoURL || company.coverPhotoURL,
+    specialties: company.specialties ?? [], // fallback para pag null sya pwede pa rin mainsertan ng isa
+    noOfEmployees: company.noOfEmployees,
+    websiteURL: company.websiteURL,
+    yearFounded: company.yearFounded,
     createdAt: company.createdAt,
-    industry: company?.industry,
-    role: company?.role,
+    industry: company.industry,
+    role: company.role,
     mission: company.mission,
   });
 
@@ -115,9 +115,10 @@ export default function CompanyProfile() {
 
     const newURL = URL.createObjectURL(file);
     setPreviewCoverPhotoURL(newURL);
+    setCompanyInfo((prev) => ({ ...prev, coverPhotoURL: newURL }));
+    // may delay sa update ng state, fix later
+    handleSaveEditChanges();
     prevCoverPhotoURLRef.current = newURL;
-
-    // TODO: Upload photo sa backend api natin
   };
 
   const handleProfilePhotoChange = (
@@ -133,18 +134,19 @@ export default function CompanyProfile() {
 
     const newURL = URL.createObjectURL(file);
     setPreviewProfilePhotoURL(newURL);
+    setCompanyInfo((prev) => ({ ...prev, photoURL: newURL }));
+    handleSaveEditChanges();
     prevProfilePhotoRef.current = newURL;
-
-    // TODO: Upload photo sa backend api natin
   };
 
-  const handleSaveEditChanges = () => {
-    console.log("try...");
-    setUser(companyInfo);
-    console.log("nasasave naman sya ah");
+  const handleSaveEditChanges = async () => {
+    try {
+      await editCompanyAuth(companyInfo);
+      setUser(companyInfo);
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  console.log(companyInfo.specialties);
 
   return (
     <div className="flex-1 p-4 space-y-6">

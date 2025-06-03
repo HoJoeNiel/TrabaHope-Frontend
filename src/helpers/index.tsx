@@ -3,6 +3,7 @@ import {
   ApplicantAuth,
   CompanyAuth,
   CompanyFetchedApplication,
+  Interview,
   JobStatus,
 } from "@/types";
 import { doc, getDoc } from "firebase/firestore";
@@ -125,4 +126,12 @@ export const sortApplicationsByDate = (
   );
 
   return sortedApplications;
+};
+
+export const sortInterviewsByDate = (interview: Interview[]) => {
+  const sortedInterviews = interview.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  return sortedInterviews;
 };

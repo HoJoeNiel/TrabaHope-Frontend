@@ -1,4 +1,10 @@
-import { ApplicantAuth, CompanyAuth, Job, JobWithId } from "@/types";
+import {
+  ApplicantAuth,
+  ApplicantJob,
+  CompanyAuth,
+  Job,
+  JobWithId,
+} from "@/types";
 
 export const verifyTokenWithBackend = async (
   token: string
@@ -109,4 +115,44 @@ export const fetchCompanyJobs = async (
     console.error(error);
     return undefined;
   }
+};
+
+export const editCompanyAuth = async (
+  company: CompanyAuth
+): Promise<CompanyAuth> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/company/${company.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(company),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API Request failed with status ${response.status}`);
+  }
+
+  return response.json();
+};
+
+// Abang lang muna pero dapat may query parameter to sa susunod
+export const fetchApplicantJobs = async (): Promise<ApplicantJob[]> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/web/all_jobs`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API Request failed with status ${response.status}`);
+  }
+
+  return await response.json();
 };
