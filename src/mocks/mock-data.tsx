@@ -18,6 +18,7 @@ import {
   CompanyFetchedApplication,
   Interview,
 } from "@/types";
+import { FileText, Users, Calendar, UserCheck } from "lucide-react";
 
 export interface FeatureType {
   icon: React.ReactNode;
@@ -32,6 +33,118 @@ export interface UserTestimonyType {
   jobTitle: string;
   testimony: string;
 }
+
+export const STATS = [
+  {
+    label: "Total Applications",
+    value: "234",
+    change: "+12%",
+    trend: "up",
+    icon: FileText,
+  },
+  {
+    label: "Active Jobs",
+    value: "18",
+    change: "+5%",
+    trend: "up",
+    icon: Users,
+  },
+  {
+    label: "Interviews Scheduled",
+    value: "42",
+    change: "+8%",
+    trend: "up",
+    icon: Calendar,
+  },
+  {
+    label: "Hired This Month",
+    value: "12",
+    change: "+15%",
+    trend: "up",
+    icon: UserCheck,
+  },
+];
+
+export const RECENT_APPLICATION = [
+  {
+    id: 1,
+    name: "Sarah Chen",
+    position: "Frontend Developer",
+    avatar: "SC",
+    email: "sarah.chen@email.com",
+    phone: "09171234567",
+    location: "Makati City, Metro Manila",
+    appliedDate: "2 hours ago",
+    status: "pending",
+    score: "92%",
+  },
+  {
+    id: 2,
+    name: "Miguel Rodriguez",
+    position: "Backend Developer",
+    avatar: "MR",
+    email: "miguel.rodriguez@email.com",
+    phone: "09281234567",
+    location: "Quezon City, Metro Manila",
+    appliedDate: "5 hours ago",
+    status: "interview",
+    score: "88%",
+  },
+  {
+    id: 3,
+    name: "Angela Tan",
+    position: "UI/UX Designer",
+    avatar: "AT",
+    email: "angela.tan@email.com",
+    phone: "09391234567",
+    location: "Taguig City, Metro Manila",
+    appliedDate: "1 day ago",
+    status: "hired",
+    score: "95%",
+  },
+  {
+    id: 4,
+    name: "David Santos",
+    position: "DevOps Engineer",
+    avatar: "DS",
+    email: "david.santos@email.com",
+    phone: "09451234567",
+    location: "Pasig City, Metro Manila",
+    appliedDate: "2 days ago",
+    status: "rejected",
+    score: "76%",
+  },
+];
+
+export const UPCOMING_INTERVIEWS = [
+  {
+    id: 1,
+    candidate: "John Martinez",
+    position: "Software Engineer",
+    time: "10:00 AM",
+    date: "Today",
+    type: "Video Call",
+    interviewer: "Sarah Johnson",
+  },
+  {
+    id: 2,
+    candidate: "Lisa Wong",
+    position: "Product Manager",
+    time: "2:30 PM",
+    date: "Today",
+    type: "On-site",
+    interviewer: "Mark Lee",
+  },
+  {
+    id: 3,
+    candidate: "Robert Kim",
+    position: "Data Analyst",
+    time: "11:00 AM",
+    date: "Tomorrow",
+    type: "Video Call",
+    interviewer: "Emma Davis",
+  },
+];
 
 export const interviews: Interview[] = [
   {

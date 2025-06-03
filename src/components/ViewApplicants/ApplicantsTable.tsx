@@ -158,7 +158,7 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
         </TableHeader>
         {applications?.length === 0 && (
           <div className="w-[1200px] h-[600px] flex justify-center items-center">
-            <span className="block max-w-[500px] text-center text-xl">
+            <span className="block max-w-[500px] text-gray-500 text-center text-xl">
               No applications received for this job yet. Check back later or
               promote your listing to attract applicants.
             </span>

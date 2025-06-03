@@ -226,3 +226,26 @@ export interface Interview {
   location: string;
   interviewer: Interviewer;
 }
+
+export interface UpdatedApplication {
+  companyId: string;
+  applicant: {
+    applicantId: string;
+    name: string;
+    title: string;
+    email: string;
+    contactNumber: string;
+    location: string;
+    resumeFile: string;
+    photoUrl: string;
+  };
+  job: {
+    jobId: number;
+    title: string;
+    employmentType: string;
+    tags: string[];
+  };
+  appliedAt: string;
+  status: string;
+  feedback: string;
+}

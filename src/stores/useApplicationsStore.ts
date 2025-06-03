@@ -12,15 +12,29 @@ import { applications as MOCK_APPLICATIONS } from "@/mocks/mock-data";
 type ApplicationStore = {
   applications: CompanyFetchedApplication[] | null; // application entries ng isang company
   setApplications: (applications: CompanyFetchedApplication[]) => void; // fetch applications
+  changeApplicationStatus: (status: string, applicantId: string) => void; // change application status to => "Hired" , "Rejected", "Interview", etc.
   addApplication: (application: CompanyFetchedApplication) => void; // pag nag apply yung isang applicant, ito yun
-  hireApplicant: (applicantId: string) => void; // recruiters action
-  rejectApplicant: (applicantId: string) => void; // recruiters action
-  inviteForInterview: (applicantId: string) => void; // recruiters action
 };
 
 const ApplicationStoreLogic = persist<ApplicationStore>(
   (set) => ({
     applications: MOCK_APPLICATIONS,
+
+    changeApplicationStatus: (status, applicantId) => {
+      set((state) => {
+        const selectedApplication = state.applications?.find(
+          (a) => a.applicantId === applicantId
+        );
+
+        if (!selectedApplication) return state;
+
+        return {
+          applications: state.applications?.map((a) =>
+            a.applicantId === applicantId ? { ...a, status } : a
+          ),
+        };
+      });
+    },
 
     setApplications: (applications: CompanyFetchedApplication[]) => {
       set({ applications: applications });
@@ -30,54 +44,6 @@ const ApplicationStoreLogic = persist<ApplicationStore>(
       set((state) => ({
         applications: state.applications?.concat(application),
       }));
-    },
-
-    hireApplicant: (applicantId) => {
-      set((state) => {
-        const selectedApplication = state.applications?.find(
-          (a) => a.applicantId === applicantId
-        );
-
-        if (!selectedApplication) return state;
-
-        return {
-          applications: state.applications?.map((a) =>
-            a.applicantId === applicantId ? { ...a, status: "Hired" } : a
-          ),
-        };
-      });
-    },
-
-    rejectApplicant: (applicantId) => {
-      set((state) => {
-        const selectedApplication = state.applications?.find(
-          (a) => a.applicantId === applicantId
-        );
-
-        if (!selectedApplication) return state;
-
-        return {
-          applications: state.applications?.map((a) =>
-            a.applicantId === applicantId ? { ...a, status: "Rejected" } : a
-          ),
-        };
-      });
-    },
-
-    inviteForInterview: (applicantId) => {
-      set((state) => {
-        const selectedApplication = state.applications?.find(
-          (a) => a.applicantId === applicantId
-        );
-
-        if (!selectedApplication) return state;
-
-        return {
-          applications: state.applications?.map((a) =>
-            a.applicantId === applicantId ? { ...a, status: "Interview" } : a
-          ),
-        };
-      });
     },
   }),
   {

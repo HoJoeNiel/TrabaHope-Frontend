@@ -1,5 +1,10 @@
 import { db } from "@/firebase";
-import { ApplicantAuth, CompanyAuth, JobStatus } from "@/types";
+import {
+  ApplicantAuth,
+  CompanyAuth,
+  CompanyFetchedApplication,
+  JobStatus,
+} from "@/types";
 import { doc, getDoc } from "firebase/firestore";
 import { BarChart2, Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
 
@@ -110,3 +115,14 @@ export function parseMultilineInput(input: string): string[] {
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 }
+
+export const sortApplicationsByDate = (
+  applications: CompanyFetchedApplication[]
+) => {
+  const sortedApplications = applications.sort(
+    (a, b) =>
+      new Date(b.appliedDate).getTime() - new Date(a.appliedDate).getTime()
+  );
+
+  return sortedApplications;
+};
