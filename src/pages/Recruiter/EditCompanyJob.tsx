@@ -146,7 +146,7 @@ export default function EditCompanyJob() {
       createdAt: selectedJob.createdAt,
     };
 
-    // await editJobBackend(job);
+    await editJobBackend(job);
     editJob(job);
     navigate("/recruiter/dashboard");
   };

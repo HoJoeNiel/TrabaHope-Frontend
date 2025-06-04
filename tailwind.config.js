@@ -54,6 +54,10 @@ export default {
         },
       },
       keyframes: {
+        blink: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
         fadeIn: {
           "0%": { opacity: 0, transform: "translateY(1px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
@@ -79,6 +83,7 @@ export default {
         fadeIn: "fadeIn 200ms ease-out",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        blink: "blink 1s infinite",
       },
     },
   },

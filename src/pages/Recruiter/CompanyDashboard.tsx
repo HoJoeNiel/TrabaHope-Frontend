@@ -17,10 +17,10 @@ const Dashboard = () => {
   const statusChartInstance = useRef<Chart.Chart | null>(null);
 
   const applications = useApplicationsStore((state) => state.applications);
-  const recentApplications = sortApplicationsByDate(applications ?? [])?.slice(
-    0,
-    4
-  );
+  // const recentApplications = sortApplicationsByDate(applications ?? [])?.slice(
+  //   0,
+  //   4
+  // );
 
   const interviews = useInterviewsStore((state) => state.interviews);
   const upcomingInterviews = sortInterviewsByDate(interviews ?? []).slice(0, 3);
@@ -160,12 +160,12 @@ const Dashboard = () => {
               </div>
 
               <div className="divide-y divide-gray-200">
-                {recentApplications?.map((application) => (
+                {/* {[].map((application) => (
                   <RecentApplications
                     key={application.applicantId}
                     application={application}
                   />
-                ))}
+                ))} */}
               </div>
               <div className="px-6 py-4 border-t border-gray-200">
                 <button

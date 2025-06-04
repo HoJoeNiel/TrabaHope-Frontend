@@ -1,17 +1,19 @@
+import { Form, Formik, FormikErrors } from "formik";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import AuthSocialButtons from "@/components/AuthSocialButtons";
 import FormField from "@/components/FormField";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import AuthSocialButtons from "@/components/AuthSocialButtons";
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Form, Formik, FormikErrors } from "formik";
-
-import { ApplicantCredentials } from "@/types";
 import { newApplicantAccountSchema } from "@/schema";
-import { Loader2 } from "lucide-react";
+import {
+  createApplicantAccountWithBackend,
+  createApplicantAccountWithFirebase,
+} from "@/services/auth";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { createApplicantAccountWithBackend } from "@/services/auth";
+import { ApplicantCredentials } from "@/types";
 
 const initialValues: ApplicantCredentials = {
   firstName: "",

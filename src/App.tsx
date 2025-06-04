@@ -1,26 +1,27 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import ApplicantProfile from "@/pages/Applicant/ApplicantProfile";
+import CompanyProfilePage from "@/pages/Applicant/CompanyProfilePage";
+import JobListingPage from "@/pages/Applicant/JobListingPage";
+import MyApplications from "@/pages/Applicant/MyApplications";
+import SavedJobsPage from "@/pages/Applicant/SavedJobsPage";
 import ApplicantSignup from "@/pages/ApplicantSignup";
 import LandingPage from "@/pages/LandingPage";
-import RecruiterSignup from "@/pages/RecruiterSignup";
 import Login from "@/pages/Login";
-import JobListingPage from "@/pages/Applicant/JobListingPage";
-import ApplicantProfile from "@/pages/Applicant/ApplicantProfile";
-import SavedJobsPage from "@/pages/Applicant/SavedJobsPage";
-import MyApplications from "@/pages/Applicant/MyApplications";
-import CompanyProfilePage from "@/pages/Applicant/CompanyProfilePage";
-import ProtectedRoute from "./components/ProtectedRoute";
-import JobPostingForm from "./pages/Recruiter/JobPostingForm";
-import CompanyDashboard from "./pages/Recruiter/CompanyDashboard";
+import RecruiterSignup from "@/pages/RecruiterSignup";
+
+import ApplicantRootLayout from "./components/ApplicantRootLayout";
 import CompanyRootLayout from "./components/CompanyRootLayout";
+import CompanyDashboard from "./pages/Recruiter/CompanyDashboard";
 import CompanyJobListing from "./pages/Recruiter/CompanyJobListing";
-import JobApplicantsPage from "./pages/Recruiter/JobApplicantsPage";
 import CompanyProfile from "./pages/Recruiter/CompanyProfile";
 import CompanySettings from "./pages/Recruiter/CompanySettings";
-import Interviews from "./pages/Recruiter/Interviews";
 import EditCompanyJob from "./pages/Recruiter/EditCompanyJob";
-import ViewCompanyJob from "./pages/Recruiter/ViewCompanyJob";
+import Interviews from "./pages/Recruiter/Interviews";
+import JobApplicantsPage from "./pages/Recruiter/JobApplicantsPage";
+import JobPostingForm from "./pages/Recruiter/JobPostingForm";
 import SpecificJobApplicants from "./pages/Recruiter/SpecificJobApplicants";
+import ViewCompanyJob from "./pages/Recruiter/ViewCompanyJob";
 
 const router = createBrowserRouter([
   {
@@ -37,11 +38,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/applicant",
-    element: (
-      <ProtectedRoute>
-        <Outlet />
-      </ProtectedRoute>
-    ),
+    element: <ApplicantRootLayout />,
     children: [
       { path: "job-listing", element: <JobListingPage /> },
       { path: "profile", element: <ApplicantProfile /> },

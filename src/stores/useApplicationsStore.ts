@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { CompanyFetchedApplication } from "@/types";
+import { Application } from "@/types";
 import { applications as MOCK_APPLICATIONS } from "@/mocks/mock-data";
 
 // NOTES: Sa backend, isang endpoint lang lahat ng applications na to.
@@ -10,33 +10,33 @@ import { applications as MOCK_APPLICATIONS } from "@/mocks/mock-data";
 //        applicant side.
 
 type ApplicationStore = {
-  applications: CompanyFetchedApplication[] | null; // application entries ng isang company
-  setApplications: (applications: CompanyFetchedApplication[]) => void; // fetch applications
+  applications: Application[] | null; // application entries ng isang company
+  setApplications: (applications: Application[]) => void; // fetch applications
   changeApplicationStatus: (status: string, applicantId: string) => void; // change application status to => "Hired" , "Rejected", "Interview", etc.
-  addApplication: (application: CompanyFetchedApplication) => void; // pag nag apply yung isang applicant, ito yun
+  addApplication: (application: Application) => void; // pag nag apply yung isang applicant, ito yun
 };
 
 const ApplicationStoreLogic = persist<ApplicationStore>(
   (set) => ({
-    applications: MOCK_APPLICATIONS,
+    applications: [],
 
     changeApplicationStatus: (status, applicantId) => {
       set((state) => {
         const selectedApplication = state.applications?.find(
-          (a) => a.applicantId === applicantId
+          (a) => a.applicant.applicantId === applicantId
         );
 
         if (!selectedApplication) return state;
 
         return {
           applications: state.applications?.map((a) =>
-            a.applicantId === applicantId ? { ...a, status } : a
+            a.applicant.applicantId === applicantId ? { ...a, status } : a
           ),
         };
       });
     },
 
-    setApplications: (applications: CompanyFetchedApplication[]) => {
+    setApplications: (applications: Application[]) => {
       set({ applications: applications });
     },
 

@@ -14,31 +14,31 @@ export default function JobFilters() {
   const [preferences, setPreferences] = useState<string[]>([]);
 
   return (
-    <div className="w-full bg-white p-6 shadow rounded-lg mt-4">
-      <div className="mb-3">
-        <h2 className="font-bold text-xl">Find Your Dream Job</h2>
-        <p className="text-gray-500">
+    <div className="w-full p-6 mt-2 bg-white rounded-lg shadow">
+      <div className="mb-2">
+        <h2 className="text-lg font-bold">Find Your Dream Job</h2>
+        <p className="text-sm text-gray-500">
           Use AI-Powered matching to discover opportunities that fits your
           skills
         </p>
       </div>
 
       <div className="relative mb-3">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <CiSearch className="size-4 text-gray-400" />
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <CiSearch className="text-gray-400 size-4" />
         </div>
         <input
           type="text"
-          className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500"
+          className="block w-full py-3 pl-10 pr-3 text-sm border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500"
           placeholder="Search jobs, companies, or keywords"
         />
-        <button className="absolute right-2 top-2 bg-sky-600 hover:bg-sky-700 text-white text-sm px-4 py-1 rounded-md">
+        <button className="absolute px-4 py-1 text-sm text-white rounded-md right-2 top-2 bg-sky-600 hover:bg-sky-700">
           Search
         </button>
       </div>
 
       <div className="mb-3">
-        <p className="font-medium text-sm">Filter by preference:</p>
+        <p className="text-sm font-medium">Filter by preference:</p>
         <div className="flex gap-3 mt-2">
           <PreferenceCombobox
             setPreferences={setPreferences}
@@ -68,11 +68,11 @@ export default function JobFilters() {
         </div>
       </div>
 
-      <div className="flex space-x-2">
+      <div className="flex flex-wrap gap-2">
         {preferences?.map((p) => (
           <div
             key={p}
-            className="bg-blue-100 text-blue-600 rounded-full flex space-x-2 items-center px-3 py-1 transition-all duration-300"
+            className="flex items-center px-3 py-1 space-x-2 text-sm text-blue-600 transition-all duration-300 bg-blue-100 rounded-full"
           >
             <span>{p}</span>
             <IoIosClose

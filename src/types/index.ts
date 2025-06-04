@@ -48,6 +48,7 @@ export type CompanyAuth = {
   contactNumber: string;
   location: string | null;
   photoURL: string | null;
+  coverPhotoURL: string | null; // bagong dagdag
   specialties: string[] | null;
   noOfEmployees: number | null;
   websiteURL: string | null;
@@ -77,6 +78,16 @@ export interface Job {
 export interface JobWithId extends Job {
   id: number;
 }
+
+type Company = {
+  photoURL: string | null;
+  name: string;
+};
+
+// FINAL type ng Job na igeget ng applicant. Basically same shape sila nung data na kinoconsume sa CompanyJobCard component. Sa component na yun ineextract lang yung photoURL at name sa company auth. Dito naman, since wala tayo access sa company store need natin sya iembed mismo sa data.
+export type ApplicantJob = JobWithId & {
+  company: Company;
+};
 
 export type category = {
   value: string;
@@ -154,31 +165,31 @@ export type ActiveJob = {
   matchScore: number;
 };
 
-export type Company = {
-  name: string;
-  companySlug: string;
-  logo: string;
-  location: string;
-  website: string;
-  industry: string;
-  size: string;
-  founded: string;
-  specialties: string[];
-  about: string;
-  mission: string;
-  benefits: string[];
-  openPositions: number;
-  averageRating: number;
-  reviewCount: number;
-  activeJobs: ActiveJob[];
-};
+// export type Company = {
+//   name: string;
+//   companySlug: string;
+//   logo: string;
+//   location: string;
+//   website: string;
+//   industry: string;
+//   size: string;
+//   founded: string;
+//   specialties: string[];
+//   about: string;
+//   mission: string;
+//   benefits: string[];
+//   openPositions: number;
+//   averageRating: number;
+//   reviewCount: number;
+//   activeJobs: ActiveJob[];
+// };
 
-export type Application = {
-  name: string;
-  appliedAt: Date | string;
-  jobTitle: string;
-  jobId: string;
-};
+// export type Application = {
+//   name: string;
+//   appliedAt: Date | string;
+//   jobTitle: string;
+//   jobId: string;
+// };
 
 // type/model ng job applications sa company / recruiter side
 // NOTE: pag mag popost ako ng application as applicant, ang need ko lang ay
@@ -227,7 +238,9 @@ export interface Interview {
   interviewer: Interviewer;
 }
 
-export interface UpdatedApplication {
+// UPDATED VERSION NG APPLICATION SHAPE, PALITAN YUNG OUTDATED NA COMPANYFETCHEDAPPLICATION TYPE
+// Shape ng application
+export interface Application {
   companyId: string;
   applicant: {
     applicantId: string;
@@ -235,7 +248,7 @@ export interface UpdatedApplication {
     title: string;
     email: string;
     contactNumber: string;
-    location: string;
+    location: string | null;
     resumeFile: string;
     photoUrl: string;
   };
@@ -243,9 +256,41 @@ export interface UpdatedApplication {
     jobId: number;
     title: string;
     employmentType: string;
-    tags: string[];
+    tags: string[] | null;
   };
   appliedAt: string;
   status: string;
-  feedback: string;
+  feedback: string | null;
 }
+
+export interface ApplicationData {
+  jobId: string;
+  companyId: string;
+  applicantId: string;
+  status: string;
+  appliedAt: string;
+  feedback: string | null;
+}
+
+// export interface Application {
+//   companyId: string;
+//   applicant: {
+//     applicantId: string;
+//     name: string;
+//     title: string;
+//     email: string;
+//     contactNumber: string;
+//     location: string;
+//     resumeFile: string;
+//     photoUrl: string;
+//   };
+//   job: {
+//     id: number;
+//     title: string;
+//     employmentType: string;
+//     tags: string[];
+//   };
+//   appliedAt: string;
+//   status: string;
+//   feedback: string;
+// }

@@ -15,8 +15,10 @@ export default function CompanyJobListing() {
 
   useEffect(() => {
     fetchCompanyJobs(company.id).then((jobs) => {
-      if (!jobs) throw new Error("Failed to fetch jobs.");
-      console.log(jobs);
+      if (!jobs) {
+        throw new Error("Failed to fetch jobs.");
+      }
+
       setJobs(jobs);
     });
   }, [company.id, setJobs]);

@@ -29,7 +29,6 @@ export default function CreateJobPostPage() {
   const navigate = useNavigate();
   const company = useLoggedInUserStore((state) => state.user);
   const addJob = useCompanyJobsStore((state) => state.addJob);
-  const jobs = useCompanyJobsStore((state) => state.jobs);
 
   const {
     jobTitle,
@@ -58,7 +57,7 @@ export default function CreateJobPostPage() {
     setTags,
   } = useJobPostingForm();
 
-  console.log(jobs);
+  console.log(company);
 
   const handlePostJob = async () => {
     setLoading(true);
@@ -109,7 +108,7 @@ export default function CreateJobPostPage() {
     const id = await postJob(companyPostedJob); // the backend api returns the created id if successful
     console.log({ ...companyPostedJob, id });
 
-    addJob({ ...companyPostedJob, id }); // array kasi yung nirereturn na id gago kaya ganito muna ginawa ko, check later
+    addJob({ ...companyPostedJob, id });
     navigate("/recruiter/dashboard");
   };
 
@@ -121,7 +120,7 @@ export default function CreateJobPostPage() {
             <h1 className="mb-6 text-2xl font-bold text-gray-900">
               Create New Job Post
             </h1>
-            
+
             <form className="space-y-6">
               <div className="p-6 bg-white rounded-lg shadow">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

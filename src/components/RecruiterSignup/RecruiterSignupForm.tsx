@@ -55,8 +55,8 @@ export default function RecruiterSignupForm() {
   ) => {
     setLoading(true);
     try {
-      const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
-      // const companyInfo = await createCompanyAccountWithBackend(values); // for backend
+      // const companyInfo = await createCompanyAccountWithFirebase(values); // for testing
+      const companyInfo = await createCompanyAccountWithBackend(values); // for backend
 
       setUser(companyInfo);
       navigate("/recruiter/create-new-job", { replace: true });
@@ -78,7 +78,6 @@ export default function RecruiterSignupForm() {
         <p className="mb-8 text-gray-600 max-lg:text-sm">
           Join thousands of recruiters using our AI-powered platform
         </p>
-
         <Formik
           initialValues={initialValues}
           validationSchema={newCompanyAccountSchema}

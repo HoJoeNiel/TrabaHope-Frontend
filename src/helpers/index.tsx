@@ -1,6 +1,8 @@
 import { db } from "@/firebase";
 import {
   ApplicantAuth,
+  ApplicantJob,
+  Application,
   CompanyAuth,
   CompanyFetchedApplication,
   Interview,
@@ -102,6 +104,15 @@ export const isRecruiter = (user: unknown): user is CompanyAuth => {
   );
 };
 
+export const isApplicant = (user: unknown): user is ApplicantAuth => {
+  return (
+    typeof user === "object" &&
+    user !== null &&
+    "role" in user &&
+    user.role === "applicant"
+  );
+};
+
 export const formatDate = (date: string | Date) => {
   return new Date(date).toLocaleString("en-US", {
     month: "long",
@@ -134,4 +145,13 @@ export const sortInterviewsByDate = (interview: Interview[]) => {
   );
 
   return sortedInterviews;
+};
+
+export const checkIfAlreadyApplied = (
+  appliedJobs: Application[],
+  job: ApplicantJob
+) => {
+  const appliedJob = appliedJobs?.find((j) => j.job.jobId === job.id);
+
+  return appliedJob ? true : false;
 };

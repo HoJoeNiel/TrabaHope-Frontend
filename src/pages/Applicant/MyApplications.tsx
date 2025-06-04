@@ -28,19 +28,19 @@ export default function MyApplications() {
   };
 
   return (
-    <div className="bg-blue-50 min-h-screen min-w-screen">
+    <div className="min-h-screen bg-blue-50 min-w-screen">
       <ApplicantHeader />
 
       <main className="max-w-[1440px] mx-auto my-4">
-        <div className="flex flex-col space-y-2 my-6">
+        <div className="flex flex-col my-6 space-y-2">
           <h1 className="text-2xl font-bold">My Applications</h1>
           <p className="text-gray-600">
             Track and manage your job applications
           </p>
         </div>
 
-        <div className="w-full bg-white rounded-lg shadow p-4 mb-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+        <div className="w-full p-4 mb-6 bg-white rounded-lg shadow">
+          <div className="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
             <div className="flex flex-wrap gap-2">
               {FILTER.map((status) => (
                 <FilterButton
@@ -56,7 +56,7 @@ export default function MyApplications() {
               <input
                 type="text"
                 placeholder="Search applications..."
-                className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full py-2 pl-3 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <Filter className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
             </div>
@@ -65,7 +65,7 @@ export default function MyApplications() {
 
         <ApplicationStats stats={stats} />
 
-        <div className="space-y-4 mt-6">
+        <div className="mt-6 space-y-4">
           {filteredApplications.map((application) => (
             <JobApplicationCard key={application.id} job={application} />
           ))}

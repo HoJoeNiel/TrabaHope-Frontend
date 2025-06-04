@@ -1,6 +1,7 @@
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { MdPerson } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Logo from "@/assets/TrabahopeLogoPNG.png";
 
 export default function ApplicantHeader() {
   const user = useLoggedInUserStore((state) => state.user);
@@ -22,11 +23,12 @@ export default function ApplicantHeader() {
     <header className="flex justify-center w-full py-4 bg-transparent ">
       <div className="flex items-center justify-between w-full max-w-[1440px]">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center justify-center size-10 main-gradient-bg rounded-xl">
-              <span className="font-bold text-white">T</span>
+          <div className="flex items-center space-x-1">
+            <img src={Logo} className="size-12" alt="TrabaHope Logo" />
+            <div className="flex">
+              <span className="text-2xl font-bold text-fuchsia-700">Traba</span>
+              <span className="text-2xl font-bold text-cyan-700">Hope</span>
             </div>
-            <h1 className="text-xl font-bold text-gray-800">TrabaHope</h1>
           </div>
         </div>
 

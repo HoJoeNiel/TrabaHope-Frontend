@@ -6,8 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { isRecruiter } from "@/helpers";
+import { fetchApplications, modifyApplicationStatus } from "@/services/api";
+import { useApplicationsStore } from "@/stores/useApplicationsStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
-import { CompanyFetchedApplication } from "@/types";
+import { Application, ApplicationData } from "@/types";
 import {
   ArrowRight,
   Calendar,
@@ -21,28 +25,60 @@ import {
   Search,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type StatusType = "Pending" | "Interview" | "Hired" | "Rejected";
 type ApplicantsTableProps = {
-  applications: CompanyFetchedApplication[];
+  applications: Application[];
 };
 
 export function ApplicantsTable({ applications }: ApplicantsTableProps) {
+  const recruiter = useLoggedInUserStore((state) => state.user);
+  const setApplications = useApplicationsStore(
+    (state) => state.setApplications
+  );
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
+
+  if (!isRecruiter(recruiter)) throw new Error("User is not a recruiter.");
+
+  useEffect(() => {
+    fetchApplications(recruiter.id).then((applications) => {
+      console.log(applications);
+      setApplications(applications);
+    });
+  }, [recruiter.id, setApplications]);
 
   const filteredApplicants = applications.filter((application) => {
     const matchesTab =
       selectedTab === "all" || application.status === selectedTab;
     const matchesSearch =
-      application.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      application.jobApplied.title
+      application.applicant.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
-      application.email.toLowerCase().includes(searchQuery.toLowerCase());
+      application.job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      application.applicant.email
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
   });
+
+  const handleModifyStatus = async (
+    application: Application,
+    status: string
+  ) => {
+    const updatedApplication: ApplicationData = {
+      jobId: String(application.job.jobId),
+      companyId: application.companyId,
+      applicantId: application.applicant.applicantId,
+      status,
+      appliedAt: application.appliedAt,
+      feedback: application.feedback,
+    };
+
+    modifyApplicationStatus(updatedApplication);
+  };
 
   const getStatusBadge = (status: StatusType) => {
     const statusConfig: Record<
@@ -166,18 +202,18 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
         )}
         <TableBody>
           {filteredApplicants?.map((applicant) => (
-            <TableRow className="w-full" key={applicant.applicantId}>
+            <TableRow className="w-full" key={applicant.applicant.applicantId}>
               <TableCell className="flex items-start py-2">
                 <div className="flex space-x-2">
-                  {applicant.photoUrl ? (
+                  {applicant.applicant.photoUrl ? (
                     <img
-                      src={applicant.photoUrl}
+                      src={applicant.applicant.photoUrl}
                       className="border-2 border-white rounded-full size-12"
                     />
                   ) : (
                     <div className="flex items-center justify-center bg-gray-800 rounded-full size-12">
                       <span className="text-lg font-semibold text-white">
-                        {applicant.name
+                        {applicant.applicant.name
                           .split(" ")
                           .map((word) => word[0]?.toUpperCase())
                           .join("")}
@@ -187,7 +223,7 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
 
                   <div className="">
                     <span className="block font-medium text-gray-900">
-                      {applicant.name}
+                      {applicant.applicant.name}
                     </span>
                   </div>
                 </div>
@@ -195,20 +231,21 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
               <TableCell>
                 <div className="">
                   <span className="block text-gray-900">
-                    {applicant.jobApplied.title}
+                    {applicant.job.title}
                   </span>
                   <span className="block text-gray-700">
-                    {applicant.jobApplied.employmentType}
+                    {applicant.job.employmentType}
                   </span>
                   <div className="flex justify-start gap-2 mx-auto my-3 overflow-x-auto no-scrollbar whitespace-nowrap">
                     <span className="inline-block px-4 py-1 text-xs text-gray-800 bg-gray-200 rounded-sm hover:bg-gray-300">
-                      {applications[0].jobApplied.tags[0]}
+                      {applications[0].job?.tags?.[0]}
                     </span>
                     <span className="inline-block px-4 py-1 text-xs text-gray-800 bg-gray-200 rounded-sm hover:bg-gray-300">
-                      {applications[0].jobApplied.tags[1]}
+                      {applications[0].job?.tags?.[1]}
                     </span>
                     <span className="inline-block px-4 py-1 text-xs text-gray-800 bg-gray-200 rounded-sm hover:bg-gray-300">
-                      + {applications[0].jobApplied.tags.length - 2}
+                      {/* 2 dahil possible na undefined daw sya, para pag mininus sa 2, 0 nalang kalabasan. Fix later */}
+                      + {(applications[0].job.tags?.length ?? 2) - 2}
                     </span>
                   </div>
                 </div>
@@ -219,16 +256,16 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
                   <div className="flex items-center space-x-2">
                     <Mail className="size-4" />
                     <span className="font-medium text-gray-800">
-                      {applicant.email}
+                      {applicant.applicant.email}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Phone className="size-4" />
-                    <span>{applicant.contactNumber}</span>
+                    <span>{applicant.applicant.contactNumber}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <MapPin className="size-4" />
-                    <span>{applicant.location}</span>
+                    <span>{applicant.applicant.location}</span>
                   </div>
                 </div>
               </TableCell>
@@ -257,26 +294,44 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
                 <div className="flex items-center space-x-2">
                   <Clock className="text-gray-600 size-4" />
                   <span className="text-gray-600">
-                    {applicant.appliedDate.toLocaleString()}
+                    {new Date(applicant.appliedAt).toLocaleString()}
                   </span>
                 </div>
               </TableCell>
 
               <TableCell>
                 <div className="flex space-x-4">
-                  <button className="flex items-center px-4 py-2 space-x-2 border rounded">
+                  <button
+                    // TODO: Implement feature.
+                    onClick={() =>
+                      console.log(
+                        "Redirect recruiter sa link para maview yung pdf resume ng applicant na yun."
+                      )
+                    }
+                    className="flex items-center px-4 py-2 space-x-2 border rounded"
+                  >
                     <Eye className="size-4" />
                     <span>View Resume</span>
                   </button>
-                  <button className="flex items-center px-4 py-2 space-x-2 text-white bg-green-500 border rounded ">
+                  <button
+                    onClick={() => handleModifyStatus(applicant, "Hired")}
+                    className="flex items-center px-4 py-2 space-x-2 text-white bg-green-500 border rounded "
+                  >
                     <Check className="size-4" />
                     <span>Hire</span>
                   </button>
-                  <button className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-500 border rounded">
+                  <button
+                    // TODO: Dialog form para sa pag seset ng mga interview details. Yung laman ng form is seset sa backend para sa Interview.
+                    onClick={() => handleModifyStatus(applicant, "Interview")}
+                    className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-500 border rounded"
+                  >
                     <Calendar className="size-4" />
                     <span>Interview</span>
                   </button>
-                  <button className="flex items-center px-4 py-2 space-x-2 text-white bg-red-500 border rounded">
+                  <button
+                    onClick={() => handleModifyStatus(applicant, "Rejected")}
+                    className="flex items-center px-4 py-2 space-x-2 text-white bg-red-500 border rounded"
+                  >
                     <X className="size-4" />
                     <span>Reject</span>
                   </button>
