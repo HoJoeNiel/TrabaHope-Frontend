@@ -470,7 +470,6 @@ export const applications: Application[] = [
   },
 ];
 
-
 export const FEATURES: FeatureType[] = [
   {
     icon: <IoDocumentTextOutline className="text-white size-6" />,
@@ -640,9 +639,9 @@ export const experienceLevel: category[] = [
 // ✅ Location (Philippines only)
 export const locations: category[] = [
   { value: "metro-manila", label: "Metro Manila" },
-  { value: "cebu", label: "Cebu" },
-  { value: "davao", label: "Davao" },
-  { value: "iloilo", label: "Iloilo" },
+  { value: "makati", label: "Makati" },
+  { value: "BGC, Taguig", label: "BGC, Taguig" },
+  { value: "pasay", label: "Pasay" },
   { value: "bacolod", label: "Bacolod" },
   { value: "cagayan-de-oro", label: "Cagayan de Oro" },
   { value: "remote-ph", label: "Remote (Philippines)" },
@@ -650,15 +649,24 @@ export const locations: category[] = [
 
 // ✅ Industry
 export const industries: category[] = [
-  { value: "tech", label: "Technology" },
-  { value: "finance", label: "Finance" },
-  { value: "education", label: "Education" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "bpo", label: "BPO / Call Center" },
-  { value: "retail", label: "Retail" },
-  { value: "marketing", label: "Marketing" },
-  { value: "government", label: "Government" },
-  { value: "freelancing", label: "Freelancing / Gig Work" },
+  {
+    value: "Information Technology (IT)",
+    label: "Information Technology (IT)",
+  },
+  { value: "Healthcare & Medical", label: "Healthcare & Medical" },
+  { value: "Education & Training", label: "Education & Training" },
+  { value: "Finance & Accounting", label: "Finance & Accounting" },
+  { value: "Manufacturing & Production", label: "Manufacturing & Production" },
+  { value: "Construction & Engineering", label: "Construction & Engineering" },
+  { value: "Retail & E-commerce", label: "Retail & E-commerce" },
+  { value: "Marketing & Advertising", label: "Marketing & Advertising" },
+  { value: "Telecommunications", label: "Telecommunications" },
+  { value: "Transportation & Logistics", label: "Transportation & Logistics" },
+  { value: "Hospitality & Tourism", label: "Hospitality & Tourism" },
+  { value: "Legal Services", label: "Legal Services" },
+  { value: "Real Estate", label: "Real Estate" },
+  { value: "Energy & Utilities", label: "Energy & Utilities" },
+  { value: "Other", label: "Other" },
 ];
 
 // ✅ Salary Range (Monthly PHP)

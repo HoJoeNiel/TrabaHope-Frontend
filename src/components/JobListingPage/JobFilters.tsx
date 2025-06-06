@@ -42,24 +42,10 @@ export default function JobFilters() {
         <div className="flex gap-3 mt-2">
           <PreferenceCombobox
             setPreferences={setPreferences}
-            label="Job Type"
-            category={jobType}
-          />
-          <PreferenceCombobox
-            setPreferences={setPreferences}
-            label="Experience level"
-            category={experienceLevel}
-          />
-          <PreferenceCombobox
-            setPreferences={setPreferences}
             label="Location"
             category={locations}
           />
-          <PreferenceCombobox
-            setPreferences={setPreferences}
-            label="Industry"
-            category={industries}
-          />
+
           <PreferenceCombobox
             setPreferences={setPreferences}
             label="Salary Range"

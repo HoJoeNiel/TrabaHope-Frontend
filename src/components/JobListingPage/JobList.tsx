@@ -1,44 +1,23 @@
-import { useEffect } from "react";
-
 import { SelectComponent } from "@/components/SelectComponent";
-import {
-  fetchApplicantJobs,
-  fetchAppliedJobs,
-  fetchSavedJobs,
-} from "@/services/api";
-import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
+import { isApplicant } from "@/helpers";
+import { useApplicantJobs } from "@/services/queries";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 import JobCard from "./JobCard";
-import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { isApplicant } from "@/helpers";
-import { useApplicationsStore } from "@/stores/useApplicationsStore";
+import Loading from "../Loading";
 
 const options = ["Best Match", "Latest", "Salary (High to Low)"];
 
 export default function JobList() {
   const applicant = useLoggedInUserStore((state) => state.user);
-  const jobs = useApplicantJobsStore((state) => state.jobs);
-  const setJob = useApplicantJobsStore((state) => state.setJobs);
-  const setApplications = useApplicationsStore(
-    (state) => state.setApplications
-  );
+
+  const { data: jobs, isLoading, isError } = useApplicantJobs();
 
   if (!isApplicant(applicant)) throw new Error("User is not an applicant.");
 
-  useEffect(() => {
-    fetchApplicantJobs().then((jobs) => {
-      setJob(jobs);
-    });
-
-    fetchAppliedJobs(applicant.id).then((jobs) => {
-      console.log(jobs);
-      setApplications(jobs);
-    });
-
-    fetchSavedJobs(applicant.id).then((savedJobs) =>
-      console.log("saved jobs: ", savedJobs)
-    );
-  }, [setJob, applicant.id, setApplications]);
+  if (isLoading) return <Loading />;
+  if (isError) return <p>An error occured.</p>; // temporary lang
+  if (!jobs?.length) return <p>No jobs available.</p>;
 
   return (
     <div className="flex-1">
@@ -56,12 +35,12 @@ export default function JobList() {
         </div>
       </div>
       <div className="max-h-[700px] overflow-y-scroll thin-scrollbar">
-        {!jobs && <p>No jobs available.</p>}
-        {(jobs ?? []).map((job) => (
+        {jobs.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>
       <div className="flex justify-center w-full mt-4 mb-8">
+        {/* TODO: load more jobs, pagination thingy. Tanong nalang kay luis pano talaga to */}
         <button className="px-4 py-2 border rounded-lg text-sky-600 border-sky-600">
           Load more Jobs
         </button>

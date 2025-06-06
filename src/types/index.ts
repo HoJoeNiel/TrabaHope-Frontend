@@ -73,6 +73,7 @@ export interface Job {
   remote: boolean;
   tags: string[];
   createdAt: string;
+  AIScore?: number;
 }
 
 export interface JobWithId extends Job {
@@ -148,13 +149,6 @@ export interface CompanyPostedJob {
   timestamps: TimeStamps;
 }
 
-export interface ApplicantSideJob extends CompanyPostedJob {
-  status?: JobStatus;
-  matchPercentage: number;
-  nextStep?: string;
-  actions: Action;
-}
-
 export type ActiveJob = {
   id: number;
   title: string;
@@ -164,32 +158,6 @@ export type ActiveJob = {
   salary: string;
   matchScore: number;
 };
-
-// export type Company = {
-//   name: string;
-//   companySlug: string;
-//   logo: string;
-//   location: string;
-//   website: string;
-//   industry: string;
-//   size: string;
-//   founded: string;
-//   specialties: string[];
-//   about: string;
-//   mission: string;
-//   benefits: string[];
-//   openPositions: number;
-//   averageRating: number;
-//   reviewCount: number;
-//   activeJobs: ActiveJob[];
-// };
-
-// export type Application = {
-//   name: string;
-//   appliedAt: Date | string;
-//   jobTitle: string;
-//   jobId: string;
-// };
 
 // type/model ng job applications sa company / recruiter side
 // NOTE: pag mag popost ako ng application as applicant, ang need ko lang ay
