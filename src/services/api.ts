@@ -6,6 +6,7 @@ import {
   CompanyAuth,
   Job,
   JobWithId,
+  Query,
 } from "@/types";
 
 export const verifyTokenWithBackend = async (
@@ -141,22 +142,88 @@ export const editCompanyAuth = async (
 };
 
 // Abang lang muna pero dapat may query parameter to sa susunod
-export const fetchApplicantJobs = async (): Promise<ApplicantJob[]> => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/web/jobs`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+// export const fetchApplicantJobs = async (): Promise<ApplicantJob[]> => {
+//   const response = await fetch(`${import.meta.env.VITE_API_URL}/api/web/jobs`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
 
-  if (!response.ok) {
-    throw new Error(`API Request failed with status ${response.status}`);
+//   if (!response.ok) {
+//     throw new Error(`API Request failed with status ${response.status}`);
+//   }
+
+//   return await response.json();
+// };
+
+// export async function fetchApplicantJobs({
+//   query,
+//   preferences,
+// }: {
+//   query: string;
+//   preferences: string[];
+// }) {
+//   const params = new URLSearchParams();
+//   if (query) params.append("query", query);
+//   preferences.forEach((p) => params.append("preference", p));
+
+//   const res = await fetch(`/api/jobs?${params.toString()}`);
+//   if (!res.ok) throw new Error("Failed to fetch jobs");
+//   return res.json();
+// }
+
+export const fetchJobs = async (): Promise<ApplicantJob[]> => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/web/jobs`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch jobs. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("fetchApplicantJobs error:", error);
+    throw error;
   }
+};
 
-  return await response.json();
+export const fetchApplicantJobs = async (
+  query: Query
+): Promise<ApplicantJob[]> => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/web/jobs`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(query),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch jobs. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("fetchApplicantJobs error:", error);
+    throw error;
+  }
 };
 
 export const sendApplication = async (application: ApplicationData) => {
+  console.log(application);
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/web/applicants/job-application`,
@@ -277,7 +344,7 @@ export const modifyApplicationStatus = async (application: ApplicationData) => {
   }
 };
 
-export const saveJob = async (applicantId: string, jobId: string) => {
+export const saveJob = async (jobId: string, applicantId: string) => {
   try {
     const response = await fetch(
       `${

@@ -37,8 +37,8 @@ export default function ApplicantSignupForm() {
   ) => {
     setLoading(true);
     try {
-      // const applicantInfo = await createApplicantAccountWithBackend(values); // for backend
-      const applicantInfo = await createApplicantAccountWithFirebase(values); // for testing
+      const applicantInfo = await createApplicantAccountWithBackend(values); // for backend
+      // const applicantInfo = await createApplicantAccountWithFirebase(values); // for testing
 
       setUser(applicantInfo);
       navigate("/applicant/job-listing", { replace: true });

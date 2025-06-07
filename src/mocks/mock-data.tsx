@@ -13,8 +13,6 @@ import { FaRobot } from "react-icons/fa";
 import {
   category,
   EmploymentType,
-  ApplicantSideJob,
-  CompanyFetchedApplication,
   Interview,
   ApplicantJob,
   Application,
@@ -50,6 +48,8 @@ export const jobs: ApplicantJob[] = [
     remote: true,
     tags: ["React", "TypeScript", "CSS"],
     createdAt: "2025-06-01T10:00:00Z",
+    id: 1,
+    AIScore: 92,
     company: {
       name: "TechNova",
       photoURL: "https://example.com/logos/technova.png",
@@ -69,6 +69,8 @@ export const jobs: ApplicantJob[] = [
     remote: false,
     tags: ["Node.js", "SQL", "Microservices"],
     createdAt: "2025-06-02T09:30:00Z",
+    id: 2,
+    AIScore: 92,
     company: {
       name: "DataForge",
       photoURL: "https://example.com/logos/dataforge.png",
@@ -88,6 +90,8 @@ export const jobs: ApplicantJob[] = [
     remote: true,
     tags: ["Figma", "UX", "UI"],
     createdAt: "2025-06-03T08:45:00Z",
+    id: 3,
+    AIScore: 92,
     company: {
       name: "PixelPerfect",
       photoURL: "https://example.com/logos/pixelperfect.png",
@@ -107,6 +111,8 @@ export const jobs: ApplicantJob[] = [
     remote: false,
     tags: ["Flutter", "React Native", "iOS", "Android"],
     createdAt: "2025-06-01T15:10:00Z",
+    id: 4,
+    AIScore: 92,
     company: {
       name: "AppWorx",
       photoURL: "https://example.com/logos/appworx.png",
@@ -126,6 +132,8 @@ export const jobs: ApplicantJob[] = [
     remote: true,
     tags: ["AWS", "Docker", "CI/CD", "Kubernetes"],
     createdAt: "2025-06-01T12:00:00Z",
+    id: 5,
+    AIScore: 92,
     company: {
       name: "CloudReach",
       photoURL: "https://example.com/logos/cloudreach.png",
@@ -145,6 +153,8 @@ export const jobs: ApplicantJob[] = [
     remote: false,
     tags: ["Python", "TensorFlow", "Data Science"],
     createdAt: "2025-06-02T14:20:00Z",
+    id: 6,
+    AIScore: 92,
     company: {
       name: "NeuroTech",
       photoURL: "https://example.com/logos/neurotech.png",
@@ -165,6 +175,8 @@ export const jobs: ApplicantJob[] = [
     remote: true,
     tags: ["Customer Support", "Troubleshooting", "Zendesk"],
     createdAt: "2025-06-03T11:40:00Z",
+    id: 7,
+    AIScore: 92,
     company: {
       name: "HelpHive",
       photoURL: "https://example.com/logos/helphive.png",
@@ -184,6 +196,8 @@ export const jobs: ApplicantJob[] = [
     remote: true,
     tags: ["SEO", "Writing", "Blogging"],
     createdAt: "2025-06-03T09:00:00Z",
+    id: 8,
+    AIScore: 92,
     company: {
       name: "Inkspire",
       photoURL: "https://example.com/logos/inkspire.png",

@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiBookmark, CiClock1 } from "react-icons/ci";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoBookmark, IoLocationOutline } from "react-icons/io5";
 import { LuBuilding } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-
-import { IoBookmark } from "react-icons/io5";
 
 import {
   Accordion,
@@ -19,26 +17,37 @@ import {
   slugify,
 } from "@/helpers";
 import {
-  cancelApplication,
-  saveJob,
-  sendApplication,
-  unsaveJob,
-} from "@/services/api";
-import { useApplicationsStore } from "@/stores/useApplicationsStore";
+  useCancelApplication,
+  useSaveJob,
+  useSendApplication,
+  useUnsaveJob,
+} from "@/services/mutations";
+import { useAppliedJobs, useSavedJobs } from "@/services/queries";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { ApplicantJob, ApplicationData } from "@/types";
-
-import LoadingAIScore from "../LoadingAIScore";
-
-// NOTE:
-// May delay na nangyayari sa update ng state sa fe kapag nagsesend ng HTTP requests, unang reload di agad nagrereflect, sa pangalawa pa
-// iniisip ko gumamit nalang ng tanstack query, check later.
+import { fetchSavedJobs } from "@/services/api";
 
 export default function JobCard({ job }: { job: ApplicantJob }) {
-  const appliedJobs = useApplicationsStore((state) => state.applications);
+  const applicant = useLoggedInUserStore((state) => state.user);
+
+  if (!isApplicant(applicant))
+    throw new Error("User logged in is not an applicant.");
+
+  const { mutate: sendApp, isPending: sending } = useSendApplication();
+  const { mutate: cancelApp, isPending: cancelling } = useCancelApplication();
+  const { mutate: saveJob, isPending: saving } = useSaveJob(applicant.id);
+  const { mutate: unsaveJob, isPending: unsaving } = useUnsaveJob(applicant.id);
+  const { data: appliedJobs } = useAppliedJobs(applicant.id);
+  const { data: savedJobs } = useSavedJobs(applicant.id);
+
   const isAlreadyApplied = checkIfAlreadyApplied(appliedJobs ?? [], job);
-  const [isApplied, setApplied] = useState(isAlreadyApplied); // default nito san is ichecheck kung yung jobId is tumutugma sa isang jobId sa appliedJobs list ng applicant.
-  const [isSaved, setSaved] = useState(false); // default nito kung tumutugma yung job dito sa jobs don sa saved jobs ng user
+  const savedJobIds = savedJobs?.map((j) => j.id);
+  const isSaved = savedJobIds?.includes(job.id);
+
+  console.log(isAlreadyApplied);
+  console.log(savedJobs);
+  console.log(isSaved);
+  console.log(appliedJobs);
 
   const navigate = useNavigate();
   const [isExpanded, setExpanded] = useState<boolean>(false);
@@ -55,31 +64,26 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
     tags,
   } = job;
 
-  const applicant = useLoggedInUserStore((state) => state.user);
+  useEffect(() => {
+    fetchSavedJobs(applicant.id).then((jobs) => console.log(jobs));
+  }, [applicant.id]);
 
-  if (!isApplicant(applicant))
-    throw new Error("User logged in is not an applicant.");
+  const handleSendApplication = () => {
+    const applicationData: ApplicationData = {
+      jobId: String(job.id),
+      companyId: job.companyId,
+      applicantId: applicant.id,
+      status: "Pending",
+      appliedAt: new Date().toISOString(),
+      feedback: null,
+    };
 
-  const handleSendApplication = async () => {
-    try {
-      const applicationData: ApplicationData = {
-        jobId: String(job.id),
-        companyId: job.companyId,
-        applicantId: applicant.id,
-        status: "Pending",
-        appliedAt: new Date().toISOString(),
-        feedback: null,
-      };
-      await sendApplication(applicationData);
-      setApplied(true);
-    } catch (error) {
-      console.error(error);
-    }
+    console.log(applicationData);
+    sendApp(applicationData);
   };
 
-  const handleCancelApplication = async () => {
-    setApplied((prev) => !prev);
-    cancelApplication(String(job.id), applicant.id);
+  const handleCancelApplication = () => {
+    cancelApp({ jobId: String(job.id), applicantId: applicant.id });
   };
 
   const handleViewCompany = () => {
@@ -87,23 +91,11 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
     navigate(`/company/${slug}`);
   };
 
-  const handleSaveJob = async () => {
-    try {
-      await saveJob(applicant.id, String(job.id));
-      setSaved(true);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-
-  const handleUnsaveJob = async () => {
-    try {
-      await unsaveJob(applicant.id, String(job.id));
-      setSaved(false);
-    } catch (error) {
-      console.error(error);
-      throw error;
+  const handleToggleSave = () => {
+    if (isSaved) {
+      unsaveJob(String(job.id));
+    } else {
+      saveJob(String(job.id));
     }
   };
 
@@ -162,24 +154,21 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
               </div>
 
               <div className="flex flex-col items-end space-y-3">
-                <LoadingAIScore />
-
+                <div className="px-4 py-2 text-sm text-green-600 bg-green-100 rounded">
+                  {job.AIScore}% match score
+                </div>
                 <div className="flex items-center space-x-2">
-                  {isSaved ? (
-                    <button
-                      onClick={handleUnsaveJob}
-                      className={`p-2 size-10 rounded-full flex items-center justify-center `}
-                    >
+                  <button
+                    onClick={handleToggleSave}
+                    disabled={saving || unsaving}
+                    className="flex items-center justify-center p-2 rounded-full size-10"
+                  >
+                    {isSaved ? (
                       <IoBookmark className="text-yellow-800 size-5" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleSaveJob}
-                      className={`p-2 size-10 rounded-full flex items-center justify-center `}
-                    >
+                    ) : (
                       <CiBookmark className="text-gray-800 size-5" />
-                    </button>
-                  )}
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
@@ -223,10 +212,11 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
               </div>
 
               <div className="flex mt-6 space-x-4">
-                {isApplied ? (
+                {isAlreadyApplied ? (
                   <button
                     className={`px-3 py-1 bg-gray-200 text-gray-800 rounded text-base`}
                     onClick={handleCancelApplication}
+                    disabled={cancelling}
                   >
                     Cancel Application
                   </button>
@@ -234,6 +224,7 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
                   <button
                     className={`px-3 py-1 bg-blue-500 text-white rounded text-base`}
                     onClick={handleSendApplication}
+                    disabled={sending}
                   >
                     Apply Now
                   </button>

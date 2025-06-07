@@ -73,7 +73,6 @@ export interface Job {
   remote: boolean;
   tags: string[];
   createdAt: string;
-  AIScore?: number;
 }
 
 export interface JobWithId extends Job {
@@ -262,3 +261,14 @@ export interface ApplicationData {
 //   status: string;
 //   feedback: string;
 // }
+
+export type Query = {
+  applicantId: string | undefined;
+  interests: string[];
+  filters: {
+    search: string;
+    min_salary: number;
+    max_salary: number;
+    location: string;
+  };
+};

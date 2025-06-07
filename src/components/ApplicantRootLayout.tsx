@@ -6,6 +6,7 @@ import {
   CalendarCheck,
   CalendarClock,
   LayoutDashboard,
+  BookMarked,
   Settings,
   UserPlus,
   Users,
@@ -61,13 +62,19 @@ export default function ApplicantRootLayout() {
           <ApplicantSidebarItem
             icon={BriefcaseBusiness}
             text="Job Listings"
-            path="job-listings"
+            path="job-listing"
             alert
           />
           <ApplicantSidebarItem
             icon={Users}
             text="Applications"
             path="applications"
+            alert
+          />
+          <ApplicantSidebarItem
+            icon={BookMarked}
+            text="Saved Jobs"
+            path="saved-jobs"
             alert
           />
           <ApplicantSidebarItem
@@ -78,7 +85,7 @@ export default function ApplicantRootLayout() {
           />
           <ApplicantSidebarItem
             icon={Building}
-            text="Company Profile"
+            text="Applicant Profile"
             path="profile"
             alert
           />

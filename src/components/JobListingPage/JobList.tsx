@@ -3,21 +3,52 @@ import { isApplicant } from "@/helpers";
 import { useApplicantJobs } from "@/services/queries";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
-import JobCard from "./JobCard";
 import Loading from "../Loading";
+import JobCard from "./JobCard";
 
 const options = ["Best Match", "Latest", "Salary (High to Low)"];
 
-export default function JobList() {
-  const applicant = useLoggedInUserStore((state) => state.user);
+type Props = {
+  searchQuery: string;
+  salary: string;
+  location: string;
+};
 
-  const { data: jobs, isLoading, isError } = useApplicantJobs();
+export default function JobList({ searchQuery, salary, location }: Props) {
+  const applicant = useLoggedInUserStore((state) => state.user);
 
   if (!isApplicant(applicant)) throw new Error("User is not an applicant.");
 
-  if (isLoading) return <Loading />;
-  if (isError) return <p>An error occured.</p>; // temporary lang
-  if (!jobs?.length) return <p>No jobs available.</p>;
+  const [min_salary, max_salary] = salary.split("-").map(Number);
+
+  const query = {
+    applicantId: applicant?.id,
+    interests: ["Frontend", "Backend", "Fullstack"],
+    filters: {
+      search: searchQuery,
+      min_salary: min_salary ?? 0,
+      max_salary: max_salary ?? 0,
+      location,
+    },
+  };
+
+  console.log(query);
+
+  const { data: jobs, isPending, isError } = useApplicantJobs();
+
+  if (isPending) return <Loading />;
+  if (isError)
+    return (
+      <div className="flex items-center justify-center flex-1">
+        <span>An error occured.</span>
+      </div>
+    ); // temporary lang
+  if (!jobs?.length)
+    return (
+      <div className="flex items-center justify-center flex-1">
+        <span>No jobs available.</span>
+      </div>
+    );
 
   return (
     <div className="flex-1">
@@ -35,7 +66,7 @@ export default function JobList() {
         </div>
       </div>
       <div className="max-h-[700px] overflow-y-scroll thin-scrollbar">
-        {jobs.map((job) => (
+        {jobs?.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>

@@ -1,17 +1,53 @@
 import { CiSearch } from "react-icons/ci";
 import PreferenceCombobox from "./PreferenceCombobox";
-import {
-  experienceLevel,
-  industries,
-  jobType,
-  locations,
-  salaryRange,
-} from "@/mocks/mock-data";
-import { useState } from "react";
-import { IoIosClose } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { locations, salaryRange } from "@/mocks/mock-data";
 
-export default function JobFilters() {
-  const [preferences, setPreferences] = useState<string[]>([]);
+type JobFiltersProps = {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  location: string;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  salary: string;
+  setSalary: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export default function JobFilters({
+  searchQuery,
+  setSearchQuery,
+  location,
+  setLocation,
+  salary,
+  setSalary,
+}: JobFiltersProps) {
+  const [rawSearchQuery, setRawSearchQuery] = useState(searchQuery);
+  const [rawLocation, setRawLocation] = useState(location);
+  const [rawSalary, setRawSalary] = useState(salary);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSearchQuery(rawSearchQuery);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [rawSearchQuery, setSearchQuery]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLocation(rawLocation);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [rawLocation, setLocation]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSalary(rawSalary);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [rawSalary, setSalary]);
+
+  const handleSearch = () => {
+    setSearchQuery(searchQuery);
+  };
 
   return (
     <div className="w-full p-6 mt-2 bg-white rounded-lg shadow">
@@ -31,6 +67,9 @@ export default function JobFilters() {
           type="text"
           className="block w-full py-3 pl-10 pr-3 text-sm border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500"
           placeholder="Search jobs, companies, or keywords"
+          value={rawSearchQuery}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          onChange={(e) => setRawSearchQuery(e.target.value)}
         />
         <button className="absolute px-4 py-1 text-sm text-white rounded-md right-2 top-2 bg-sky-600 hover:bg-sky-700">
           Search
@@ -41,20 +80,20 @@ export default function JobFilters() {
         <p className="text-sm font-medium">Filter by preference:</p>
         <div className="flex gap-3 mt-2">
           <PreferenceCombobox
-            setPreferences={setPreferences}
+            setPreferences={setRawLocation}
             label="Location"
             category={locations}
           />
 
           <PreferenceCombobox
-            setPreferences={setPreferences}
+            setPreferences={setRawSalary}
             label="Salary Range"
             category={salaryRange}
           />
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      {/* <div className="flex flex-wrap gap-2">
         {preferences?.map((p) => (
           <div
             key={p}
@@ -69,7 +108,7 @@ export default function JobFilters() {
             />
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
