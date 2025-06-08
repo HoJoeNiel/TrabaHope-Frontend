@@ -133,6 +133,8 @@ export const createApplicantAccountWithFirebase = async (
     preferredEmploymentType: null,
     interests: null,
     role: "applicant",
+    skills: null,
+    openTo: null,
   };
   await setDoc(doc(db, "users", user.uid), applicantInfo);
   return applicantInfo;
@@ -164,6 +166,8 @@ export const createApplicantAccountWithBackend = async (
     preferredEmploymentType: null,
     interests: null,
     role: "applicant",
+    skills: null,
+    openTo: null,
   };
 
   const response = await fetch(
@@ -257,6 +261,8 @@ export const registerWithSocial = async (
       preferredEmploymentType: null,
       role: "applicant",
       interests: null,
+      skills: null,
+      openTo: null,
     };
 
     const response = await fetch(

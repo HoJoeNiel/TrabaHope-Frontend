@@ -1,7 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { sendApplication, cancelApplication, saveJob, unsaveJob } from "./api";
-import { ApplicationData } from "@/types";
 import { queryClient } from "@/lib/queryClient";
+import { ApplicantAuth, ApplicationData, InterviewData } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+
+import {
+  cancelApplication,
+  editApplicantInfo,
+  modifyApplicationStatus,
+  postInterview,
+  saveJob,
+  sendApplication,
+  unsaveJob,
+} from "./api";
 
 export const useSendApplication = () => {
   return useMutation({
@@ -40,9 +49,40 @@ export const useSaveJob = (applicantId: string) => {
 
 export const useUnsaveJob = (applicantId: string) => {
   return useMutation({
-    mutationFn: (jobId: string) => unsaveJob(jobId, applicantId),
+    mutationFn: (jobId: string) => unsaveJob(applicantId, String(jobId)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["savedJobs", applicantId] });
     },
+  });
+};
+
+export const useSetInterview = () => {
+  return useMutation({
+    mutationFn: (interview: InterviewData) => postInterview(interview),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["company-interviews"],
+      });
+    },
+  });
+};
+
+export const useModifyApplicationStatus = () => {
+  return useMutation({
+    mutationFn: (application: ApplicationData) =>
+      modifyApplicationStatus(application),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["company-applications"],
+      });
+    },
+  });
+};
+
+// TODO: 
+export const useEditApplicantInfo = () => {
+  return useMutation({
+    mutationFn: (applicantInfo: ApplicantAuth) =>
+      editApplicantInfo(applicantInfo),
   });
 };

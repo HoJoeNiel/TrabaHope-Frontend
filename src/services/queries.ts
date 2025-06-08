@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  fetchApplicantJobs,
+  fetchApplications,
   fetchAppliedJobs,
+  fetchCompanyInterviews,
+  fetchCompanyJobs,
   fetchJobs,
   fetchSavedJobs,
 } from "./api";
-import { ApplicantJob, Application, Query } from "@/types";
+import { ApplicantJob, Application, Interview, JobWithId } from "@/types";
 
 // export const useApplicantJobs = () => {
 //   return useQuery<ApplicantJob[]>({
@@ -45,5 +47,26 @@ export const useSavedJobs = (applicantId: string) => {
     queryKey: ["savedJobs", applicantId],
     queryFn: () => fetchSavedJobs(applicantId),
     enabled: !!applicantId,
+  });
+};
+
+export const useCompanyApplications = (companyId: string) => {
+  return useQuery<Application[]>({
+    queryKey: ["company-applications"],
+    queryFn: () => fetchApplications(companyId),
+  });
+};
+
+export const useCompanyInterviews = (companyId: string) => {
+  return useQuery<Interview[]>({
+    queryKey: ["company-interviews"],
+    queryFn: () => fetchCompanyInterviews(companyId),
+  });
+};
+
+export const useCompanyJobs = (companyId: string) => {
+  return useQuery<JobWithId[]>({
+    queryKey: ["company-jobs"],
+    queryFn: () => fetchCompanyJobs(companyId),
   });
 };
