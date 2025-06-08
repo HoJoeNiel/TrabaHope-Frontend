@@ -1,8 +1,20 @@
 import InterviewDetailsCard from "@/components/InterviewsPage/InterviewDetailsCard";
-import { useInterviewsStore } from "@/stores/useInterviewsStore";
+import { isRecruiter } from "@/helpers";
+import { useCompanyInterviews } from "@/services/queries";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 export default function Interviews() {
-  const interviews = useInterviewsStore((state) => state.interviews);
+  const company = useLoggedInUserStore((state) => state.user);
+
+  if (!isRecruiter(company)) throw new Error("User is not a recruiter.");
+
+  const {
+    data: interviews,
+    isPending,
+    isError,
+  } = useCompanyInterviews(company.id);
+
+  console.log(interviews);
 
   return (
     <div className="flex-1 p-4">
