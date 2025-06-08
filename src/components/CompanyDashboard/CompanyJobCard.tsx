@@ -40,6 +40,7 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
     tags,
     createdAt,
   } = job;
+
   const [showMenu, setShowMenu] = useState(false);
 
   const avatar = photoURL ?? name.charAt(0).toUpperCase();
@@ -48,13 +49,17 @@ export default function CompanyJobCard({ job }: CompanyJobsCardProps) {
     <div className="w-full pt-4 bg-white border rounded border-md">
       <div className="flex justify-between px-4">
         <div className="flex items-center space-x-2">
-          <div className="flex items-center justify-center bg-black rounded-md size-12">
+          <div className="flex items-center justify-center overflow-hidden bg-black rounded-md over size-12">
             <span className="text-xl font-bold text-white">{avatar}</span>
           </div>
 
           <div className="flex flex-col">
-            <h2 className="text-lg font-medium truncate max-w-[30ch]">{title}</h2>
-            <span className="text-sm text-gray-600 truncate max-w-[30ch]">{name}</span>
+            <h2 className="text-lg font-medium truncate max-w-[30ch]">
+              {title}
+            </h2>
+            <span className="text-sm text-gray-600 truncate max-w-[30ch]">
+              {name}
+            </span>
           </div>
         </div>
 

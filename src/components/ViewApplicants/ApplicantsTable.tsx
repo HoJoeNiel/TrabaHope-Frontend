@@ -7,14 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { isRecruiter } from "@/helpers";
-import { fetchApplications, modifyApplicationStatus } from "@/services/api";
-import { useApplicationsStore } from "@/stores/useApplicationsStore";
+import { useModifyApplicationStatus } from "@/services/mutations";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 import { Application, ApplicationData } from "@/types";
 import {
   ArrowRight,
-  Calendar,
   Check,
   Clock,
   Eye,
@@ -25,7 +23,8 @@ import {
   Search,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import SetInterviewModal from "./SetInterviewModal";
 
 type StatusType = "Pending" | "Interview" | "Hired" | "Rejected";
 type ApplicantsTableProps = {
@@ -34,21 +33,21 @@ type ApplicantsTableProps = {
 
 export function ApplicantsTable({ applications }: ApplicantsTableProps) {
   const recruiter = useLoggedInUserStore((state) => state.user);
-  const setApplications = useApplicationsStore(
-    (state) => state.setApplications
-  );
+
+  if (!isRecruiter(recruiter) || !recruiter) {
+    throw new Error("User is not a recruiter.");
+  }
+
+  const {
+    mutate: modifyStatus,
+    isPending,
+    isError,
+  } = useModifyApplicationStatus();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
 
   if (!isRecruiter(recruiter)) throw new Error("User is not a recruiter.");
-
-  useEffect(() => {
-    fetchApplications(recruiter.id).then((applications) => {
-      console.log(applications);
-      setApplications(applications);
-    });
-  }, [recruiter.id, setApplications]);
 
   const filteredApplicants = applications.filter((application) => {
     const matchesTab =
@@ -77,7 +76,7 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
       feedback: application.feedback,
     };
 
-    modifyApplicationStatus(updatedApplication);
+    modifyStatus(updatedApplication);
   };
 
   const getStatusBadge = (status: StatusType) => {
@@ -313,6 +312,7 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
                     <Eye className="size-4" />
                     <span>View Resume</span>
                   </button>
+
                   <button
                     onClick={() => handleModifyStatus(applicant, "Hired")}
                     className="flex items-center px-4 py-2 space-x-2 text-white bg-green-500 border rounded "
@@ -320,14 +320,12 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
                     <Check className="size-4" />
                     <span>Hire</span>
                   </button>
-                  <button
-                    // TODO: Dialog form para sa pag seset ng mga interview details. Yung laman ng form is seset sa backend para sa Interview.
+
+                  <SetInterviewModal
+                    applicant={applicant}
                     onClick={() => handleModifyStatus(applicant, "Interview")}
-                    className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-500 border rounded"
-                  >
-                    <Calendar className="size-4" />
-                    <span>Interview</span>
-                  </button>
+                  />
+
                   <button
                     onClick={() => handleModifyStatus(applicant, "Rejected")}
                     className="flex items-center px-4 py-2 space-x-2 text-white bg-red-500 border rounded"

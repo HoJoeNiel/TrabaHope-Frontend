@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiBookmark, CiClock1 } from "react-icons/ci";
 import { IoBookmark, IoLocationOutline } from "react-icons/io5";
 import { LuBuilding } from "react-icons/lu";
@@ -25,7 +25,6 @@ import {
 import { useAppliedJobs, useSavedJobs } from "@/services/queries";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { ApplicantJob, ApplicationData } from "@/types";
-import { fetchSavedJobs } from "@/services/api";
 
 export default function JobCard({ job }: { job: ApplicantJob }) {
   const applicant = useLoggedInUserStore((state) => state.user);
@@ -44,11 +43,6 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
   const savedJobIds = savedJobs?.map((j) => j.id);
   const isSaved = savedJobIds?.includes(job.id);
 
-  console.log(isAlreadyApplied);
-  console.log(savedJobs);
-  console.log(isSaved);
-  console.log(appliedJobs);
-
   const navigate = useNavigate();
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
@@ -64,10 +58,6 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
     tags,
   } = job;
 
-  useEffect(() => {
-    fetchSavedJobs(applicant.id).then((jobs) => console.log(jobs));
-  }, [applicant.id]);
-
   const handleSendApplication = () => {
     const applicationData: ApplicationData = {
       jobId: String(job.id),
@@ -79,6 +69,7 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
     };
 
     console.log(applicationData);
+
     sendApp(applicationData);
   };
 

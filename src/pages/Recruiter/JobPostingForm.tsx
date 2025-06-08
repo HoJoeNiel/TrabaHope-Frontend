@@ -102,7 +102,7 @@ export default function CreateJobPostPage() {
       responsibilities,
       remote,
       tags,
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toISOString(),
     };
 
     const id = await postJob(companyPostedJob); // the backend api returns the created id if successful

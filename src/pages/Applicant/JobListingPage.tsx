@@ -10,12 +10,15 @@ export default function JobListingPage() {
   const [location, setLocation] = useState<string>("");
   const [salary, setSalary] = useState<string>("");
 
-  console.log(searchQuery);
-  console.log(location);
-  console.log(salary);
-
   return (
     <div className="min-h-screen p-4 bg-gray-50 min-w-screen">
+      <div className="flex flex-col my-6 space-y-2">
+        <h1 className="text-2xl font-bold">Find Your Dream Job</h1>
+        <p className="text-gray-600">
+          Use AI-Powered matching to discover opportunities that fits your
+          skills
+        </p>
+      </div>
       <main className="max-w-[1440px] mx-auto">
         <JobFilters
           searchQuery={searchQuery}

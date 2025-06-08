@@ -1,34 +1,32 @@
-import ApplicantHeader from "@/components/ApplicantHeader";
-import Footer from "@/components/Footer";
-import FilterSection from "@/components/SavedJobsPage/FilterSection";
-import SavedJobsCard from "@/components/SavedJobsPage/SavedJobsCard";
-import SavedJobsStats from "@/components/SavedJobsPage/SavedJobsStats";
-import { useApplicantJobsStore } from "@/stores/useApplicantJobsStore";
+import JobCard from "@/components/JobListingPage/JobCard";
+import { isApplicant } from "@/helpers";
+import { useSavedJobs } from "@/services/queries";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 export default function SavedJobsPage() {
-  const savedJobs = useApplicantJobsStore((state) => state.savedJobs);
+  const applicant = useLoggedInUserStore((state) => state.user);
+
+  if (!isApplicant(applicant))
+    throw new Error("User logged in is not an applicant.");
+
+  const { data: savedJobs } = useSavedJobs(applicant.id);
+
+  console.log(savedJobs);
 
   return (
-    <div className="flex flex-col min-h-screen min-w-screen bg-blue-50">
-      <ApplicantHeader />
-
+    <div className="flex flex-col min-h-screen p-4 min-w-screen">
       <main className="flex-1 w-full max-w-[1440px] mx-auto">
-        <div className="flex flex-col space-y-2 my-6">
+        <div className="flex flex-col my-6 space-y-2">
           <h1 className="text-2xl font-bold">Saved Jobs</h1>
           <p className="text-gray-600">
             Jobs you've saved for later. Apply when you're ready.
           </p>
         </div>
 
-        <FilterSection />
-        <SavedJobsStats />
-
-        {savedJobs.map((job) => (
-          <SavedJobsCard key={job.id} job={job} />
+        {savedJobs?.map((job) => (
+          <JobCard key={job.id} job={job} />
         ))}
       </main>
-
-      <Footer />
     </div>
   );
 }
