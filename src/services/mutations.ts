@@ -1,16 +1,22 @@
 import { queryClient } from "@/lib/queryClient";
-import { ApplicantAuth, ApplicationData, InterviewData } from "@/types";
+import {
+  ApplicantAuth,
+  ApplicationData,
+  CompanyAuth,
+  InterviewData,
+} from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 import {
   cancelApplication,
-  editApplicantInfo,
+  editCompanyAuth,
   modifyApplicationStatus,
   postInterview,
   saveJob,
   sendApplication,
   unsaveJob,
 } from "./api";
+import { editApplicantInfo } from "./auth";
 
 export const useSendApplication = () => {
   return useMutation({
@@ -79,10 +85,15 @@ export const useModifyApplicationStatus = () => {
   });
 };
 
-// TODO: 
 export const useEditApplicantInfo = () => {
   return useMutation({
     mutationFn: (applicantInfo: ApplicantAuth) =>
       editApplicantInfo(applicantInfo),
+  });
+};
+
+export const useEditCompanyInfo = () => {
+  return useMutation({
+    mutationFn: (companyInfo: CompanyAuth) => editCompanyAuth(companyInfo),
   });
 };

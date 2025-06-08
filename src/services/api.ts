@@ -458,23 +458,18 @@ export const fetchCompanyInterviews = async (
   return await response.json();
 };
 
-export const editApplicantInfo = async (applicantInfo: ApplicantAuth) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/web/recruiter/`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(applicantInfo),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to save job. Status: ${response.status}`);
+export const uploadImageToCloudinary = async (data: FormData) => {
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`,
+    {
+      method: "POST",
+      body: data,
     }
-  } catch (error) {
-    console.error(error);
-  }
+  );
+
+  const { secure_url } = await response.json();
+
+  return secure_url;
 };

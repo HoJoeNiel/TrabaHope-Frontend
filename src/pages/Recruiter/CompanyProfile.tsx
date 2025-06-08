@@ -1,9 +1,3 @@
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { isRecruiter } from "@/helpers";
-import { editCompanyAuth } from "@/services/api";
-import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
-import { CompanyAuth } from "@/types";
 import {
   Building2,
   Calendar,
@@ -16,8 +10,16 @@ import {
   Trash,
   Users,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { isRecruiter } from "@/helpers";
+import {  uploadImageToCloudinary } from "@/services/api";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { CompanyAuth } from "@/types";
+import { useEditCompanyInfo } from "@/services/mutations";
 
 export default function CompanyProfile() {
   const company = useLoggedInUserStore((state) => state.user);
@@ -25,10 +27,13 @@ export default function CompanyProfile() {
 
   if (!isRecruiter(company)) throw new Error("Company data not loaded");
 
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+  const { mutate: editCompanyInfo, isPending, isError } = useEditCompanyInfo();
+
   const coverPhotoRef = useRef<HTMLInputElement>(null);
   const profilePhotoRef = useRef<HTMLInputElement>(null);
-  const prevProfilePhotoRef = useRef<string | null>(null);
-  const prevCoverPhotoURLRef = useRef<string | null>(null);
 
   const [previewProfilePhotoURL, setPreviewProfilePhotoURL] = useState<
     string | null
@@ -62,20 +67,9 @@ export default function CompanyProfile() {
     mission: company.mission,
   });
 
+  console.log(companyInfo);
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // delete yung prev na nacreate na object url para maavoid memory leaks
-    return () => {
-      if (prevCoverPhotoURLRef.current) {
-        URL.revokeObjectURL(prevCoverPhotoURLRef.current);
-      }
-
-      if (prevProfilePhotoRef.current) {
-        URL.revokeObjectURL(prevProfilePhotoRef.current);
-      }
-    };
-  }, []);
 
   if (!company) {
     navigate("/login");
@@ -102,46 +96,57 @@ export default function CompanyProfile() {
     coverPhotoRef.current?.click();
   };
 
-  const handleCoverPhotoChange = (
+  const handleCoverPhotoChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    try {
+      const file = event.target.files?.[0];
 
-    if (!file) return;
+      if (!file) return;
 
-    if (prevCoverPhotoURLRef.current) {
-      URL.revokeObjectURL(prevCoverPhotoURLRef.current);
+      const data = new FormData();
+
+      data.append("file", file);
+      data.append("upload_preset", uploadPreset);
+      data.append("cloud_name", cloudName);
+
+      const secure_url = await uploadImageToCloudinary(data);
+
+      setPreviewCoverPhotoURL(secure_url);
+      setCompanyInfo((prev) => ({ ...prev, coverPhotoURL: secure_url }));
+      handleSaveEditChanges();
+    } catch (error) {
+      console.error(error);
     }
-
-    const newURL = URL.createObjectURL(file);
-    setPreviewCoverPhotoURL(newURL);
-    setCompanyInfo((prev) => ({ ...prev, coverPhotoURL: newURL }));
-    // may delay sa update ng state, fix later
-    handleSaveEditChanges();
-    prevCoverPhotoURLRef.current = newURL;
   };
 
-  const handleProfilePhotoChange = (
+  const handleProfilePhotoChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    try {
+      const file = event.target.files?.[0];
 
-    if (!file) return;
+      if (!file) return;
 
-    if (prevProfilePhotoRef.current) {
-      URL.revokeObjectURL(prevProfilePhotoRef.current);
+      const data = new FormData();
+
+      data.append("file", file);
+      data.append("upload_preset", uploadPreset);
+      data.append("cloud_name", cloudName);
+
+      const secure_url = await uploadImageToCloudinary(data);
+
+      setPreviewProfilePhotoURL(secure_url);
+      setCompanyInfo((prev) => ({ ...prev, photoURL: secure_url }));
+      handleSaveEditChanges();
+    } catch (error) {
+      console.error(error);
     }
-
-    const newURL = URL.createObjectURL(file);
-    setPreviewProfilePhotoURL(newURL);
-    setCompanyInfo((prev) => ({ ...prev, photoURL: newURL }));
-    handleSaveEditChanges();
-    prevProfilePhotoRef.current = newURL;
   };
 
   const handleSaveEditChanges = async () => {
     try {
-      await editCompanyAuth(companyInfo);
+      editCompanyInfo(companyInfo);
       setUser(companyInfo);
     } catch (error) {
       console.error(error);
@@ -152,7 +157,7 @@ export default function CompanyProfile() {
     <div className="flex-1 p-4 space-y-6">
       <div className="relative w-full overflow-hidden bg-white border rounded-lg">
         <div className="h-[200px] overflow-hidden relative bg-gradient-to-r from-cyan-400 to-fuchsia-400">
-          {company.photoURL || // cover photo dapat to pero since wala pa, eto nalang muna
+          {company.coverPhotoURL ||
             (previewCoverPhotoURL && (
               <img
                 src={company.photoURL ?? previewCoverPhotoURL ?? ""}
