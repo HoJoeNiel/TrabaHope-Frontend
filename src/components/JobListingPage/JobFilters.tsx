@@ -51,14 +51,6 @@ export default function JobFilters({
 
   return (
     <div className="w-full p-6 mt-2 bg-white rounded-lg shadow">
-      <div className="mb-2">
-        <h2 className="text-lg font-bold">Find Your Dream Job</h2>
-        <p className="text-sm text-gray-500">
-          Use AI-Powered matching to discover opportunities that fits your
-          skills
-        </p>
-      </div>
-
       <div className="relative mb-3">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <CiSearch className="text-gray-400 size-4" />
