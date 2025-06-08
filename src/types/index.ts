@@ -115,7 +115,7 @@ export enum EmploymentType {
 }
 
 export type CompanyFetchedApplication = {
-  applicantId: string; 
+  applicantId: string;
   companyId: string;
   name: string;
   title: string;
@@ -215,3 +215,10 @@ export interface InterviewData {
   type: string;
   location: string;
 }
+
+export type ResumeData = {
+  secureURL: string;
+  fileName: string;
+  size: number;
+  createdAt: string;
+};
