@@ -32,10 +32,10 @@ type ApplicantsTableProps = {
 };
 
 export function ApplicantsTable({ applications }: ApplicantsTableProps) {
-  const recruiter = useLoggedInUserStore((state) => state.user);
+  const user = useLoggedInUserStore((state) => state.user);
 
-  if (!isRecruiter(recruiter) || !recruiter) {
-    throw new Error("User is not a recruiter.");
+  if (!user || !isRecruiter(user)) {
+    throw new Error("User is not recruiter.");
   }
 
   const {
@@ -46,8 +46,6 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
-
-  if (!isRecruiter(recruiter)) throw new Error("User is not a recruiter.");
 
   const filteredApplicants = applications.filter((application) => {
     const matchesTab =
@@ -301,11 +299,8 @@ export function ApplicantsTable({ applications }: ApplicantsTableProps) {
               <TableCell>
                 <div className="flex space-x-4">
                   <button
-                    // TODO: Implement feature.
                     onClick={() =>
-                      console.log(
-                        "Redirect recruiter sa link para maview yung pdf resume ng applicant na yun."
-                      )
+                      window.open(applicant.applicant.resumeFile, "_blank")
                     }
                     className="flex items-center px-4 py-2 space-x-2 border rounded"
                   >
