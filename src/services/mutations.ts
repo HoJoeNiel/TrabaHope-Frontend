@@ -3,7 +3,9 @@ import {
   ApplicantAuth,
   ApplicationData,
   CompanyAuth,
+  Interview,
   InterviewData,
+  InterviewForPut,
 } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
@@ -11,6 +13,7 @@ import {
   cancelApplication,
   editCompanyAuth,
   modifyApplicationStatus,
+  modifyInterview,
   postInterview,
   saveJob,
   sendApplication,
@@ -68,6 +71,17 @@ export const useSetInterview = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["company-interviews"],
+      });
+    },
+  });
+};
+
+export const useModifyInterview = () => {
+  return useMutation({
+    mutationFn: (interview: InterviewForPut) => modifyInterview(interview),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["applicant-interviews"],
       });
     },
   });

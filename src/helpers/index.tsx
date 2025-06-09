@@ -1,6 +1,7 @@
 import { db } from "@/firebase";
 import {
   ApplicantAuth,
+  ApplicantAuthRemodel,
   ApplicantJob,
   Application,
   CompanyAuth,
@@ -105,6 +106,17 @@ export const isRecruiter = (user: unknown): user is CompanyAuth => {
 };
 
 export const isApplicant = (user: unknown): user is ApplicantAuth => {
+  return (
+    typeof user === "object" &&
+    user !== null &&
+    "role" in user &&
+    user.role === "applicant"
+  );
+};
+
+export const isApplicantRemodel = (
+  user: unknown
+): user is ApplicantAuthRemodel => {
   return (
     typeof user === "object" &&
     user !== null &&

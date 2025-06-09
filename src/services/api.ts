@@ -4,8 +4,10 @@ import {
   Application,
   ApplicationData,
   CompanyAuth,
+  Experience,
   Interview,
   InterviewData,
+  InterviewForPut,
   Job,
   JobWithId,
   Query,
@@ -438,11 +440,59 @@ export const postInterview = async (interview: InterviewData) => {
   }
 };
 
+export const modifyInterview = async (interview: InterviewForPut) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/web/recruiter/${
+        interview.applicantId
+      }/${interview.jobId}/interview`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(interview),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to set interview. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const fetchCompanyInterviews = async (
   companyId: string
 ): Promise<Interview[]> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/api/web/recruiter/${companyId}/interview`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API Request failed with status ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+export const fetchApplicantInterviews = async (
+  applicantId: string
+): Promise<Interview[]> => {
+  const response = await fetch(
+    `${
+      import.meta.env.VITE_API_URL
+    }/api/web/applicants/${applicantId}/interview`,
     {
       method: "GET",
       headers: {
@@ -469,9 +519,9 @@ export const uploadImageToCloudinary = async (data: FormData) => {
     }
   );
 
-  const { secure_url } = await response.json();
+  const image = await response.json();
 
-  return secure_url;
+  return image;
 };
 
 export const uploadResumePDFToCloudinary = async (data: FormData) => {
@@ -488,4 +538,64 @@ export const uploadResumePDFToCloudinary = async (data: FormData) => {
   const result = await response.json();
 
   return result;
+};
+
+export const fetchApplicantExperiences = async (
+  applicantId: string
+): Promise<Experience[]> => {
+  const response = await fetch(
+    `${
+      import.meta.env.VITE_API_URL
+    }/api/web/applicant/${applicantId}/experience`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API Request failed with status ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+export const fetchApplicantInfo = async (
+  uid: string
+): Promise<ApplicantAuth> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/applicant/${uid}/info`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API Request failed with status ${response.status}`);
+  }
+
+  return response.json();
+};
+
+export const fetchCompanyInfo = async (uid: string): Promise<CompanyAuth> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/recruiter/${uid}/info`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API Request failed with status ${response.status}`);
+  }
+
+  return response.json();
 };

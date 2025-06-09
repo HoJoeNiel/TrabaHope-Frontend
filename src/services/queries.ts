@@ -1,13 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  fetchApplicantExperiences,
+  fetchApplicantInfo,
+  fetchApplicantInterviews,
   fetchApplications,
   fetchAppliedJobs,
+  fetchCompanyInfo,
   fetchCompanyInterviews,
   fetchCompanyJobs,
   fetchJobs,
   fetchSavedJobs,
 } from "./api";
-import { ApplicantJob, Application, Interview, JobWithId } from "@/types";
+import {
+  ApplicantAuth,
+  ApplicantJob,
+  Application,
+  CompanyAuth,
+  Experience,
+  Interview,
+  JobWithId,
+} from "@/types";
 
 // export const useApplicantJobs = () => {
 //   return useQuery<ApplicantJob[]>({
@@ -64,9 +76,37 @@ export const useCompanyInterviews = (companyId: string) => {
   });
 };
 
+export const useApplicantInterviews = (applicantId: string) => {
+  return useQuery<Interview[]>({
+    queryKey: ["applicant-interviews"],
+    queryFn: () => fetchApplicantInterviews(applicantId),
+  });
+};
+
 export const useCompanyJobs = (companyId: string) => {
   return useQuery<JobWithId[]>({
     queryKey: ["company-jobs"],
     queryFn: () => fetchCompanyJobs(companyId),
+  });
+};
+
+export const useApplicantExperience = (applicantId: string) => {
+  return useQuery<Experience[]>({
+    queryKey: ["applicant-experiences"],
+    queryFn: () => fetchApplicantExperiences(applicantId),
+  });
+};
+
+export const useApplicantInfo = (uid: string) => {
+  return useQuery<ApplicantAuth>({
+    queryKey: ["applicant-info"],
+    queryFn: () => fetchApplicantInfo(uid),
+  });
+};
+
+export const useCompanyInfo = (uid: string) => {
+  return useQuery<CompanyAuth>({
+    queryKey: ["company-info"],
+    queryFn: () => fetchCompanyInfo(uid),
   });
 };
