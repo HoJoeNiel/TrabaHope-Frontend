@@ -124,12 +124,13 @@ export const createApplicantAccountWithFirebase = async (
     email: values.email,
     location: null,
     contactNumber: String(values.phoneNumber),
-    photoUrl: null,
+    photoURL: null,
+    linkedInURL: null,
     resumeFile: null,
     jobTitle: null,
     description: null,
     createdAt: new Date().toISOString(),
-    portfolioUrl: null,
+    portfolioURL: null,
     preferredEmploymentType: null,
     interests: null,
     role: "applicant",
@@ -157,12 +158,13 @@ export const createApplicantAccountWithBackend = async (
     email: values.email,
     location: null,
     contactNumber: String(values.phoneNumber),
-    photoUrl: null,
+    photoURL: null,
+    linkedInURL: null,
     resumeFile: null,
     jobTitle: null,
     description: null,
     createdAt: new Date().toISOString(),
-    portfolioUrl: null,
+    portfolioURL: null,
     preferredEmploymentType: null,
     interests: null,
     role: "applicant",
@@ -252,12 +254,13 @@ export const registerWithSocial = async (
       email: user.email ?? "defaultemail@gmail.com", //
       location: null,
       contactNumber: user.phoneNumber,
-      photoUrl: null,
+      photoURL: null,
+      linkedInURL: null,
       resumeFile: null,
       jobTitle: null,
       description: null,
       createdAt: new Date().toISOString(),
-      portfolioUrl: null,
+      portfolioURL: null,
       preferredEmploymentType: null,
       role: "applicant",
       interests: null,
@@ -299,6 +302,27 @@ export const deleteCurrentUser = async () => {
   try {
     await deleteUser(user);
     console.log("User deleted because user data cannot be found.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const editApplicantInfo = async (applicantInfo: ApplicantAuth) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/applicant/${applicantInfo.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(applicantInfo),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to save job. Status: ${response.status}`);
+    }
   } catch (error) {
     console.error(error);
   }

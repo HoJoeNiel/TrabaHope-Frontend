@@ -25,12 +25,13 @@ export type ApplicantAuth = {
   email: string;
   location: string | null;
   contactNumber: string | null;
-  photoUrl: string | null;
+  photoURL: string | null;
+  linkedInURL: string | null;
   resumeFile: string | null;
   jobTitle: string | null;
   description: string | null;
   createdAt: string;
-  portfolioUrl: string | null;
+  portfolioURL: string | null;
   preferredEmploymentType: string | null;
   interests: string[] | null;
   skills: string[] | null;
@@ -150,12 +151,26 @@ type Interviewer = {
 export interface Interview {
   applicant: Applicant;
   status: string;
+  jobId: number;
   duration: string;
-  date: Date | string;
-  time: Date | string;
+  date: string;
+  time: string;
   type: string;
   location: string;
   interviewer: Interviewer;
+}
+
+export interface InterviewForPut {
+  applicantId: string;
+  jobId: number;
+  interviewerName: string;
+  interviewerTitle: string;
+  status: string;
+  duration: string;
+  date: string;
+  time: string;
+  type: string;
+  location: string;
 }
 
 // UPDATED VERSION NG APPLICATION SHAPE, PALITAN YUNG OUTDATED NA COMPANYFETCHEDAPPLICATION TYPE
