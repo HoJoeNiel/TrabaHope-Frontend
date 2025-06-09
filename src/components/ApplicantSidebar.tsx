@@ -108,9 +108,9 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
           }`}
         >
           <div className="flex items-center justify-center overflow-hidden bg-black rounded-full size-10">
-            {applicant.role === "applicant" && applicant.photoUrl ? (
+            {applicant.role === "applicant" && applicant.photoURL ? (
               <img
-                src={applicant.photoUrl}
+                src={applicant.photoURL}
                 alt="company profile picture"
                 className="rounded-full size-10"
               />

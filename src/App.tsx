@@ -13,17 +13,17 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import ApplicantRootLayout from "./components/ApplicantRootLayout";
 import CompanyRootLayout from "./components/CompanyRootLayout";
+import { queryClient } from "./lib/queryClient";
+import ApplicantInterviews from "./pages/Applicant/ApplicantInterviews";
 import CompanyDashboard from "./pages/Recruiter/CompanyDashboard";
 import CompanyJobListing from "./pages/Recruiter/CompanyJobListing";
 import CompanyProfile from "./pages/Recruiter/CompanyProfile";
-import CompanySettings from "./pages/Recruiter/CompanySettings";
 import EditCompanyJob from "./pages/Recruiter/EditCompanyJob";
 import Interviews from "./pages/Recruiter/Interviews";
 import JobApplicantsPage from "./pages/Recruiter/JobApplicantsPage";
 import JobPostingForm from "./pages/Recruiter/JobPostingForm";
 import SpecificJobApplicants from "./pages/Recruiter/SpecificJobApplicants";
 import ViewCompanyJob from "./pages/Recruiter/ViewCompanyJob";
-import { queryClient } from "./lib/queryClient";
 
 const router = createBrowserRouter([
   {
@@ -46,9 +46,8 @@ const router = createBrowserRouter([
       { path: "job-listing", element: <JobListingPage /> },
       { path: "applications", element: <MyApplications /> },
       { path: "saved-jobs", element: <SavedJobsPage /> },
-      { path: "interviews", element: <div>Interviews</div> },
+      { path: "interviews", element: <ApplicantInterviews /> },
       { path: "profile", element: <ApplicantProfile /> },
-      { path: "settings", element: <div>Settings</div> },
     ],
   },
   {
@@ -63,7 +62,6 @@ const router = createBrowserRouter([
       { path: "job/:jobId/applicants", element: <SpecificJobApplicants /> },
       { path: "edit-job/:jobId", element: <EditCompanyJob /> },
       { path: "profile", element: <CompanyProfile /> },
-      { path: "settings", element: <CompanySettings /> },
       { path: "interviews", element: <Interviews /> },
     ],
   },
