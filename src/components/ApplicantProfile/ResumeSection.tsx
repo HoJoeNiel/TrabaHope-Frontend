@@ -3,25 +3,32 @@ import { CiFileOn } from "react-icons/ci";
 import { GoDownload } from "react-icons/go";
 import { MdOutlineFileUpload } from "react-icons/md";
 
-import { isApplicant } from "@/helpers";
 import { uploadResumePDFToCloudinary } from "@/services/api";
-import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { useResumeStore } from "@/stores/useResumeStore";
-import { ResumeData } from "@/types";
+import { ApplicantAuth, ResumeData } from "@/types";
 
 import ResumeAnalysis from "./ResumeAnalysis";
+import { useEditApplicantInfo } from "@/services/mutations";
+import Loading from "../Loading";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
-export default function ResumeSection() {
-  const user = useLoggedInUserStore((state) => state.user);
-
-  if (!isApplicant(user) || !user) throw new Error("User is not an applicant.");
-
+export default function ResumeSection({ user }: { user: ApplicantAuth }) {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
+  const {
+    mutate: editApplicantInfo,
+    isPending,
+    isError,
+  } = useEditApplicantInfo();
+
+  const setUser = useLoggedInUserStore((state) => state.setUser);
+
   const resumeFileRef = useRef<HTMLInputElement | null>(null);
+
   const resume = useResumeStore((state) => state.resume);
   const setResume = useResumeStore((state) => state.setResume);
+
   const downloadUrl = resume?.secureURL.replace(
     "/upload/",
     "/upload/fl_attachment/"
@@ -34,9 +41,8 @@ export default function ResumeSection() {
   const handleUploadResume = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setResume(null); // remove muna yung prev resume
     const file = event?.target?.files?.[0];
-
-    console.log(file);
 
     if (!file) return;
 
@@ -55,8 +61,8 @@ export default function ResumeSection() {
       createdAt: resumepdf.created_at,
     };
 
-    console.log(resumeData);
-
+    editApplicantInfo({ ...user, resumeFile: resumepdf.secure_url }); // check if edit ba talaga nangyayari
+    setUser({ ...user, resumeFile: resumepdf.secure_url }); // check if edit ba talaga nangyayari
     setResume(resumeData);
   };
 
@@ -94,8 +100,10 @@ export default function ResumeSection() {
       </div>
 
       <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-        {!resume && <p>No resume uploaded.</p>}
-        {resume && (
+        {!resume && isPending && <p>No uploaded resume.</p>}
+        {isPending && <Loading />}
+        {isError && <p>An error occured. Failed to upload resume.</p>}
+        {resume && !isPending && (
           <>
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded">
@@ -103,7 +111,10 @@ export default function ResumeSection() {
               </div>
 
               <div className="ml-3">
-                <p className="font-medium">{resume.fileName}</p>
+                <a href={user.resumeFile ?? ""} target="_blank">
+                  {resume.fileName}
+                </a>
+                {/* <a  href=className="font-medium">{resume.fileName} /> */}
                 <p className="text-sm text-gray-500">
                   Uploaded on {new Date().toLocaleDateString()}
                 </p>
