@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { isRecruiter } from "@/helpers";
-import {  uploadImageToCloudinary } from "@/services/api";
+import { uploadImageToCloudinary } from "@/services/api";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { CompanyAuth } from "@/types";
 import { useEditCompanyInfo } from "@/services/mutations";
@@ -46,7 +46,6 @@ export default function CompanyProfile() {
   const [isEditingDescription, setEditingDescription] = useState(false);
   const [isEditingMission, setEditingMission] = useState(false);
   const [isEditingSpecialities, setEditingSpecialities] = useState(false);
-
   const [specialtyInput, setSpecialtyInput] = useState("");
   const [companyInfo, setCompanyInfo] = useState<CompanyAuth>({
     id: company.id,
@@ -66,8 +65,6 @@ export default function CompanyProfile() {
     role: company.role,
     mission: company.mission,
   });
-
-  console.log(companyInfo);
 
   const navigate = useNavigate();
 
@@ -110,11 +107,12 @@ export default function CompanyProfile() {
       data.append("upload_preset", uploadPreset);
       data.append("cloud_name", cloudName);
 
-      const secure_url = await uploadImageToCloudinary(data);
+      const image = await uploadImageToCloudinary(data);
 
-      setPreviewCoverPhotoURL(secure_url);
-      setCompanyInfo((prev) => ({ ...prev, coverPhotoURL: secure_url }));
-      handleSaveEditChanges();
+      editCompanyInfo({ ...company, coverPhotoURL: image.secure_url });
+      setCompanyInfo((prev) => ({ ...prev, coverPhotoURL: image.secure_url }));
+      setPreviewCoverPhotoURL(image.secure_url);
+      // handleSaveEditChanges();
     } catch (error) {
       console.error(error);
     }
@@ -134,11 +132,11 @@ export default function CompanyProfile() {
       data.append("upload_preset", uploadPreset);
       data.append("cloud_name", cloudName);
 
-      const secure_url = await uploadImageToCloudinary(data);
+      const image = await uploadImageToCloudinary(data);
 
-      setPreviewProfilePhotoURL(secure_url);
-      setCompanyInfo((prev) => ({ ...prev, photoURL: secure_url }));
-      handleSaveEditChanges();
+      editCompanyInfo({ ...company, photoURL: image.secure_url });
+      setCompanyInfo((prev) => ({ ...prev, photoURL: image.secure_url }));
+      setPreviewProfilePhotoURL(image.secure_url);
     } catch (error) {
       console.error(error);
     }
@@ -157,14 +155,13 @@ export default function CompanyProfile() {
     <div className="flex-1 p-4 space-y-6">
       <div className="relative w-full overflow-hidden bg-white border rounded-lg">
         <div className="h-[200px] overflow-hidden relative bg-gradient-to-r from-cyan-400 to-fuchsia-400">
-          {company.coverPhotoURL ||
-            (previewCoverPhotoURL && (
-              <img
-                src={company.photoURL ?? previewCoverPhotoURL ?? ""}
-                alt="Company cover"
-                className="object-cover w-full h-full"
-              />
-            ))}
+          {company.coverPhotoURL && (
+            <img
+              src={company.coverPhotoURL ?? previewCoverPhotoURL ?? ""}
+              alt="Company cover"
+              className="object-cover w-full h-full"
+            />
+          )}
 
           <button
             className="absolute p-2 bg-white rounded-lg shadow top-6 right-6 hover:bg-gray-100"

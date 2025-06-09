@@ -6,7 +6,7 @@ import { ResumeData } from "@/types";
 type ResumeStore = {
   resume: ResumeData | null;
 
-  setResume: (resume: ResumeData) => void;
+  setResume: (resume: ResumeData | null) => void;
 };
 
 const resumeStoreLogic = persist<ResumeStore>(
