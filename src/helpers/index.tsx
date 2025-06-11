@@ -1,16 +1,20 @@
 import { db } from "@/firebase";
 import {
   ApplicantAuth,
-  ApplicantAuthRemodel,
   ApplicantJob,
   Application,
   CompanyAuth,
   CompanyFetchedApplication,
   Interview,
-  JobStatus,
 } from "@/types";
 import { doc, getDoc } from "firebase/firestore";
-import { BarChart2, Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
+import {
+  AlertCircle,
+  Calendar,
+  CheckCircle,
+  Clock,
+  XCircle,
+} from "lucide-react";
 
 export const getRelativeTimeAgo = (date: string | Date): string => {
   const now = new Date();
@@ -38,40 +42,6 @@ export const getDaysAgo = (date: string | Date): number => {
   const diffInDays = Math.floor(diffsInMilliseconds / (1000 * 60 * 60 * 24));
 
   return diffInDays;
-};
-
-export const getStatusColor = (status: string) => {
-  switch (status) {
-    case "Pending":
-      return "bg-blue-100 text-blue-600";
-    case "Review":
-      return "bg-purple-100 text-purple-600";
-    case "Interview":
-      return "bg-emerald-100 text-emerald-600";
-    case "Hired":
-      return "bg-green-100 text-green-600";
-    case "Rejected":
-      return "bg-red-100 text-red-600";
-    default:
-      return "bg-gray-100 text-gray-600";
-  }
-};
-
-export const getStatusIcon = (status: JobStatus) => {
-  switch (status) {
-    case "Pending":
-      return <Clock className="w-4 h-4" />;
-    case "Review":
-      return <BarChart2 className="w-4 h-4" />;
-    case "Interview":
-      return <Calendar className="w-4 h-4" />;
-    case "Hired":
-      return <CheckCircle className="w-4 h-4" />;
-    case "Rejected":
-      return <XCircle className="w-4 h-4" />;
-    default:
-      return <Clock className="w-4 h-4" />;
-  }
 };
 
 export const slugify = (text: string) =>
@@ -106,17 +76,6 @@ export const isRecruiter = (user: unknown): user is CompanyAuth => {
 };
 
 export const isApplicant = (user: unknown): user is ApplicantAuth => {
-  return (
-    typeof user === "object" &&
-    user !== null &&
-    "role" in user &&
-    user.role === "applicant"
-  );
-};
-
-export const isApplicantRemodel = (
-  user: unknown
-): user is ApplicantAuthRemodel => {
   return (
     typeof user === "object" &&
     user !== null &&
@@ -166,4 +125,38 @@ export const checkIfAlreadyApplied = (
   const appliedJob = appliedJobs?.find((j) => j.job.jobId === job.id);
 
   return appliedJob ? true : false;
+};
+
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Scheduled":
+      return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+    case "Confirmed":
+      return "bg-green-500/20 text-green-400 border-green-500/30";
+    case "Pending":
+      return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
+    case "Completed":
+      return "bg-purple-500/20 text-purple-400 border-purple-500/30";
+    case "Cancelled":
+      return "bg-red-500/20 text-red-400 border-red-500/30";
+    default:
+      return "bg-gray-500/20 text-gray-400 border-gray-500/30";
+  }
+};
+
+export const getStatusIcon = (status: string) => {
+  switch (status) {
+    case "Scheduled":
+      return <Calendar className="w-3 h-3" />;
+    case "Confirmed":
+      return <CheckCircle className="w-3 h-3" />;
+    case "Pending":
+      return <AlertCircle className="w-3 h-3" />;
+    case "Completed":
+      return <CheckCircle className="w-3 h-3" />;
+    case "Cancelled":
+      return <XCircle className="w-3 h-3" />;
+    default:
+      return <Clock className="w-3 h-3" />;
+  }
 };

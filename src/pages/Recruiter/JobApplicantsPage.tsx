@@ -17,8 +17,6 @@ export default function JobApplicantsPage() {
     isError,
   } = useCompanyApplications(recruiter.id);
 
-  console.log(applications);
-
   let fallback;
 
   if (isPending) {
@@ -32,6 +30,7 @@ export default function JobApplicantsPage() {
     );
   } // temporary lang
 
+  // TODO: Mag lagay ng fallback hero/better message
   if (!applications?.length) {
     fallback = (
       <div className="flex items-center justify-center flex-1">
@@ -41,7 +40,7 @@ export default function JobApplicantsPage() {
   }
   return (
     <div className="flex-1 p-4">
-      <h1 className="text-2xl font-semibold">Applications</h1>
+      <h1 className="text-2xl font-semibold text-white">Applications</h1>
       {/* <ApplicantsTable applications={applications} /> */}
       {fallback ?? <ApplicantsTable applications={applications ?? []} />}
     </div>

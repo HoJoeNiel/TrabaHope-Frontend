@@ -2,6 +2,7 @@ import CompanyJobCard from "@/components/CompanyDashboard/CompanyJobCard";
 import { isRecruiter } from "@/helpers";
 import { useCompanyJobs } from "@/services/queries";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import LoadingHero from "@/assets/Loading-pana.svg";
 
 export default function CompanyJobListing() {
   const company = useLoggedInUserStore((state) => state.user);
@@ -11,11 +12,16 @@ export default function CompanyJobListing() {
 
   const { data: jobs, isPending, isError } = useCompanyJobs(company.id);
 
-  console.log(jobs);
   return (
     <div className="flex-1 p-4">
-      <h1 className="text-2xl font-semibold">Job Listings</h1>
-      <div className="grid grid-cols-2 gap-4 py-8 max-2xl:grid-cols-1">
+      <h1 className="text-2xl font-semibold text-white">Job Listings</h1>
+      <div className="">
+        {isPending && (
+          <div className="flex flex-col items-center justify-center w-full h-[700px]">
+            <img src={LoadingHero} className="w-[500px]" />
+            <p className="block text-lg text-gray-300 ">Loading your job postings. Hang tight, this won’t take long!</p>
+          </div>
+        )}
         {jobs?.map((job) => (
           <CompanyJobCard key={job.id} job={job} />
         ))}

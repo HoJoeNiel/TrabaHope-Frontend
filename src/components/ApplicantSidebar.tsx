@@ -1,6 +1,7 @@
 import Logo from "@/assets/TrabahopeLogoPNG.png";
 import { isApplicant } from "@/helpers";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { useResumeStore } from "@/stores/useResumeStore";
 import { LogOut, PanelRight } from "lucide-react";
 import {
   PropsWithChildren,
@@ -9,14 +10,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type SidebarProps = PropsWithChildren;
 type SidebarItemProps = {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   text: string;
   active?: boolean;
-  alert?: boolean;
   path: string;
 };
 type SidebarContextType = {
@@ -32,14 +32,21 @@ const ApplicantSidebarContext = createContext<SidebarContextType>({
 });
 
 export default function ApplicantSidebar({ children }: SidebarProps) {
+  const location = useLocation();
+  const segment = location.pathname.split("/");
+  const lastSegment = segment[segment.length - 1]; // current active tab
+
   const [isExpanded, setIsExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState(lastSegment);
+
   const applicant = useLoggedInUserStore((state) => state.user);
+  const clearUser = useLoggedInUserStore((state) => state.clearUser);
+  const setResume = useResumeStore((state) => state.setResume);
+
+  const navigate = useNavigate();
 
   if (!applicant) throw new Error("There's no authenticated user.");
   if (!isApplicant) throw new Error("User is not an applicant.");
-
-  console.log(applicant);
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -66,9 +73,15 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
     };
   }, []);
 
+  const handleLogout = () => {
+    clearUser();
+    setResume(null);
+    navigate("/");
+  };
+
   return (
     <aside
-      className={`sticky top-0 left-0 z-20 h-screen text-sm bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0 ${
+      className={`sticky top-0 left-0 z-20 h-screen text-sm bg-gray-900/90 backdrop-blur-sm border-gray-700/50 border-r max-xl:absolute max-xl:top-0 max-lg:left-0 ${
         isExpanded ? "w-[250px]" : "w-auto"
       }`}
     >
@@ -85,12 +98,12 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
           >
             <img src={Logo} alt="Trabahope logo" className="size-12" />
             <div className="flex">
-              <span className="text-2xl font-bold text-cyan-700">Traba</span>
-              <span className="text-2xl font-bold text-cyan-700">Hope</span>
+              <span className="text-2xl font-bold text-cyan-500">Traba</span>
+              <span className="text-2xl font-bold text-fuchsia-500">Hope</span>
             </div>
           </div>
           <button onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
-            <PanelRight strokeWidth={1} className="text-gray-500" />
+            <PanelRight strokeWidth={1} className="text-gray-200" />
           </button>
         </div>
 
@@ -103,11 +116,11 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
         </ApplicantSidebarContext.Provider>
 
         <div
-          className={`border-t bg-stone-50 flex p-3 items-center ${
+          className={`rounded-lg bg-gray-800 flex p-3 items-center m-2 border border-white/10 ${
             isExpanded && "justify-between"
           }`}
         >
-          <div className="flex items-center justify-center overflow-hidden bg-black rounded-full size-10">
+          <div className="flex items-center justify-center overflow-hidden bg-white rounded-full size-10">
             {applicant.role === "applicant" && applicant.photoURL ? (
               <img
                 src={applicant.photoURL}
@@ -115,7 +128,7 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
                 className="rounded-full size-10"
               />
             ) : (
-              <span className="text-xl font-semibold text-white">
+              <span className="text-xl font-semibold text-black">
                 {applicant.name
                   .split(" ")
                   .map((word) => word[0]?.toUpperCase())
@@ -129,15 +142,19 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
             }`}
           >
             <div>
-              <h4 className="font-semibold text-gray-800 line-clamp-1">
+              <h4 className="font-semibold text-gray-200 line-clamp-1">
                 {applicant.name}
               </h4>
-              <span className="text-xs text-gray-600 line-clamp-1">
+              <span className="text-xs text-gray-400 line-clamp-1">
                 {applicant.email}
               </span>
             </div>
           </div>
-          {isExpanded && <LogOut size={20} />}
+          {isExpanded && (
+            <button onClick={handleLogout}>
+              <LogOut className="ml-3 text-gray-400" size={20} />
+            </button>
+          )}
         </div>
       </nav>
     </aside>
@@ -147,27 +164,26 @@ export default function ApplicantSidebar({ children }: SidebarProps) {
 export function ApplicantSidebarItem({
   icon: Icon,
   text,
-  alert,
   path,
 }: SidebarItemProps) {
   const { isExpanded, activeTab, setActiveTab } = useContext(
     ApplicantSidebarContext
   );
-  const isActive = activeTab === text;
+  const isActive = activeTab === path;
   const navigate = useNavigate();
 
   return (
     <li
       onClick={() => {
-        setActiveTab(text);
+        setActiveTab(path);
         navigate(path);
       }}
       className={`
-        relative text-base flex items-center py-2 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
+        relative text-base flex items-center text-gray-300 py-2 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
-            ? "bg-cyan-50 text-cyan-700 border-cyan-200"
-            : "hover:bg-cyan-50 text-gray-600 border-transparent"
+            ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/30"
+            : "hover:text-cyan-400 border-transparent"
         }
     `}
     >
@@ -181,10 +197,6 @@ export function ApplicantSidebarItem({
       >
         {text}
       </span>
-      {/* Palitan to ng number of something */}
-      {alert && isExpanded && (
-        <div className="absolute w-2 h-2-cyan bg-cyan-400 right-2" />
-      )}
 
       {!isExpanded && (
         <div

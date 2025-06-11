@@ -8,13 +8,16 @@ import Testimonials from "@/components/LandingPage/sections/Testimonials";
 import Footer from "@/components/Footer";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { useEffect } from "react";
+import { useResumeStore } from "@/stores/useResumeStore";
 
 export default function LandingPage() {
   const clearUser = useLoggedInUserStore((state) => state.clearUser);
+  const setResume = useResumeStore((state) => state.setResume);
 
   useEffect(() => {
     clearUser(); // clear user kapag nasa landing page sya
-  }, [clearUser]);
+    setResume(null);
+  }, [clearUser, setResume]);
   return (
     <div>
       <Header />

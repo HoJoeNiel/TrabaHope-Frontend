@@ -14,7 +14,7 @@ export function SelectComponent({
   defaultValue,
   setFn,
 }: {
-  options: string[];
+  options: string[] | number[];
   className?: string;
   defaultValue?: string;
   setFn?: (value: string) => void;
@@ -23,6 +23,7 @@ export function SelectComponent({
     <Select
       defaultValue={defaultValue}
       onValueChange={(value) => setFn?.(value)}
+      required
     >
       <SelectTrigger className={`text-sm ${className}`}>
         <SelectValue
@@ -34,7 +35,7 @@ export function SelectComponent({
         <SelectGroup>
           <SelectLabel>{options[0]}</SelectLabel>
           {options.map((o) => (
-            <SelectItem key={o} value={o}>
+            <SelectItem key={o} value={o.toString()}>
               {o}
             </SelectItem>
           ))}

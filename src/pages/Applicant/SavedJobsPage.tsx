@@ -15,10 +15,10 @@ export default function SavedJobsPage() {
 
   return (
     <div className="flex flex-col min-h-screen p-4 min-w-screen">
-      <main className="flex-1 w-full max-w-[1440px] mx-auto">
-        <div className="flex flex-col my-6 space-y-2">
-          <h1 className="text-2xl font-bold">Saved Jobs</h1>
-          <p className="text-gray-600">
+      <main className="flex-1 w-full mx-auto">
+        <div className="flex flex-col mb-4 space-y-2">
+          <h1 className="text-2xl font-bold text-white">Saved Jobs</h1>
+          <p className="text-gray-300">
             Jobs you've saved for later. Apply when you're ready.
           </p>
         </div>

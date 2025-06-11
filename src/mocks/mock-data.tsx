@@ -1,23 +1,55 @@
-import React from "react";
-
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { GrAscend } from "react-icons/gr";
-import { IoChatbubblesSharp } from "react-icons/io5";
-import { GiStonePath } from "react-icons/gi";
-import { IoIosSearch } from "react-icons/io";
-import { VscChecklist } from "react-icons/vsc";
-import { FaCheck } from "react-icons/fa6";
-import { GoGraph } from "react-icons/go";
-import { PiListChecksThin } from "react-icons/pi";
-import { FaRobot } from "react-icons/fa";
 import {
+  BarChart,
+  BookOpen,
+  Briefcase,
+  Calculator,
+  Calendar,
+  Clipboard,
+  Clock,
+  Code,
+  DollarSign,
+  FileText,
+  FlaskConical,
+  GanttChart,
+  Globe,
+  GraduationCap,
+  Handshake,
+  Headphones,
+  Heart,
+  Hourglass,
+  Lock,
+  MapPin,
+  Megaphone,
+  Palette,
+  PenTool,
+  Scale,
+  Settings,
+  Shield,
+  Stethoscope,
+  Truck,
+  UserCheck,
+  UserPlus,
+  Users,
+  Wrench,
+} from "lucide-react";
+import React from "react";
+import { FaRobot } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
+import { GiStonePath } from "react-icons/gi";
+import { GoGraph } from "react-icons/go";
+import { GrAscend } from "react-icons/gr";
+import { IoIosSearch } from "react-icons/io";
+import { IoChatbubblesSharp, IoDocumentTextOutline } from "react-icons/io5";
+import { PiListChecksThin } from "react-icons/pi";
+import { VscChecklist } from "react-icons/vsc";
+
+import {
+  ApplicantJob,
+  Application,
   category,
   EmploymentType,
   Interview,
-  ApplicantJob,
-  Application,
 } from "@/types";
-import { FileText, Users, Calendar, UserCheck } from "lucide-react";
 
 export interface FeatureType {
   icon: React.ReactNode;
@@ -651,6 +683,30 @@ export const experienceLevel: category[] = [
 ];
 
 // ✅ Location (Philippines only)
+
+export const corporateJobLocations = [
+  "Makati City",
+  "Taguig City (Bonifacio Global City)",
+  "Quezon City",
+  "Manila",
+  "Pasig City",
+  "Cebu City",
+  "Davao City",
+  "Mandaluyong City",
+  "Parañaque City",
+  "Clark Freeport Zone (Angeles City)",
+  "Ortigas Center (Pasig City)",
+  "Alabang (Muntinlupa City)",
+  "Baguio City",
+  "Iloilo City",
+  "Bacoor City",
+  "San Fernando City (Pampanga)",
+  "Laguna (Santa Rosa and Biñan)",
+  "Batangas City",
+  "Cagayan de Oro City",
+  "Subic Bay Freeport Zone",
+];
+
 export const locations: category[] = [
   { value: "metro-manila", label: "Metro Manila" },
   { value: "makati", label: "Makati" },
@@ -684,243 +740,13 @@ export const industries: category[] = [
 ];
 
 // ✅ Salary Range (Monthly PHP)
-export const salaryRange: category[] = [
-  { value: "10000-20000", label: "₱10,000 - ₱20,000" },
-  { value: "20001-30000", label: "₱20,001 - ₱30,000" },
+export const salaryRange = [
+  "10000-20000",
+  "20001-30000",
   { value: "30001-50000", label: "₱30,001 - ₱50,000" },
   { value: "50001-70000", label: "₱50,001 - ₱70,000" },
   { value: "70001-100000", label: "₱70,001 - ₱100,000" },
   { value: "100001-above", label: "₱100,001 and above" },
-];
-
-export const ApplicantJobs = [];
-
-export const JOBS: ApplicantSideJob[] = [
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
-    jobTitle: "Frontend Developer",
-    companyName: "Apple Inc.",
-    remote: true,
-    location: "Salcedo Village, Makati City",
-    employmentType: EmploymentType.FULL_TIME,
-    salaryRange: "₱35,000 - ₱45,000",
-    timestamps: {
-      posted: new Date("March 21, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 98,
-    description:
-      "We're looking for an experienced Frontend Developer to join our team and build cutting-edge web applications using React, Typescript, and Tailwind CSS. You will be responsible for transforming design mockups into interactive, high-performance interfaces while collaborating closely with designers and backend developers. Ideal candidates have a keen eye for detail, a deep understanding of component-based architecture, and are comfortable working in a fast-paced agile environment. Experience with Git workflows and performance optimization is a plus.",
-    tags: ["React", "Typescript", "Tailwind CSS", "Git"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-    jobTitle: "Backend Engineer",
-    companyName: "Google LLC",
-    remote: false,
-    location: "Cebu IT Park, Cebu City",
-    employmentType: EmploymentType.FULL_TIME,
-    salaryRange: "₱50,000 - ₱65,000",
-    timestamps: {
-      posted: new Date("March 21, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 87,
-    description:
-      "We're seeking a Backend Engineer to build and maintain our RESTful APIs and microservices using Node.js and PostgreSQL. You'll collaborate with frontend developers and DevOps to ensure robust and scalable backend architecture. Experience with Docker, CI/CD pipelines, and writing unit/integration tests is highly preferred.",
-    tags: ["Node.js", "PostgreSQL", "Docker", "CI/CD"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-    jobTitle: "UI/UX Designer",
-    companyName: "Microsoft Corporation",
-    remote: true,
-    location: "Remote (Philippines)",
-    employmentType: EmploymentType.FREELANCE,
-    salaryRange: "₱30,000 - ₱40,000",
-    timestamps: {
-      posted: new Date("April 07, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 91,
-    description:
-      "We're hiring a UI/UX Designer who excels at creating intuitive and visually appealing designs using Figma. You’ll work closely with our product and engineering teams to shape the look and feel of our platform. Ideal candidates are user-obsessed and have experience conducting usability testing and crafting design systems.",
-    tags: ["Figma", "Design Systems", "User Research", "Prototyping"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-    jobTitle: "Data Analyst",
-    companyName: "Amazon, Inc.",
-    remote: false,
-    location: "Ortigas Center, Pasig City",
-    employmentType: EmploymentType.FULL_TIME,
-    salaryRange: "₱40,000 - ₱55,000",
-    timestamps: {
-      posted: new Date("February 27, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 85,
-    description:
-      "Join our growing analytics team as a Data Analyst! You'll be responsible for interpreting complex data sets and generating actionable insights for stakeholders. Strong SQL skills, familiarity with data visualization tools like Power BI or Tableau, and a solid grasp of statistical techniques are must-haves.",
-    tags: ["SQL", "Power BI", "Data Visualization", "Statistics"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://www.stocksbnb.com/wp-content/uploads/2022/08/meta-logo-1.png",
-    jobTitle: "Customer Support Specialist",
-    companyName: "Meta Platforms Inc.",
-    remote: true,
-    location: "Remote (Philippines)",
-    employmentType: EmploymentType.PART_TIME,
-    salaryRange: "₱20,000 - ₱25,000",
-    timestamps: {
-      posted: new Date("April 13, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 93,
-    description:
-      "We're looking for a reliable Customer Support Specialist to join our remote team. Responsibilities include responding to customer inquiries via email and chat, troubleshooting basic product issues, and escalating technical problems. Excellent written English and empathy are key traits we value.",
-    tags: [
-      "Customer Service",
-      "Email Support",
-      "Chat Support",
-      "English Communication",
-    ],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-    jobTitle: "UI/UX Designer",
-    companyName: "Netflix, Inc.",
-    remote: true,
-    location: "Remote",
-    employmentType: EmploymentType.PART_TIME,
-    salaryRange: "₱25,000 - ₱35,000",
-    timestamps: {
-      posted: new Date("January 18, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 92,
-    description:
-      "NextWave Solutions is hiring a creative UI/UX Designer to help design intuitive interfaces for our web and mobile apps. You'll work closely with product managers and developers to turn user needs into elegant visual designs.",
-    tags: ["Figma", "User Research", "Prototyping", "Adobe XD"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
-    jobTitle: "Data Analyst",
-    companyName: "Nike, Inc.",
-    remote: false,
-    location: "Ortigas Center, Pasig City",
-    employmentType: EmploymentType.FULL_TIME,
-    salaryRange: "₱40,000 - ₱55,000",
-    timestamps: {
-      posted: new Date("February 11, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 87,
-    description:
-      "We’re seeking a Data Analyst to process and analyze large data sets to uncover insights that will drive strategic decisions across departments. Candidates should be proficient in SQL, Python, and data visualization tools like Power BI or Tableau.",
-    tags: ["SQL", "Python", "Power BI", "Data Visualization"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
-    jobTitle: "Mobile App Developer",
-    companyName: "Tesla, Inc.",
-    remote: true,
-    location: "Remote",
-    employmentType: EmploymentType.CONTRACT,
-    salaryRange: "₱60,000 - ₱80,000",
-    timestamps: {
-      posted: new Date("March 29, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 94,
-    description:
-      "Groove Ventures is on the lookout for a skilled Mobile App Developer with experience in Flutter and Firebase. You will play a key role in building scalable, high-performance applications for our global user base.",
-    tags: ["Flutter", "Firebase", "REST API", "State Management"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://logos-world.net/wp-content/uploads/2020/04/Sony-Logo-1962-1969.png",
-    jobTitle: "DevOps Engineer",
-    companyName: "Sony Group Corporation",
-    remote: false,
-    location: "Bonifacio Global City, Taguig",
-    employmentType: EmploymentType.FULL_TIME,
-    salaryRange: "₱55,000 - ₱70,000",
-    timestamps: {
-      posted: new Date("March 03, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 89,
-    description:
-      "ZenLayer PH is hiring a DevOps Engineer to automate infrastructure and improve our CI/CD pipelines. The ideal candidate has experience with cloud providers, Docker, Kubernetes, and monitoring tools like Prometheus.",
-    tags: ["CI/CD", "Kubernetes", "Docker", "AWS"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
-  {
-    id: crypto.randomUUID(),
-    companyProfileUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
-    jobTitle: "Content Writer",
-    companyName: "Samsung Electronics Co., Ltd.",
-    remote: true,
-    location: "Remote",
-    employmentType: EmploymentType.FREELANCE,
-    salaryRange: "₱20,000 - ₱30,000",
-    timestamps: {
-      posted: new Date("April 04, 2025").toLocaleDateString(),
-    },
-    matchPercentage: 91,
-    description:
-      "Aspire Media is looking for a creative and detail-oriented content writer to produce compelling blog posts, social media content, and marketing copy. Experience in SEO and content strategy is a plus.",
-    tags: ["SEO", "Copywriting", "Content Strategy", "Blogging"],
-    actions: {
-      saved: false,
-      applied: false,
-    },
-  },
 ];
 
 export const COLORS = [
@@ -1590,4 +1416,306 @@ export const COMPANIES: Company[] = [
       },
     ],
   },
+];
+
+export const jobFields = [
+  {
+    id: "frontend",
+    name: "Frontend Development",
+    icon: Code,
+    color: "#06b6d4",
+    description: "Build user interfaces and web experiences",
+  },
+  {
+    id: "backend",
+    name: "Backend Development",
+    icon: Shield,
+    color: "#8b5cf6",
+    description: "Server-side development and APIs",
+  },
+  {
+    id: "fullstack",
+    name: "Full Stack Development",
+    icon: Globe,
+    color: "#10b981",
+    description: "End-to-end web development",
+  },
+  {
+    id: "mobile",
+    name: "Mobile Development",
+    icon: Briefcase,
+    color: "#f59e0b",
+    description: "iOS and Android applications",
+  },
+  {
+    id: "uiux",
+    name: "UI/UX Design",
+    icon: Palette,
+    color: "#ef4444",
+    description: "User interface and experience design",
+  },
+  {
+    id: "data",
+    name: "Data Science",
+    icon: BarChart,
+    color: "#6366f1",
+    description: "Data analysis and machine learning",
+  },
+  {
+    id: "devops",
+    name: "DevOps Engineering",
+    icon: Settings,
+    color: "#14b8a6",
+    description: "Infrastructure and deployment",
+  },
+  {
+    id: "product",
+    name: "Product Management",
+    icon: Users,
+    color: "#f97316",
+    description: "Product strategy and development",
+  },
+  {
+    id: "marketing",
+    name: "Digital Marketing",
+    icon: Megaphone,
+    color: "#ec4899",
+    description: "Online promotion and advertising",
+  },
+  {
+    id: "sales",
+    name: "Sales",
+    icon: Handshake,
+    color: "#3b82f6",
+    description: "Client acquisition and revenue growth",
+  },
+  {
+    id: "hr",
+    name: "Human Resources",
+    icon: UserPlus,
+    color: "#22c55e",
+    description: "Recruitment and employee management",
+  },
+  {
+    id: "finance",
+    name: "Finance",
+    icon: DollarSign,
+    color: "#facc15",
+    description: "Budgeting and financial planning",
+  },
+  {
+    id: "accounting",
+    name: "Accounting",
+    icon: Calculator,
+    color: "#64748b",
+    description: "Bookkeeping and financial reporting",
+  },
+  {
+    id: "operations",
+    name: "Operations Management",
+    icon: Wrench,
+    color: "#a855f7",
+    description: "Process optimization and logistics",
+  },
+  {
+    id: "customer",
+    name: "Customer Support",
+    icon: Headphones,
+    color: "#06b6d4",
+    description: "Client assistance and issue resolution",
+  },
+  {
+    id: "project",
+    name: "Project Management",
+    icon: GanttChart,
+    color: "#10b981",
+    description: "Planning and executing projects",
+  },
+  {
+    id: "legal",
+    name: "Legal Services",
+    icon: Scale,
+    color: "#8b5cf6",
+    description: "Contracts and compliance",
+  },
+  {
+    id: "content",
+    name: "Content Creation",
+    icon: PenTool,
+    color: "#f59e0b",
+    description: "Writing and multimedia production",
+  },
+  {
+    id: "education",
+    name: "Education & Training",
+    icon: BookOpen,
+    color: "#ef4444",
+    description: "Teaching and skill development",
+  },
+  {
+    id: "research",
+    name: "Research & Development",
+    icon: FlaskConical,
+    color: "#6366f1",
+    description: "Innovation and product research",
+  },
+  {
+    id: "health",
+    name: "Healthcare Administration",
+    icon: Stethoscope,
+    color: "#14b8a6",
+    description: "Managing healthcare operations",
+  },
+  {
+    id: "security",
+    name: "Cybersecurity",
+    icon: Lock,
+    color: "#f97316",
+    description: "Protecting systems and data",
+  },
+  {
+    id: "logistics",
+    name: "Logistics & Supply Chain",
+    icon: Truck,
+    color: "#ec4899",
+    description: "Managing transportation and inventory",
+  },
+  {
+    id: "event",
+    name: "Event Planning",
+    icon: Calendar,
+    color: "#3b82f6",
+    description: "Organizing events and conferences",
+  },
+  {
+    id: "admin",
+    name: "Administrative Support",
+    icon: Clipboard,
+    color: "#22c55e",
+    description: "Office management and coordination",
+  },
+];
+
+export const interests = [
+  "Artificial Intelligence",
+  "Machine Learning",
+  "Cloud Computing",
+  "Cybersecurity",
+  "Blockchain",
+  "IoT",
+  "AR/VR",
+  "Fintech",
+  "E-commerce",
+  "Healthcare Tech",
+  "EdTech",
+  "Gaming",
+  "Social Media",
+  "Sustainability",
+  "Automation",
+  "Big Data",
+  "Microservices",
+  "API Development",
+  "Open Source",
+  "Startup Culture",
+  "Graphic Design",
+  "Photography",
+  "Video Production",
+  "Content Writing",
+  "Journalism",
+  "Public Relations",
+  "Digital Marketing",
+  "SEO",
+  "Branding",
+  "Advertising",
+  "Event Planning",
+  "Interior Design",
+  "Architecture",
+  "Urban Planning",
+  "Landscape Design",
+  "Fashion Design",
+  "Textile Innovation",
+  "Culinary Arts",
+  "Food Science",
+  "Nutrition",
+  "Sports Management",
+  "Fitness Training",
+  "Wellness Coaching",
+  "Mental Health",
+  "Psychology",
+  "Sociology",
+  "Anthropology",
+  "History",
+  "Archaeology",
+  "Environmental Science",
+  "Renewable Energy",
+  "Climate Change",
+  "Wildlife Conservation",
+  "Agriculture",
+  "Horticulture",
+  "Marine Biology",
+  "Biotechnology",
+  "Genetics",
+  "Pharmaceuticals",
+  "Medical Research",
+  "Nursing",
+  "Public Health",
+  "Logistics",
+  "Supply Chain",
+  "Transportation",
+  "Aerospace",
+  "Automotive",
+  "Robotics",
+  "Manufacturing",
+  "Construction",
+  "Real Estate",
+  "Property Management",
+  "Finance",
+  "Investing",
+  "Accounting",
+  "Economics",
+  "Entrepreneurship",
+  "Human Resources",
+  "Talent Acquisition",
+  "Organizational Development",
+  "Law",
+  "Compliance",
+  "Policy Analysis",
+  "Education",
+  "Curriculum Development",
+  "Special Education",
+  "Music Production",
+  "Performing Arts",
+  "Theater",
+  "Dance",
+  "Visual Arts",
+  "Animation",
+  "3D Modeling",
+  "Travel",
+  "Tourism",
+  "Hospitality",
+  "Customer Experience",
+  "Retail Management",
+  "Nonprofit Work",
+  "Community Outreach",
+  "Volunteerism",
+  "Data Analytics",
+  "Business Strategy",
+  "Project Management",
+];
+
+export const jobTypes = [
+  { id: "fulltime", name: "Full-time", icon: Clock },
+  { id: "parttime", name: "Part-time", icon: Clock },
+  { id: "contract", name: "Contract", icon: Briefcase },
+  { id: "freelance", name: "Freelance", icon: Globe },
+  { id: "temporary", name: "Temporary", icon: Hourglass },
+  { id: "internship", name: "Internship", icon: GraduationCap },
+  { id: "volunteer", name: "Volunteer", icon: Heart },
+  { id: "apprenticeship", name: "Apprenticeship", icon: Wrench },
+  { id: "seasonal", name: "Seasonal", icon: Calendar },
+  { id: "remoteonly", name: "Remote-only", icon: MapPin },
+];
+
+export const salary = [
+  10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000,
 ];
