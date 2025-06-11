@@ -33,19 +33,29 @@ export type ApplicantAuth = {
   createdAt: string;
   portfolioURL: string | null;
   preferredEmploymentType: string | null;
-  interests: string[] | null;
+  interest: string[] | null;
   skills: string[] | null;
   openTo: string[] | null;
   role: "applicant";
 };
 
 export interface Experience {
-  jobTitle: string | null;
-  companyName: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  location: string | null;
-  description: string | null;
+  jobTitle: string;
+  companyName: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  description: string;
+}
+
+export interface ExperienceToPost {
+  applicantId: string;
+  jobTitle: string;
+  companyName: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  description: string;
 }
 
 export type CompanyAuth = {
@@ -74,14 +84,14 @@ export interface Job {
   maxSalary: number;
   minSalary: number;
   location: string;
-  employmentType: EmploymentType;
+  employmentType: string;
   description: string;
   benefits: string;
   responsibilities: string;
   remote: boolean;
   tags: string[];
   createdAt: string;
-  AIScore?: number;
+  score?: number;
 }
 
 export interface JobWithId extends Job {
@@ -160,19 +170,6 @@ export interface Interview {
   interviewer: Interviewer;
 }
 
-export interface InterviewForPut {
-  applicantId: string;
-  jobId: number;
-  interviewerName: string;
-  interviewerTitle: string;
-  status: string;
-  duration: string;
-  date: string;
-  time: string;
-  type: string;
-  location: string;
-}
-
 // UPDATED VERSION NG APPLICATION SHAPE, PALITAN YUNG OUTDATED NA COMPANYFETCHEDAPPLICATION TYPE
 // Shape ng application
 export interface Application {
@@ -196,6 +193,7 @@ export interface Application {
   appliedAt: string;
   status: string;
   feedback: string | null;
+  score?: number;
 }
 
 export interface ApplicationData {
@@ -208,9 +206,9 @@ export interface ApplicationData {
 }
 
 export type Query = {
-  applicantId: string | undefined;
-  interests: string[];
-  filters: {
+  applicantId: string;
+  interests: string[] | null;
+  filters?: {
     search: string;
     min_salary: number;
     max_salary: number;
@@ -218,9 +216,22 @@ export type Query = {
   };
 };
 
-export interface InterviewData {
+export interface InterviewForPut {
   applicantId: string;
   jobId: number;
+  interviewerName: string;
+  interviewerTitle: string;
+  status: string;
+  duration: string;
+  date: string;
+  time: string;
+  type: string;
+  location: string;
+}
+
+export interface InterviewData {
+  applicantId: string | undefined; // pang tanggal error lang muna haup
+  jobId: number | undefined;
   interviewerName: string;
   interviewerTitle: string;
   status: string;

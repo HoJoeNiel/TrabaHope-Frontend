@@ -5,6 +5,7 @@ import {
   ApplicationData,
   CompanyAuth,
   Experience,
+  ExperienceToPost,
   Interview,
   InterviewData,
   InterviewForPut,
@@ -161,21 +162,19 @@ export const editCompanyAuth = async (
 //   return await response.json();
 // };
 
-// export async function fetchApplicantJobs({
-//   query,
-//   preferences,
-// }: {
-//   query: string;
-//   preferences: string[];
-// }) {
-//   const params = new URLSearchParams();
-//   if (query) params.append("query", query);
-//   preferences.forEach((p) => params.append("preference", p));
+export const fetchRecommendedJobs = async (query: Query) => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/web/jobs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(query),
+  });
 
-//   const res = await fetch(`/api/jobs?${params.toString()}`);
-//   if (!res.ok) throw new Error("Failed to fetch jobs");
-//   return res.json();
-// }
+  if (!res.ok) throw new Error("Failed to fetch jobs");
+
+  return res.json();
+};
 
 export const fetchJobs = async (): Promise<ApplicantJob[]> => {
   try {
@@ -440,7 +439,7 @@ export const postInterview = async (interview: InterviewData) => {
   }
 };
 
-export const modifyInterview = async (interview: InterviewForPut) => {
+export const modifyInterview = async (interview: InterviewData) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/web/recruiter/${
@@ -598,4 +597,77 @@ export const fetchCompanyInfo = async (uid: string): Promise<CompanyAuth> => {
   }
 
   return response.json();
+};
+
+export const postExperience = async (experience: ExperienceToPost) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/web/applicant/experience`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(experience),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to set interview. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const editExperience = async (experience: ExperienceToPost) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/web/applicant/${
+        experience.applicantId
+      }/experience`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(experience),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to set interview. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchResumeRecommendation = async (resumeURL: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/career_suggestion`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ resumeURL }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to save job. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
 };

@@ -3,17 +3,21 @@ import {
   ApplicantAuth,
   ApplicationData,
   CompanyAuth,
-  Interview,
+  ExperienceToPost,
   InterviewData,
   InterviewForPut,
+  Query,
 } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 import {
   cancelApplication,
   editCompanyAuth,
+  editExperience,
+  fetchRecommendedJobs,
   modifyApplicationStatus,
   modifyInterview,
+  postExperience,
   postInterview,
   saveJob,
   sendApplication,
@@ -78,7 +82,7 @@ export const useSetInterview = () => {
 
 export const useModifyInterview = () => {
   return useMutation({
-    mutationFn: (interview: InterviewForPut) => modifyInterview(interview),
+    mutationFn: (interview: InterviewData) => modifyInterview(interview),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["applicant-interviews"],
@@ -109,5 +113,33 @@ export const useEditApplicantInfo = () => {
 export const useEditCompanyInfo = () => {
   return useMutation({
     mutationFn: (companyInfo: CompanyAuth) => editCompanyAuth(companyInfo),
+  });
+};
+
+export const useAddExperience = () => {
+  return useMutation({
+    mutationFn: (experience: ExperienceToPost) => postExperience(experience),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["applicant-experiences"],
+      });
+    },
+  });
+};
+
+export const useEditExperience = () => {
+  return useMutation({
+    mutationFn: (experience: ExperienceToPost) => editExperience(experience),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["applicant-experiences"],
+      });
+    },
+  });
+};
+
+export const useFetchRecommendedJobs = () => {
+  return useMutation({
+    mutationFn: (query: Query) => fetchRecommendedJobs(query),
   });
 };
