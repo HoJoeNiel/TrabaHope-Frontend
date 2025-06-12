@@ -1,10 +1,10 @@
 import { RECRUITER_SIGNUP_FEATURE } from "@/mocks/mock-data";
 import AuthFeatureCard from "@/components/AuthFeatureCard";
-import Logo from "@/assets/TrabahopeLogoPNG.png";
+import Logo from "@/assets/Blue_White_Professional_Mobile_App_Logo-removebg-preview.png";
 
 export default function RecruiterSignupHeroPanel() {
   return (
-    <div className="flex justify-end min-h-screen bg-fuchsia-800/80 max-md:h-auto max-md:pb-20 pt-28">
+    <div className="flex justify-end min-h-screen bg-gradient-to-r from-fuchsia-900 to-purple-900 max-md:h-auto max-md:pb-20 pt-28">
       <div className="w-full max-w-[720px] mx-16">
         <div className="flex items-center space-x-3">
           <img src={Logo} alt="Trabahope logo" className="size-16" />

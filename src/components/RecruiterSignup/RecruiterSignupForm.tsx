@@ -7,7 +7,7 @@ import { newCompanyAccountSchema } from "@/schema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, FormikErrors } from "formik";
-import { Loader2 } from "lucide-react";
+import { Building2, Globe, Loader2, Lock, Mail, Phone } from "lucide-react";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import {
   createCompanyAccountWithBackend,
@@ -70,12 +70,12 @@ export default function RecruiterSignupForm() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-slate-800">
       <div className="px-24 mt-20 mb-12 w-full max-w-[720px]">
-        <h2 className="mb-2 text-3xl font-bold text-gray-800 max-lg:text-2xl">
+        <h2 className="mb-2 text-3xl font-bold text-gray-100 max-lg:text-2xl">
           Create Recruiter Account
         </h2>
-        <p className="mb-8 text-gray-600 max-lg:text-sm">
+        <p className="mb-8 text-gray-200 max-lg:text-sm">
           Join thousands of recruiters using our AI-powered platform
         </p>
         <Formik
@@ -89,6 +89,7 @@ export default function RecruiterSignupForm() {
             <Form onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4 mt-6">
                 <FormField
+                  icon={Building2}
                   type="text"
                   name="companyName"
                   id="companyName"
@@ -106,6 +107,7 @@ export default function RecruiterSignupForm() {
               </div>
 
               <FormField
+                icon={Globe}
                 type="text"
                 name="companyWebsite"
                 id="companyWebsite"
@@ -114,6 +116,7 @@ export default function RecruiterSignupForm() {
               />
 
               <FormField
+                icon={Mail}
                 type="email"
                 name="companyEmail"
                 id="companyEmail"
@@ -121,6 +124,7 @@ export default function RecruiterSignupForm() {
               />
 
               <FormField
+                icon={Lock}
                 type="password"
                 name="password"
                 id="password"
@@ -129,6 +133,7 @@ export default function RecruiterSignupForm() {
               />
 
               <FormField
+                icon={Lock}
                 type="password"
                 id="confirmPassword"
                 label="Confirm Password"
@@ -136,6 +141,7 @@ export default function RecruiterSignupForm() {
               />
 
               <FormField
+                icon={Phone}
                 type="text"
                 name="phoneNumber"
                 id="phoneNumber"
@@ -146,13 +152,14 @@ export default function RecruiterSignupForm() {
                 <Checkbox
                   id="terms"
                   required
+                  className="border-white"
                   onCheckedChange={(checked) =>
                     setFieldValue("terms", checked === true)
                   }
                 />
                 <label
                   htmlFor="terms"
-                  className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="leading-none text-gray-200 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Accept terms and conditions
                 </label>
@@ -161,7 +168,7 @@ export default function RecruiterSignupForm() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-6 my-6 text-lg bg-fuchsia-500 max-lg:text-base hover:bg-fuchsia-600"
+                className="w-full py-6 my-6 text-lg bg-fuchsia-800 max-lg:text-base hover:bg-fuchsia-900"
               >
                 {isLoading ? (
                   <div className="flex items-center space-x-2">
@@ -176,15 +183,15 @@ export default function RecruiterSignupForm() {
           )}
         </Formik>
 
-        <p className="mt-6 text-center text-gray-600">
+        <p className="mt-6 text-center text-gray-200">
           Already have an account?
-          <a href="#" className="font-medium text-blue-600 hover:underline">
+          <a href="#" className="font-medium text-blue-400 hover:underline">
             {" "}
             Sign in
           </a>
         </p>
 
-        <div className="mt-12 text-sm text-center text-gray-500">
+        <div className="mt-12 text-sm text-center text-gray-200">
           © 2025 TrabaHope. All rights reserved.
         </div>
       </div>

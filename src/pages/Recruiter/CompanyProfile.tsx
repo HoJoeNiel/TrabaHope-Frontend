@@ -17,9 +17,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { isRecruiter } from "@/helpers";
 import { uploadImageToCloudinary } from "@/services/api";
+import { useEditCompanyInfo } from "@/services/mutations";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { CompanyAuth } from "@/types";
-import { useEditCompanyInfo } from "@/services/mutations";
 
 export default function CompanyProfile() {
   const company = useLoggedInUserStore((state) => state.user);
@@ -30,7 +30,7 @@ export default function CompanyProfile() {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-  const { mutate: editCompanyInfo, isPending, isError } = useEditCompanyInfo();
+  const { mutate: editCompanyInfo } = useEditCompanyInfo();
 
   const coverPhotoRef = useRef<HTMLInputElement>(null);
   const profilePhotoRef = useRef<HTMLInputElement>(null);
@@ -112,7 +112,6 @@ export default function CompanyProfile() {
       editCompanyInfo({ ...company, coverPhotoURL: image.secure_url });
       setCompanyInfo((prev) => ({ ...prev, coverPhotoURL: image.secure_url }));
       setPreviewCoverPhotoURL(image.secure_url);
-      // handleSaveEditChanges();
     } catch (error) {
       console.error(error);
     }
@@ -153,11 +152,11 @@ export default function CompanyProfile() {
 
   return (
     <div className="flex-1 p-4 space-y-6">
-      <div className="relative w-full overflow-hidden bg-white border rounded-lg">
-        <div className="h-[200px] overflow-hidden relative bg-gradient-to-r from-cyan-400 to-fuchsia-400">
+      <div className="relative w-full overflow-hidden bg-gray-800 border border-gray-700 rounded-lg">
+        <div className="h-[200px] overflow-hidden relative bg-gradient-to-r from-fuchsia-700 to-purple-700">
           {company.coverPhotoURL && (
             <img
-              src={company.coverPhotoURL ?? previewCoverPhotoURL ?? ""}
+              src={companyInfo.coverPhotoURL ?? previewCoverPhotoURL ?? ""}
               alt="Company cover"
               className="object-cover w-full h-full"
             />
@@ -178,17 +177,17 @@ export default function CompanyProfile() {
           />
         </div>
 
-        <div className="absolute border-4 border-white rounded-md shadow top-40 left-10 bg-gray-50 size-36">
+        <div className="absolute border-4 rounded shadow top-40 left-10 bg-gray-50 size-36">
           <div className="relative w-full h-full">
             {company.photoURL || previewProfilePhotoURL ? (
               <img
-                src={company.photoURL ?? previewProfilePhotoURL ?? ""}
+                src={companyInfo.photoURL ?? previewProfilePhotoURL ?? ""}
                 alt="Company logo"
                 className="object-cover w-full h-full"
               />
             ) : (
-              <div className="flex items-center justify-center w-full h-full bg-gray-800 rounded-md">
-                <span className="text-4xl font-semibold text-gray-200">
+              <div className="flex items-center justify-center w-full h-full bg-gray-400 rounded-md">
+                <span className="text-4xl font-semibold text-gray-800">
                   {getInitials(company.name)}
                 </span>
               </div>
@@ -226,12 +225,12 @@ export default function CompanyProfile() {
                 />
               )}
               {!isEditingMain && (
-                <h1 className="text-3xl font-bold truncate max-w-[30ch]">
+                <h1 className="text-3xl text-gray-200 font-bold truncate max-w-[30ch]">
                   {company.name}
                 </h1>
               )}
 
-              <div className="flex flex-wrap gap-4 my-2 text-gray-600">
+              <div className="flex flex-wrap gap-4 my-2 text-gray-200">
                 <div className="flex items-center space-x-1">
                   <Building2 className="size-4" />
                   {isEditingMain ? (
@@ -275,7 +274,7 @@ export default function CompanyProfile() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 text-gray-200">
                 <div className="flex items-center space-x-1">
                   <Calendar className="size-4" />
                   {isEditingMain ? (
@@ -300,7 +299,7 @@ export default function CompanyProfile() {
                     href={company.websiteURL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-1 text-blue-600 hover:underline"
+                    className="flex items-center space-x-1 text-blue-400 hover:underline"
                   >
                     <Globe className="size-4" />
                     {isEditingMain ? (
@@ -357,7 +356,7 @@ export default function CompanyProfile() {
       >
         {isEditingDescription ? (
           <Textarea
-            className="p-0 m-0 text-sm text-gray-700 whitespace-pre-line"
+            className="p-0 m-0 text-sm text-gray-300 whitespace-pre-line"
             value={
               companyInfo.description ??
               "Your company doesn't have description yet. Let others know more about your company!"
@@ -370,7 +369,7 @@ export default function CompanyProfile() {
             }
           />
         ) : (
-          <p className="text-gray-700 whitespace-pre-line">
+          <p className="text-gray-300 whitespace-pre-line">
             {company.description ||
               "Your company description hasn't been added yet. Let others know more about your company!"}
           </p>
@@ -386,7 +385,7 @@ export default function CompanyProfile() {
         <div className="flex items-start space-x-4">
           {isEditingMission ? (
             <Textarea
-              className="p-0 m-0 text-sm text-gray-700 whitespace-pre-line"
+              className="p-0 m-0 text-sm text-gray-300 whitespace-pre-line"
               value={
                 companyInfo.mission ??
                 "Your company hasn't set its mission yet. Share what drives your organization!"
@@ -399,7 +398,7 @@ export default function CompanyProfile() {
               }
             />
           ) : (
-            <p className="mt-1 text-gray-700 whitespace-pre-line">
+            <p className="mt-1 text-gray-300 whitespace-pre-line">
               {company.mission ||
                 "Your company hasn't set its mission yet. Share what drives your organization!"}
             </p>
@@ -441,7 +440,7 @@ export default function CompanyProfile() {
             ))
           ) : (
             // Show message if no specialties
-            <p className="text-gray-500">
+            <p className="text-gray-300">
               You haven't added any company specialties yet
             </p>
           )}
@@ -451,7 +450,7 @@ export default function CompanyProfile() {
             <Input
               type="text"
               placeholder="e.g. React, TypeScript, Tailwind"
-              className="flex-grow block px-3 py-2 text-sm border border-gray-300 shadow-sm rounded-l-md focus:border-indigo-500 focus:ring-indigo-500"
+              className="flex-grow block px-3 py-2 text-sm text-gray-200 border border-gray-300 shadow-sm rounded-l-md focus:border-indigo-500 focus:ring-indigo-500"
               value={specialtyInput}
               onChange={(e) => setSpecialtyInput(e.target.value)}
               onKeyDown={(e) => {
@@ -489,9 +488,9 @@ function SectionCard({
   isEditing: boolean;
 }) {
   return (
-    <div className="p-6 bg-white border rounded-lg">
+    <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-lg font-semibold text-gray-200">{title}</h2>
         {isEditing ? (
           <button
             onClick={() => {

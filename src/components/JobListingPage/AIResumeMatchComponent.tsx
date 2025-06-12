@@ -1,57 +1,51 @@
-import { HiOutlineLightBulb } from "react-icons/hi2";
-import { FiCheckCircle } from "react-icons/fi";
-import { FiRefreshCcw } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { Star, TrendingUp } from "lucide-react";
 
 export default function AIResumeMatchComponent() {
-  const navigate = useNavigate();
-
   return (
-    <div className="w-full  rounded-lg border border-gray-200 bg-white shadow-sm p-4">
+    <div className="p-6 border bg-gradient-to-br from-cyan-500/10 to-fuchsia-600/10 border-blue-500/20 rounded-2xl">
       <div className="flex items-center gap-3 mb-4">
-        <div className="bg-blue-100 p-2 rounded-full">
-          <HiOutlineLightBulb className="size-5 text-blue-600" />
+        <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
+          <Star className="w-5 h-5 text-white" />
         </div>
-        <h3 className="font-medium text-gray-900">AI-Powered Job Matching</h3>
+        <h3 className="font-semibold text-white">AI-Powered Job Matching</h3>
       </div>
-
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="mb-4 text-sm text-gray-300">
         Our AI analyzes jobs against your resume, showing match percentages for
         each listing based on your skills and experience.
       </p>
-
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <FiCheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-          <span className="text-sm text-gray-700">
-            <span className="font-medium">90%+ Match</span>: Excellent fit for
-            your profile
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span className="text-xs font-medium text-green-400">
+            90%+ Match:
+          </span>
+          <span className="text-xs text-gray-300">
+            Excellent fit for your profile
           </span>
         </div>
-
-        <div className="flex items-center gap-2">
-          <FiCheckCircle className="h-4 w-4 text-blue-500 flex-shrink-0" />
-          <span className="text-sm text-gray-700">
-            <span className="font-medium">70-89% Match</span>: Good match with
-            your qualifications
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+          <span className="text-xs font-medium text-blue-400">
+            70-89% Match:
+          </span>
+          <span className="text-xs text-gray-300">
+            Good match with your qualifications
           </span>
         </div>
-
-        <div className="flex items-center gap-2">
-          <FiCheckCircle className="h-4 w-4 text-yellow-500 flex-shrink-0" />
-          <span className="text-sm text-gray-700">
-            <span className="font-medium">50-69% Match</span>: Potential fit
-            with some skill gaps
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+          <span className="text-xs font-medium text-yellow-400">
+            50-69% Match:
+          </span>
+          <span className="text-xs text-gray-300">
+            Potential fit with some skill gaps
           </span>
         </div>
       </div>
-
-      <div className="mt-5 pt-4 border-t border-gray-200">
-        <button onClick={() => navigate('/applicant/profile')} className="flex items-center justify-center w-full gap-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 px-4 rounded-md transition-colors">
-          <FiRefreshCcw className="h-4 w-4" />
-          Update Your Resume
-        </button>
-      </div>
+      <button className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-4 text-sm text-white transition-colors bg-gray-700/50 hover:bg-gray-700 rounded-xl">
+        <TrendingUp className="w-4 h-4" />
+        Update Your Resume
+      </button>
     </div>
   );
 }
