@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import Logo from "@/assets/TrabahopeLogoPNG.png";
+import Logo from "@/assets/Blue_White_Professional_Mobile_App_Logo-removebg-preview.png";
 import { isRecruiter } from "@/helpers";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { useResumeStore } from "@/stores/useResumeStore";
@@ -100,8 +100,12 @@ export default function CompanySidebar({ children }: SidebarProps) {
             <img src={Logo} alt="Trabahope logo" className="size-12" />
 
             <div className="flex">
-              <span className="text-2xl font-bold text-fuchsia-700">Traba</span>
-              <span className="text-2xl font-bold text-cyan-700">Hope</span>
+              <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-fuchsia-400 to-purple-400 bg-clip-text">
+                Traba
+              </span>
+              <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text">
+                Hope
+              </span>
             </div>
           </div>
 

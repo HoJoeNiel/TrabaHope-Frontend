@@ -3,7 +3,6 @@ import {
   Building,
   CalendarClock,
   LayoutDashboard,
-  Settings,
   Users,
 } from "lucide-react";
 import { Outlet } from "react-router-dom";
@@ -25,27 +24,14 @@ export default function CompanyRootLayout() {
             icon={BriefcaseBusiness}
             text="Job Listings"
             path="job-listings"
-            alert
           />
-          <SidebarItem
-            icon={Users}
-            text="Applications"
-            path="applications"
-            alert
-          />
+          <SidebarItem icon={Users} text="Applications" path="applications" />
           <SidebarItem
             icon={CalendarClock}
             text="Interviews"
             path="interviews"
-            alert
           />
-          <SidebarItem
-            icon={Building}
-            text="Company Profile"
-            path="profile"
-            alert
-          />
-          <SidebarItem icon={Settings} text="Settings" path="settings" alert />
+          <SidebarItem icon={Building} text="Company Profile" path="profile" />
         </CompanySidebar>
         <div className="flex-1 max-h-screen overflow-y-scroll thin-scrollbar max-xl:pl-16">
           <Outlet />

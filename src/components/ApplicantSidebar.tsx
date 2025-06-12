@@ -1,4 +1,4 @@
-import Logo from "@/assets/TrabahopeLogoPNG.png";
+import Logo from "@/assets/Blue_White_Professional_Mobile_App_Logo-removebg-preview.png";
 import { isApplicant } from "@/helpers";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { useResumeStore } from "@/stores/useResumeStore";
