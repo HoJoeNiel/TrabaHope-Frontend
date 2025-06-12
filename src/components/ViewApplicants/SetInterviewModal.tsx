@@ -1,3 +1,6 @@
+import { Calendar, Edit3 } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,38 +14,45 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useModifyInterview, useSetInterview } from "@/services/mutations";
 import { Application, InterviewData } from "@/types";
-import { Calendar } from "lucide-react";
-import { useState } from "react";
-import DateAndTimePicker from "./DateAndTimePicker";
-import { SelectComponent } from "../SelectComponent";
-import { useSetInterview } from "@/services/mutations";
 
-const INTERVIEW_TYPE = ["On-site", "Online, through Zoom meeting"];
+import { SelectComponent } from "../SelectComponent";
+import DateAndTimePicker from "./DateAndTimePicker";
+
+const INTERVIEW_TYPE = ["On-site", "Video Call"];
 
 type SetInterviewModalProps = {
-  applicant: Application;
-  onClick: () => void;
+  applicant?: Application;
+  onClick?: () => void;
+  isEditing?: boolean;
+  applicationData?: InterviewData;
 };
 
 export default function SetInterviewModal({
+  isEditing,
+  applicationData,
   applicant,
   onClick,
 }: SetInterviewModalProps) {
-  const { mutate: postInterview, isPending, isError } = useSetInterview();
+  const [isOpen, setIsOpen] = useState(false);
+  const { mutate: postInterview, isPending } = useSetInterview();
+  const { mutate: modifyInterview } = useModifyInterview();
 
-  const [interviewDetails, setInterviewDetails] = useState<InterviewData>({
-    applicantId: applicant.applicant.applicantId,
-    jobId: applicant.job.jobId,
-    interviewerName: "",
-    interviewerTitle: "",
-    status: "Scheduled",
-    duration: "",
-    date: "",
-    time: "",
-    type: "",
-    location: "",
-  });
+  const [interviewDetails, setInterviewDetails] = useState<InterviewData>(
+    applicationData ?? {
+      applicantId: applicant && applicant.applicant.applicantId, // temporary solution, fix later
+      jobId: applicant && applicant.job.jobId,
+      interviewerName: "",
+      interviewerTitle: "",
+      status: "Scheduled",
+      duration: "",
+      date: "",
+      time: "",
+      type: "",
+      location: "",
+    }
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,8 +60,39 @@ export default function SetInterviewModal({
   };
 
   const handleSubmit = () => {
-    postInterview(interviewDetails);
-    onClick(); // for setting the application status to -> Interview
+    const {
+      interviewerName,
+      interviewerTitle,
+      duration,
+      date,
+      time,
+      type,
+      location,
+    } = interviewDetails;
+
+    if (
+      !interviewerName ||
+      !interviewerTitle ||
+      !duration ||
+      !date ||
+      !time ||
+      !type ||
+      !location
+    ) {
+      alert("Missing field");
+      return;
+    }
+
+    if (isEditing) {
+      modifyInterview(interviewDetails);
+    } else {
+      postInterview(interviewDetails);
+    }
+
+    if (onClick) {
+      onClick(); // for setting the application status to -> Interview
+    }
+
     setInterviewDetails(() => ({
       applicantId: "",
       jobId: 0,
@@ -64,15 +105,22 @@ export default function SetInterviewModal({
       type: "",
       location: "",
     }));
+    setIsOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <button className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-500 border rounded">
-          <Calendar className="size-4" />
-          <span>Interview</span>
-        </button>
+        {isEditing ? (
+          <button className="p-2 text-gray-400 transition-colors rounded-lg hover:text-white hover:bg-gray-700/50">
+            <Edit3 className="w-4 h-4" />
+          </button>
+        ) : (
+          <button className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-500 rounded">
+            <Calendar className="size-4" />
+            <span>Interview</span>
+          </button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -90,6 +138,7 @@ export default function SetInterviewModal({
               className="text-base"
               id="interviewerName"
               name="interviewerName"
+              required
               placeholder="Jonel Villaver"
               value={interviewDetails.interviewerName}
               onChange={handleInputChange}
@@ -100,6 +149,7 @@ export default function SetInterviewModal({
             <Input
               className="text-base"
               id="interviewerTitle"
+              required
               name="interviewerTitle"
               placeholder="Frontend Developer"
               value={interviewDetails.interviewerTitle}
@@ -119,6 +169,7 @@ export default function SetInterviewModal({
             <Input
               className="text-base"
               id="duration"
+              required
               name="duration"
               placeholder="3 hours"
               value={interviewDetails.duration}
@@ -147,6 +198,7 @@ export default function SetInterviewModal({
           <Input
             className="text-base"
             id="location"
+            required
             name="location"
             placeholder="401 Main Tower, BGC, Taguig"
             value={interviewDetails.location}
@@ -157,9 +209,15 @@ export default function SetInterviewModal({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button disabled={isPending} type="submit" onClick={handleSubmit}>
-            Send Invitation
-          </Button>
+          {isEditing ? (
+            <Button disabled={isPending} type="submit" onClick={handleSubmit}>
+              Send Invitation
+            </Button>
+          ) : (
+            <Button disabled={isPending} type="submit" onClick={handleSubmit}>
+              Send Invitation
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
