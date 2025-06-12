@@ -7,10 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { isApplicant } from "@/helpers";
+import { useCancelApplication } from "@/services/mutations";
 import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 
 import { Application } from "@/types";
-import { Clock, Filter, Search, X } from "lucide-react";
+import { Clock, Search, X } from "lucide-react";
 import { useState } from "react";
 
 type StatusType = "Pending" | "Interview" | "Hired" | "Rejected";
@@ -19,12 +20,16 @@ type ApplicantsTableProps = {
 };
 
 export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
-  const applicant = useLoggedInUserStore((state) => state.user);
+  const user = useLoggedInUserStore((state) => state.user);
+
+  const { mutate: cancelApp, isPending: cancelling } = useCancelApplication();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
 
-  if (!isApplicant(applicant)) throw new Error("User is not an applicant.");
+  if (!user || !isApplicant(user)) {
+    throw new Error("User is not an applicant.");
+  }
 
   const filteredApplicants = applications.filter((application) => {
     const matchesTab =
@@ -79,8 +84,8 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
   };
 
   return (
-    <div className="min-w-[1900px]">
-      <div className="my-6 bg-white border border-gray-200 rounded shadow-sm">
+    <div className="min-w-[1300px]">
+      <div className="p-2 my-6 border shadow-sm rounded-xl bg-gray-800/50 border-gray-700/50 backdrop-blur-sm">
         <div className="p-4">
           <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
             <div className="flex items-center space-x-4">
@@ -91,22 +96,9 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-64 py-2 pl-10 pr-4 text-white bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
-              <button className="flex items-center px-4 py-2 space-x-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                <Filter className="w-4 h-4" />
-                <span>Filter</span>
-              </button>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">Export:</span>
-              <button className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50">
-                CSV
-              </button>
-              <button className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50">
-                PDF
-              </button>
             </div>
           </div>
         </div>
@@ -123,10 +115,10 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
               <button
                 key={tab.key}
                 onClick={() => setSelectedTab(tab.key)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
                   selectedTab === tab.key
                     ? "border-indigo-500 text-indigo-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    : "border-transparent text-gray-200 hover:border-gray-300"
                 }`}
               >
                 {tab.label}
@@ -141,12 +133,22 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
 
       <Table className="">
         <TableHeader>
-          <TableRow>
-            <TableHead className="min-w-[200px]">APPLIED FOR</TableHead>
-            <TableHead className="min-w-[100px]">AI Score</TableHead>
-            <TableHead className="min-w-[100px]">STATUS</TableHead>
-            <TableHead className="min-w-[100px]">APPLIED DATE</TableHead>
-            <TableHead className="min-w-[600px]">ACTIONS</TableHead>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="text-gray-100 min-w-[200px]">
+              APPLIED FOR
+            </TableHead>
+            <TableHead className="text-gray-100 min-w-[100px]">
+              AI Score
+            </TableHead>
+            <TableHead className="text-gray-100 min-w-[100px]">
+              STATUS
+            </TableHead>
+            <TableHead className="text-gray-100 min-w-[100px]">
+              APPLIED DATE
+            </TableHead>
+            <TableHead className="text-gray-100 min-w-[600px]">
+              ACTIONS
+            </TableHead>
           </TableRow>
         </TableHeader>
         {applications?.length === 0 && (
@@ -159,13 +161,16 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
         )}
         <TableBody>
           {filteredApplicants?.map((applicant) => (
-            <TableRow className="w-full" key={applicant.applicant.applicantId}>
+            <TableRow
+              className="w-full hover:bg-gray-800/70"
+              key={applicant.applicant.applicantId}
+            >
               <TableCell>
                 <div className="">
-                  <span className="block text-gray-900">
+                  <span className="block text-gray-200">
                     {applicant.job.title}
                   </span>
-                  <span className="block text-gray-700">
+                  <span className="block text-gray-400">
                     {applicant.job.employmentType}
                   </span>
                   <div className="flex justify-start gap-2 mx-auto my-3 overflow-x-auto no-scrollbar whitespace-nowrap">
@@ -187,7 +192,7 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
                 {/* Communicate sa backend api para maget yung score ng applicant */}
                 {/* Loading spinner muna habang wala pa yung score */}
                 <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800`}
+                  className={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium text-green-400 border rounded-full bg-green-500/20 border-green-500/30`}
                 >
                   92%
                 </span>
@@ -198,8 +203,8 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
               </TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <Clock className="text-gray-600 size-4" />
-                  <span className="text-gray-600">
+                  <Clock className="text-gray-300 size-4" />
+                  <span className="text-gray-300">
                     {new Date(applicant.appliedAt).toLocaleString()}
                   </span>
                 </div>
@@ -208,13 +213,14 @@ export function MyApplicationsTable({ applications }: ApplicantsTableProps) {
               <TableCell>
                 <div className="flex space-x-4">
                   <button
-                    // TODO: Implement feature.
                     onClick={() =>
-                      console.log(
-                        "Redirect recruiter sa link para maview yung pdf resume ng applicant na yun."
-                      )
+                      cancelApp({
+                        jobId: String(applicant.job.jobId),
+                        applicantId: applicant.applicant.applicantId,
+                      })
                     }
-                    className="flex items-center px-4 py-2 space-x-2 border rounded"
+                    disabled={cancelling}
+                    className="flex items-center px-4 py-2 space-x-2 rounded bg-gray-300/80"
                   >
                     <X strokeWidth={1} className="size-4" />
                     <span>Cancel Application</span>
