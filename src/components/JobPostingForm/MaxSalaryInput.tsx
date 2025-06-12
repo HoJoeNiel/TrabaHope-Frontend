@@ -22,7 +22,7 @@ function MaxSalaryInput({
       <Input
         type="text"
         placeholder="Maximum"
-        className="block w-full py-2 pl-8 pr-3 text-base border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="block w-full py-2 pl-8 pr-3 text-base text-white bg-gray-700 border border-gray-400 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         value={value}
         defaultValue={defaultValue}
         onChange={(e) => onChange(e.target.value)}

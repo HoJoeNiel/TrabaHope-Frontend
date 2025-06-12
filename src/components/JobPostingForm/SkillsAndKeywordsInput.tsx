@@ -30,12 +30,12 @@ function SkillsAndKeywordsInput({
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow">
+    <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg shadow">
       <div className="flex items-start justify-between mb-1">
-        <Label className="block text-sm font-medium text-gray-700">
+        <Label className="block text-sm font-medium text-gray-200">
           Skills & Keywords
         </Label>
-        <div className="flex items-center text-xs text-gray-500">
+        <div className="flex items-center text-xs text-gray-300">
           <Info className="w-4 h-4 mr-1" />
           <span>
             Adding relevant skills helps our AI match the right candidates to
@@ -47,7 +47,7 @@ function SkillsAndKeywordsInput({
         <Input
           type="text"
           placeholder="e.g. React, TypeScript, Tailwind"
-          className="flex-grow block px-3 py-2 text-sm border border-gray-300 shadow-sm rounded-l-md focus:border-indigo-500 focus:ring-indigo-500"
+          className="flex-grow block px-3 py-2 text-sm text-white bg-gray-700 border border-gray-400 shadow-sm rounded-l-md focus:border-indigo-500 focus:ring-indigo-500"
           value={tag}
           onChange={(e) => setTag(e.target.value)}
           onKeyDown={(e) => {

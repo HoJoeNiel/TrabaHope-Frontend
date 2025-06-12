@@ -12,7 +12,7 @@ type LocationInputProps = {
 function LocationInput({ value, onChange, defaultValue }: LocationInputProps) {
   return (
     <div>
-      <Label className="block mb-1 text-sm font-medium text-gray-700">
+      <Label className="block mb-1 text-sm font-medium text-gray-300">
         Location<span className="text-red-500">*</span>
       </Label>
       <div className="relative">
@@ -22,7 +22,7 @@ function LocationInput({ value, onChange, defaultValue }: LocationInputProps) {
         <Input
           type="text"
           placeholder="e.g. New York, NY"
-          className="block w-full py-2 pr-3 text-base border border-gray-300 rounded-md shadow-sm pl-9 focus:border-indigo-500 focus:ring-indigo-500"
+          className="block w-full py-2 pr-3 text-base text-white bg-gray-700 border border-gray-400 rounded-md shadow-sm pl-9 focus:border-indigo-500 focus:ring-indigo-500"
           value={value}
           defaultValue={defaultValue}
           onChange={(e) => onChange(e.target.value)}
