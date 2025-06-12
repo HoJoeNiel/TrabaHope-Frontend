@@ -24,6 +24,8 @@ import JobApplicantsPage from "./pages/Recruiter/JobApplicantsPage";
 import JobPostingForm from "./pages/Recruiter/JobPostingForm";
 import SpecificJobApplicants from "./pages/Recruiter/SpecificJobApplicants";
 import ViewCompanyJob from "./pages/Recruiter/ViewCompanyJob";
+import SetupApplicantAccount from "./components/SetupApplicantAccount";
+import ApplicantDashboard from "./pages/Applicant/ApplicantDashboard";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
     path: "/applicant",
     element: <ApplicantRootLayout />,
     children: [
-      { path: "dashboard", element: <div>Applicant Dashboard</div> },
+      { path: "dashboard", element: <ApplicantDashboard /> },
       { path: "job-listing", element: <JobListingPage /> },
       { path: "applications", element: <MyApplications /> },
       { path: "saved-jobs", element: <SavedJobsPage /> },
@@ -65,6 +67,7 @@ const router = createBrowserRouter([
       { path: "interviews", element: <Interviews /> },
     ],
   },
+  { path: "setup-account", element: <SetupApplicantAccount /> },
   {
     path: "/company/:companySlug",
     element: <CompanyProfilePage />,
