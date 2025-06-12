@@ -124,15 +124,18 @@ export const createApplicantAccountWithFirebase = async (
     email: values.email,
     location: null,
     contactNumber: String(values.phoneNumber),
-    photoUrl: null,
+    photoURL: null,
+    linkedInURL: null,
     resumeFile: null,
     jobTitle: null,
     description: null,
     createdAt: new Date().toISOString(),
-    portfolioUrl: null,
+    portfolioURL: null,
     preferredEmploymentType: null,
-    interests: null,
+    interest: null,
     role: "applicant",
+    skills: null,
+    openTo: null,
   };
   await setDoc(doc(db, "users", user.uid), applicantInfo);
   return applicantInfo;
@@ -155,15 +158,18 @@ export const createApplicantAccountWithBackend = async (
     email: values.email,
     location: null,
     contactNumber: String(values.phoneNumber),
-    photoUrl: null,
+    photoURL: null,
+    linkedInURL: null,
     resumeFile: null,
     jobTitle: null,
     description: null,
     createdAt: new Date().toISOString(),
-    portfolioUrl: null,
+    portfolioURL: null,
     preferredEmploymentType: null,
-    interests: null,
+    interest: null,
     role: "applicant",
+    skills: null,
+    openTo: null,
   };
 
   const response = await fetch(
@@ -248,15 +254,18 @@ export const registerWithSocial = async (
       email: user.email ?? "defaultemail@gmail.com", //
       location: null,
       contactNumber: user.phoneNumber,
-      photoUrl: null,
+      photoURL: null,
+      linkedInURL: null,
       resumeFile: null,
       jobTitle: null,
       description: null,
       createdAt: new Date().toISOString(),
-      portfolioUrl: null,
+      portfolioURL: null,
       preferredEmploymentType: null,
       role: "applicant",
-      interests: null,
+      interest: null,
+      skills: null,
+      openTo: null,
     };
 
     const response = await fetch(
@@ -293,6 +302,27 @@ export const deleteCurrentUser = async () => {
   try {
     await deleteUser(user);
     console.log("User deleted because user data cannot be found.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const editApplicantInfo = async (applicantInfo: ApplicantAuth) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/applicant/${applicantInfo.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(applicantInfo),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to save job. Status: ${response.status}`);
+    }
   } catch (error) {
     console.error(error);
   }

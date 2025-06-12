@@ -1,6 +1,5 @@
 export type Role = "applicant" | "recruiter";
 
-// applicant's creds
 export interface ApplicantCredentials {
   firstName: string;
   lastName: string;
@@ -10,7 +9,6 @@ export interface ApplicantCredentials {
   phoneNumber: string;
 }
 
-// company's creds
 export type CompanyCredentials = {
   companyName: string;
   industry: string;
@@ -21,25 +19,45 @@ export type CompanyCredentials = {
   confirmPassword: string;
 };
 
-// Applicant details
 export type ApplicantAuth = {
   id: string;
   name: string;
   email: string;
   location: string | null;
   contactNumber: string | null;
-  photoUrl: string | null;
+  photoURL: string | null;
+  linkedInURL: string | null;
   resumeFile: string | null;
   jobTitle: string | null;
   description: string | null;
-  createdAt: string; // TATANGALIN DAW TO
-  portfolioUrl: string | null;
+  createdAt: string;
+  portfolioURL: string | null;
   preferredEmploymentType: string | null;
-  interests: string[] | null;
+  interest: string[] | null;
+  skills: string[] | null;
+  openTo: string[] | null;
   role: "applicant";
 };
 
-// Company / Recruiter details
+export interface Experience {
+  jobTitle: string;
+  companyName: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  description: string;
+}
+
+export interface ExperienceToPost {
+  applicantId: string;
+  jobTitle: string;
+  companyName: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  description: string;
+}
+
 export type CompanyAuth = {
   id: string;
   name: string;
@@ -48,7 +66,7 @@ export type CompanyAuth = {
   contactNumber: string;
   location: string | null;
   photoURL: string | null;
-  coverPhotoURL: string | null; // bagong dagdag
+  coverPhotoURL: string | null;
   specialties: string[] | null;
   noOfEmployees: number | null;
   websiteURL: string | null;
@@ -56,7 +74,7 @@ export type CompanyAuth = {
   createdAt: string;
   industry: string;
   role: "recruiter";
-  mission: string | null; // kakadagdag palang
+  mission: string | null;
 };
 
 export interface Job {
@@ -66,13 +84,14 @@ export interface Job {
   maxSalary: number;
   minSalary: number;
   location: string;
-  employmentType: EmploymentType;
+  employmentType: string;
   description: string;
   benefits: string;
   responsibilities: string;
   remote: boolean;
   tags: string[];
   createdAt: string;
+  score?: number;
 }
 
 export interface JobWithId extends Job {
@@ -84,7 +103,6 @@ type Company = {
   name: string;
 };
 
-// FINAL type ng Job na igeget ng applicant. Basically same shape sila nung data na kinoconsume sa CompanyJobCard component. Sa component na yun ineextract lang yung photoURL at name sa company auth. Dito naman, since wala tayo access sa company store need natin sya iembed mismo sa data.
 export type ApplicantJob = JobWithId & {
   company: Company;
 };
@@ -107,95 +125,8 @@ export enum EmploymentType {
   REMOTE_ONLY = "Remote-only",
 }
 
-export type Action = {
-  saved: boolean;
-  applied: boolean;
-};
-
-export type JobStatus =
-  | "Pending"
-  | "Applied"
-  | "Interview"
-  | "Review"
-  | "Offer"
-  | "Rejected"
-  | "Hired";
-
-export type TimeStamps = {
-  posted: string | Date;
-  applied?: string | Date;
-  lastUpdate?: string | Date;
-};
-
-//  GET Jobs endpoint shape
-export interface CompanyPostedJob {
-  id: string;
-  companyProfileUrl: string | null;
-  companyName: string;
-  jobTitle: string;
-  location: string;
-  employmentType: EmploymentType;
-  description: string;
-  benefits: string[];
-  requirements: string[];
-  responsibilities: string[];
-  remote: boolean;
-  salaryRange: {
-    min: number;
-    max: number;
-  };
-  tags: string[];
-  timestamps: TimeStamps;
-}
-
-export interface ApplicantSideJob extends CompanyPostedJob {
-  status?: JobStatus;
-  matchPercentage: number;
-  nextStep?: string;
-  actions: Action;
-}
-
-export type ActiveJob = {
-  id: number;
-  title: string;
-  location: string;
-  type: string;
-  postedDate: string;
-  salary: string;
-  matchScore: number;
-};
-
-// export type Company = {
-//   name: string;
-//   companySlug: string;
-//   logo: string;
-//   location: string;
-//   website: string;
-//   industry: string;
-//   size: string;
-//   founded: string;
-//   specialties: string[];
-//   about: string;
-//   mission: string;
-//   benefits: string[];
-//   openPositions: number;
-//   averageRating: number;
-//   reviewCount: number;
-//   activeJobs: ActiveJob[];
-// };
-
-// export type Application = {
-//   name: string;
-//   appliedAt: Date | string;
-//   jobTitle: string;
-//   jobId: string;
-// };
-
-// type/model ng job applications sa company / recruiter side
-// NOTE: pag mag popost ako ng application as applicant, ang need ko lang ay
-//       applicantId, jobId, companyId
 export type CompanyFetchedApplication = {
-  applicantId: string; //
+  applicantId: string;
   companyId: string;
   name: string;
   title: string;
@@ -230,9 +161,10 @@ type Interviewer = {
 export interface Interview {
   applicant: Applicant;
   status: string;
+  jobId: number;
   duration: string;
-  date: Date | string;
-  time: Date | string;
+  date: string;
+  time: string;
   type: string;
   location: string;
   interviewer: Interviewer;
@@ -261,6 +193,7 @@ export interface Application {
   appliedAt: string;
   status: string;
   feedback: string | null;
+  score?: number;
 }
 
 export interface ApplicationData {
@@ -270,27 +203,49 @@ export interface ApplicationData {
   status: string;
   appliedAt: string;
   feedback: string | null;
+  score?: number;
 }
 
-// export interface Application {
-//   companyId: string;
-//   applicant: {
-//     applicantId: string;
-//     name: string;
-//     title: string;
-//     email: string;
-//     contactNumber: string;
-//     location: string;
-//     resumeFile: string;
-//     photoUrl: string;
-//   };
-//   job: {
-//     id: number;
-//     title: string;
-//     employmentType: string;
-//     tags: string[];
-//   };
-//   appliedAt: string;
-//   status: string;
-//   feedback: string;
-// }
+export type Query = {
+  applicantId: string;
+  interests: string[] | null;
+  filters?: {
+    search: string;
+    min_salary: number;
+    max_salary: number;
+    location: string;
+  };
+};
+
+export interface InterviewForPut {
+  applicantId: string;
+  jobId: number;
+  interviewerName: string;
+  interviewerTitle: string;
+  status: string;
+  duration: string;
+  date: string;
+  time: string;
+  type: string;
+  location: string;
+}
+
+export interface InterviewData {
+  applicantId: string | undefined; // pang tanggal error lang muna haup
+  jobId: number | undefined;
+  interviewerName: string;
+  interviewerTitle: string;
+  status: string;
+  duration: string;
+  date: string;
+  time: string;
+  type: string;
+  location: string;
+}
+
+export type ResumeData = {
+  secureURL: string;
+  fileName: string;
+  size: number;
+  createdAt: string;
+};

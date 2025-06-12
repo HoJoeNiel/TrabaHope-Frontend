@@ -21,7 +21,7 @@ import { category } from "@/types";
 type PreferenceComboboxProp = {
   category: category[];
   label: string;
-  setPreferences: React.Dispatch<React.SetStateAction<string[]>>;
+  setPreferences: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function PreferenceCombobox({
@@ -39,7 +39,7 @@ export default function PreferenceCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between rounded-xl text-sm"
+          className="justify-between text-sm rounded-xl"
         >
           {label}
           <ChevronsUpDown className="opacity-50" />
@@ -57,7 +57,7 @@ export default function PreferenceCombobox({
                   value={c.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
-                    setPreferences((prev) => [...prev, currentValue]);
+                    setPreferences(currentValue);
                     setOpen(false);
                   }}
                 >

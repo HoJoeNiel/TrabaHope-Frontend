@@ -3,7 +3,7 @@ import ApplicantSignupHeroPanel from "@/components/ApplicantSignup/ApplicantSign
 
 export default function ApplicantSignup() {
   return (
-    <div className="w-screen min-h-screen grid grid-cols-2 max-md:grid-cols-1">
+    <div className="grid w-screen min-h-screen grid-cols-2 max-md:grid-cols-1">
       <ApplicantSignupForm />
       <ApplicantSignupHeroPanel />
     </div>

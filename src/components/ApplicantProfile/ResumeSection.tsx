@@ -1,84 +1,131 @@
-import { CiFileOn } from "react-icons/ci";
-import { GoDownload } from "react-icons/go";
-import { MdOutlineFileUpload } from "react-icons/md";
+import { Upload } from "lucide-react";
 import { useRef } from "react";
-import ResumeAnalysis from "./ResumeAnalysis";
-import { useResumeStore } from "@/stores/useResumeStore";
+import { GoDownload } from "react-icons/go";
 
-export default function ResumeSection() {
+import { uploadResumePDFToCloudinary } from "@/services/api";
+import { useEditApplicantInfo } from "@/services/mutations";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { useResumeStore } from "@/stores/useResumeStore";
+import { ApplicantAuth, ResumeData } from "@/types";
+
+import ResumeTipsCard from "../JobListingPage/ResumeTipsCard";
+import Loading from "../Loading";
+
+export default function ResumeSection({ user }: { user: ApplicantAuth }) {
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+  const {
+    mutate: editApplicantInfo,
+    isPending,
+    isError,
+  } = useEditApplicantInfo();
+
+  const setUser = useLoggedInUserStore((state) => state.setUser);
+
   const resumeFileRef = useRef<HTMLInputElement | null>(null);
-  const resume = useResumeStore((state) => state.resumeFile);
+
+  const resume = useResumeStore((state) => state.resume);
   const setResume = useResumeStore((state) => state.setResume);
 
-  console.log(resume);
+  const downloadUrl = resume?.secureURL.replace(
+    "/upload/",
+    "/upload/fl_attachment/"
+  );
 
   const handleClick = () => {
     resumeFileRef.current?.click();
   };
 
-  const handleUploadResume = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadResume = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setResume(null); // remove muna yung prev resume
     const file = event?.target?.files?.[0];
 
-    if (file) {
-      setResume(file);
-      console.log("Uploaded file: ", file);
-    }
+    if (!file) return;
 
-    // TODO: Send the uploaded resume to the backend server.
+    const data = new FormData();
+
+    data.append("file", file);
+    data.append("upload_preset", uploadPreset);
+    data.append("cloud_name", cloudName);
+
+    const resumepdf = await uploadResumePDFToCloudinary(data);
+
+    const resumeData: ResumeData = {
+      secureURL: resumepdf.secure_url,
+      fileName: resumepdf.display_name,
+      size: resumepdf.bytes,
+      createdAt: resumepdf.created_at,
+    };
+
+    editApplicantInfo({ ...user, resumeFile: resumepdf.secure_url }); // check if edit ba talaga nangyayari
+    setUser({ ...user, resumeFile: resumepdf.secure_url }); // check if edit ba talaga nangyayari
+    setResume(resumeData);
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 my-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Resume</h2>
-        <div className="flex space-x-2">
-          {resume && (
-            <button className="flex items-center space-x-1 text-blue-500 hover:text-blue-600">
-              <GoDownload size={16} />
-              <span>Download</span>
+    <div className="p-8 mx-6 mb-8 bg-gray-800 border border-gray-700 rounded shadow-xl">
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-white">Resume</h2>
+          <div className="flex gap-3">
+            {user.resumeFile && (
+              <a
+                href={downloadUrl}
+                download={resume?.fileName}
+                className="flex items-center gap-2 px-4 py-2 text-white transition-colors bg-gray-700 rounded-lg hover:bg-gray-600"
+              >
+                <GoDownload size={16} />
+                <span>Download</span>
+              </a>
+            )}
+            <input
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              ref={resumeFileRef}
+              onChange={handleUploadResume}
+            />
+            <button
+              onClick={handleClick}
+              className="flex items-center gap-2 px-4 py-2 text-white transition-colors rounded-lg bg-cyan-600 hover:bg-cyan-700"
+            >
+              <Upload className="w-4 h-4" />
+              {user.resumeFile ? "Update" : "Upload"}
             </button>
-          )}
-
-          <input
-            type="file"
-            className="hidden"
-            ref={resumeFileRef}
-            onChange={handleUploadResume}
-          />
-          <button
-            onClick={handleClick}
-            className="flex items-center space-x-1 text-blue-500 hover:text-blue-600"
-          >
-            <MdOutlineFileUpload size={16} />
-            <span>{resume ? "Update" : "Upload"}</span>
-          </button>
+          </div>
         </div>
-      </div>
-
-      <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-        {!resume && <p>No resume uploaded.</p>}
-        {resume && (
-          <>
-            <div className="flex items-center">
-              <div className="bg-blue-100 rounded p-2">
-                <CiFileOn size={20} className="text-blue-500" />
-              </div>
-
-              <div className="ml-3">
-                <p className="font-medium">{resume.name}</p>
-                <p className="text-sm text-gray-500">
-                  Uploaded on {Date.now().toLocaleString()}
-                </p>
-              </div>
+        {!resume && isPending && <p>No uploaded resume.</p>}
+        {isPending && <Loading />}
+        {isError && <p>An error occured. Failed to upload resume.</p>}
+        {user.resumeFile && !isPending && (
+          <div className="flex items-center gap-4 p-4 border border-gray-600 rounded bg-gray-700/50">
+            <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-red-500/20">
+              <div className="w-6 h-8 bg-red-500 rounded-sm"></div>
             </div>
-            <div className="bg-green-100 text-green-700 text-sm py-1 px-3 rounded-full">
+            <div className="flex-1">
+              <a
+                href={user.resumeFile ?? ""}
+                target="_blank"
+                className="font-medium text-white"
+              >
+                {user.name}_resume.pdf
+              </a>
+              <p className="text-sm text-gray-400">
+                Uploaded on {new Date().toLocaleDateString()}
+              </p>
+            </div>
+            <span className="px-3 py-1 text-sm text-green-400 border rounded-full bg-green-500/20 border-green-500/30">
               Active
-            </div>
-          </>
+            </span>
+          </div>
+        )}
+        {resume && (
+          <ResumeTipsCard className="border-gray-600 rounded bg-gray-700/60" />
         )}
       </div>
-
-      {resume && <ResumeAnalysis resume={resume} />}
     </div>
   );
 }

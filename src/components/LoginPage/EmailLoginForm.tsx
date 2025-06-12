@@ -51,12 +51,16 @@ export default function EmailLoginForm() {
       if (!userData) throw new Error("User data not found.");
 
       setUser(userData);
-      navigate(
-        userData?.role === "applicant"
-          ? "/applicant/job-listing"
-          : "/recruiter/create-new-job",
-        { replace: true }
-      );
+
+      if (userData.role === "applicant") {
+        if (!userData.interest?.length || !userData.interest) {
+          navigate("/setup-account", { replace: true });
+        } else {
+          navigate("/applicant/job-listing", { replace: true });
+        }
+      } else {
+        navigate("/recruiter/dashboard", { replace: true });
+      }
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "An unexpected error occurred"
@@ -69,7 +73,9 @@ export default function EmailLoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="grid w-full items-center gap-1.5 mb-4">
-        <Label htmlFor="email-address">Email Address</Label>
+        <Label htmlFor="email-address" className="text-gray-200">
+          Email Address
+        </Label>
         <Input
           type="email"
           id="email-address"
@@ -77,32 +83,36 @@ export default function EmailLoginForm() {
           placeholder="Email Address"
           required
           value={credentials.email}
+          className="border bg-slate-700/50 border-slate-600"
           onChange={handleInputChange}
         />
         {error && <p className="text-sm font-medium text-red-600">{error}</p>}
       </div>
 
       <div className="grid w-full items-center gap-1.5 mb-4">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password" className="text-gray-200">
+          Password
+        </Label>
         <Input
           type="password"
           name="password"
           id="password"
           placeholder="Password"
           required
+          className="border bg-slate-700/50 border-slate-600"
           value={credentials.password}
           onChange={handleInputChange}
         />
       </div>
 
-      <div className="flex mb-4 space-x-2">
+      <div className="flex mb-4 space-x-2 text-gray-200">
         <input type="checkbox" id="remember-me" />
         <label htmlFor="remember-me">Remember me</label>
       </div>
 
       <Button
         type="submit"
-        className="w-full py-2 text-lg text-center text-white rounded-lg shadow bg-cyan-500 hover:bg-cyan-600"
+        className="w-full py-2 text-lg text-center text-white rounded-lg shadow bg-cyan-600 hover:bg-cyan-700"
         disabled={loading}
       >
         {loading ? (

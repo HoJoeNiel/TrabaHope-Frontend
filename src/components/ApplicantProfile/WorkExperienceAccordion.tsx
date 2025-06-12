@@ -1,100 +1,71 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { MdOutlineWorkOutline } from "react-icons/md";
-import { TbEdit } from "react-icons/tb";
-import { CiCalendar } from "react-icons/ci";
-import { CiLocationOn } from "react-icons/ci";
+import { Building, Calendar, Edit, MapPin } from "lucide-react";
 
-export default function WorkExperienceAccordion() {
+import { formatDate } from "@/helpers";
+import { useApplicantExperience } from "@/services/queries";
+import { ApplicantAuth } from "@/types";
+
+import Loading from "../Loading";
+import AddWorkExperienceModal from "../WorkExperience/AddWorkExperienceModal";
+
+export default function WorkExperienceAccordion({
+  user,
+}: {
+  user: ApplicantAuth;
+}) {
+  const { data: experiences, isPending } = useApplicantExperience(user.id);
+
   return (
-    <div className="bg-white rounded-lg shadow p-6 my-8">
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="w-full">
-            <div className="flex items-center space-x-2 text-gray-800 font-bold">
-              <MdOutlineWorkOutline className="size-5" />
-              <h2 className="text-lg">Work Experience</h2>
-            </div>
-          </AccordionTrigger>
-
-          <AccordionContent className="mt-4">
-            <div className="border-b border-gray-200 pb-4 mt-4">
-              <div className="flex justify-between">
+    <div className="p-8 mx-6 mb-8 bg-gray-800 border border-gray-700 rounded shadow-xl">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="flex items-center gap-3 text-2xl font-bold text-white">
+          <Building className="size-6 text-cyan-500 " />
+          Work Experience
+        </h2>
+        <button className="text-cyan-400 hover:text-cyan-300">
+          <Edit className="w-5 h-5" />
+        </button>
+      </div>
+      <div className="space-y-6">
+        {isPending && <Loading />}
+        {!isPending && !experiences?.length && (
+          <div className="text-gray-200">
+            You haven't added any past experiences yet.
+          </div>
+        )}
+        {experiences?.map((exp) => (
+          <div className="relative pl-8 border-l-2 border-gray-700">
+            <div className="absolute top-0 w-4 h-4 border-2 border-gray-800 rounded-full -left-2 bg-cyan-500"></div>
+            <div className="p-6 border border-gray-600 bg-gray-700/50 rounded-xl">
+              <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h3 className="font-medium">Senior Frontend Developer</h3>
-                  <p className="text-gray-600">TechCorp Inc.</p>
+                  <h3 className="mb-1 text-xl font-semibold text-white">
+                    {exp.jobTitle}
+                  </h3>
+                  <p className="mb-2 font-medium text-cyan-400">
+                    {exp.companyName}
+                  </p>
+                  <div className="flex items-center gap-4 text-sm text-gray-400">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>
+                        {formatDate(exp.startDate)} - {formatDate(exp.endDate)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-4 h-4" />
+                      <span>{exp.location}</span>
+                    </div>
+                  </div>
                 </div>
-                <button className="text-blue-500 hover:text-blue-600">
-                  <TbEdit size={16} />
-                </button>
+                <AddWorkExperienceModal experience={exp} />
               </div>
-              <div className="flex items-center mt-2 text-sm text-gray-500">
-                <CiCalendar size={14} className="mr-1" />
-                <span>Jan 2023 - Present</span>
-                <CiLocationOn size={14} className="ml-4 mr-1" />
-                <span>Makati City, Remote</span>
-              </div>
-              <p className="mt-2 text-gray-700">
-                Led frontend development for multiple web applications using
-                React, TypeScript, and Tailwind CSS. Improved performance by 40%
-                through code optimization.
-              </p>
+              <p className="leading-relaxed text-gray-300">{exp.description}</p>
             </div>
+          </div>
+        ))}
+      </div>
 
-            <div className="border-b border-gray-200 pb-4 mt-4">
-              <div className="flex justify-between">
-                <div>
-                  <h3 className="font-medium">Senior Frontend Developer</h3>
-                  <p className="text-gray-600">TechCorp Inc.</p>
-                </div>
-                <button className="text-blue-500 hover:text-blue-600">
-                  <TbEdit size={16} />
-                </button>
-              </div>
-              <div className="flex items-center mt-2 text-sm text-gray-500">
-                <CiCalendar size={14} className="mr-1" />
-                <span>Jan 2023 - Present</span>
-                <CiLocationOn size={14} className="ml-4 mr-1" />
-                <span>Makati City, Remote</span>
-              </div>
-              <p className="mt-2 text-gray-700">
-                Led frontend development for multiple web applications using
-                React, TypeScript, and Tailwind CSS. Improved performance by 40%
-                through code optimization.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-4 mt-4">
-              <div className="flex justify-between">
-                <div>
-                  <h3 className="font-medium">Senior Frontend Developer</h3>
-                  <p className="text-gray-600">TechCorp Inc.</p>
-                </div>
-                <button className="text-blue-500 hover:text-blue-600">
-                  <TbEdit size={16} />
-                </button>
-              </div>
-              <div className="flex items-center mt-2 text-sm text-gray-500">
-                <CiCalendar size={14} className="mr-1" />
-                <span>Jan 2023 - Present</span>
-                <CiLocationOn size={14} className="ml-4 mr-1" />
-                <span>Makati City, Remote</span>
-              </div>
-              <p className="mt-2 text-gray-700">
-                Led frontend development for multiple web applications using
-                React, TypeScript, and Tailwind CSS. Improved performance by 40%
-                through code optimization.
-              </p>
-            </div>
-
-            <button className="text-blue-400 text-lg my-3">+ Add Experience</button>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <AddWorkExperienceModal />
     </div>
   );
 }

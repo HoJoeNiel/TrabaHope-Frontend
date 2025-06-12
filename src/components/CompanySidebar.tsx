@@ -1,17 +1,23 @@
-import { PropsWithChildren, useContext, useEffect, useState } from "react";
 import { LogOut, PanelRight } from "lucide-react";
-import { createContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import Logo from "@/assets/Blue_White_Professional_Mobile_App_Logo-removebg-preview.png";
 import { isRecruiter } from "@/helpers";
-import Logo from "@/assets/TrabahopeLogoPNG.png";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { useResumeStore } from "@/stores/useResumeStore";
 
 type SidebarProps = PropsWithChildren;
 type SidebarItemProps = {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   text: string;
   active?: boolean;
-  alert?: boolean;
   path: string;
 };
 type SidebarContextType = {
@@ -27,12 +33,20 @@ const SidebarContext = createContext<SidebarContextType>({
 });
 
 export default function CompanySidebar({ children }: SidebarProps) {
+  const location = useLocation();
+  const segment = location.pathname.split("/");
+  const lastSegment = segment[segment.length - 1];
+
   const [isExpanded, setIsExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState(lastSegment);
   const company = useLoggedInUserStore((state) => state.user);
 
-  if (!company) throw new Error("There's no authenticated user.");
+  const clearUser = useLoggedInUserStore((state) => state.clearUser);
+  const setResume = useResumeStore((state) => state.setResume);
 
+  const navigate = useNavigate();
+
+  if (!company) throw new Error("There's no authenticated user.");
   if (!isRecruiter(company)) throw new Error("User is not a recruiter.");
 
   useEffect(() => {
@@ -60,9 +74,15 @@ export default function CompanySidebar({ children }: SidebarProps) {
     };
   }, []);
 
+  const handleLogout = () => {
+    clearUser();
+    setResume(null);
+    navigate("/");
+  };
+
   return (
     <aside
-      className={`sticky top-0 left-0 z-20 h-screen text-sm bg-white border-r max-xl:absolute max-xl:top-0 max-lg:left-0 ${
+      className={`sticky top-0 left-0 z-20 h-screen text-sm bg-gray-900/90 backdrop-blur-sm border-gray-700/50 border-r max-xl:absolute max-xl:top-0 max-lg:left-0 ${
         isExpanded ? "w-[250px]" : "w-auto"
       }`}
     >
@@ -78,11 +98,17 @@ export default function CompanySidebar({ children }: SidebarProps) {
             }`}
           >
             <img src={Logo} alt="Trabahope logo" className="size-12" />
+
             <div className="flex">
-              <span className="text-2xl font-bold text-fuchsia-700">Traba</span>
-              <span className="text-2xl font-bold text-cyan-700">Hope</span>
+              <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-fuchsia-400 to-purple-400 bg-clip-text">
+                Traba
+              </span>
+              <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text">
+                Hope
+              </span>
             </div>
           </div>
+
           <button onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
             <PanelRight strokeWidth={1} className="text-gray-500" />
           </button>
@@ -97,11 +123,11 @@ export default function CompanySidebar({ children }: SidebarProps) {
         </SidebarContext.Provider>
 
         <div
-          className={`border-t bg-stone-50 flex p-3 items-center ${
+          className={` rounded-lg bg-gray-800 flex p-3 items-center m-2 border border-white/10 ${
             isExpanded && "justify-between"
           }`}
         >
-          <div className="flex items-center justify-center overflow-hidden bg-black rounded-full size-10">
+          <div className="flex items-center justify-center overflow-hidden bg-white rounded-full size-10">
             {company.photoURL ? (
               <img
                 src={company.photoURL}
@@ -109,7 +135,7 @@ export default function CompanySidebar({ children }: SidebarProps) {
                 className="rounded-full size-10"
               />
             ) : (
-              <span className="text-xl font-semibold text-white">
+              <span className="text-xl font-semibold text-black">
                 {company.name
                   .split(" ")
                   .map((word) => word[0]?.toUpperCase())
@@ -123,48 +149,47 @@ export default function CompanySidebar({ children }: SidebarProps) {
             }`}
           >
             <div>
-              <h4 className="font-semibold text-gray-800 line-clamp-1">
+              <h4 className="font-semibold text-gray-200 line-clamp-1">
                 {company.name}
               </h4>
-              <span className="text-xs text-gray-600 line-clamp-1">
+              <span className="text-xs text-gray-400 line-clamp-1">
                 {company.email}
               </span>
             </div>
           </div>
-          {isExpanded && <LogOut size={20} />}
+          {isExpanded && (
+            <button onClick={handleLogout}>
+              <LogOut className="ml-3 text-gray-400" size={16} />
+            </button>
+          )}
         </div>
       </nav>
     </aside>
   );
 }
 
-export function SidebarItem({
-  icon: Icon,
-  text,
-  alert,
-  path,
-}: SidebarItemProps) {
+export function SidebarItem({ icon: Icon, text, path }: SidebarItemProps) {
   const { isExpanded, activeTab, setActiveTab } = useContext(SidebarContext);
-  const isActive = activeTab === text;
+  const isActive = activeTab === path;
   const navigate = useNavigate();
 
   return (
     <li
       onClick={() => {
-        setActiveTab(text);
+        setActiveTab(path);
         navigate(path);
       }}
       className={`
-        relative text-base flex items-center py-2 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
+        relative text-base flex items-center py-2 text-gray-300 px-3 my-1 border rounded-md cursor-pointer h-[42px] transition-all group
         ${
           isActive
-            ? "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200"
-            : "hover:bg-fuchsia-50 text-gray-600 border-transparent"
+            ? "bg-purple-500/20 text-purple-300  border-purple-500/30"
+            : "hover:text-purple-400 border-transparent"
         }
     `}
     >
       <Icon
-        className={`size-5 ${isActive ? "text-fuchsia-600" : "text-gray-400"}`}
+        className={`size-5 ${isActive ? "text-purple-600" : "text-gray-400"}`}
       />
       <span
         className={`overflow-hidden transition-all ${
@@ -173,10 +198,6 @@ export function SidebarItem({
       >
         {text}
       </span>
-      {/* Palitan to ng number of something */}
-      {alert && isExpanded && (
-        <div className="absolute w-2 h-2-fuchsia bg-cyan-400 right-2" />
-      )}
 
       {!isExpanded && (
         <div

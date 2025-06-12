@@ -1,56 +1,19 @@
-import { Outlet } from "react-router-dom";
-import CompanySidebar, { SidebarItem } from "./CompanySidebar";
 import {
   BriefcaseBusiness,
   Building,
-  CalendarCheck,
   CalendarClock,
   LayoutDashboard,
-  Settings,
-  UserPlus,
   Users,
 } from "lucide-react";
-import { getRelativeTimeAgo } from "@/helpers";
-import { Application } from "@/types";
-import ProtectedRoute from "./ProtectedRoute";
+import { Outlet } from "react-router-dom";
 
-const applicationNotifs: Application[] = [
-  {
-    name: "Jonel Villaver",
-    jobId: "job_01a2b3c",
-    jobTitle: "Frontend Developer",
-    appliedAt: new Date().toISOString(),
-  },
-  {
-    name: "Maria Santos",
-    jobId: "job_04d5e6f",
-    jobTitle: "Backend Developer",
-    appliedAt: new Date("2025-05-21T08:45:00"),
-  },
-  {
-    name: "Carlos Reyes",
-    jobId: "job_07g8h9i",
-    jobTitle: "UI/UX Designer",
-    appliedAt: new Date("2025-05-20T15:15:00"),
-  },
-  {
-    name: "Liza Dela Cruz",
-    jobId: "job_10j11k12",
-    jobTitle: "Data Analyst",
-    appliedAt: new Date("2025-05-19T13:05:00"),
-  },
-  {
-    name: "Arnold Mendoza",
-    jobId: "job_13l14m15",
-    jobTitle: "Software Engineer",
-    appliedAt: new Date("2025-05-18T09:20:00"),
-  },
-];
+import CompanySidebar, { SidebarItem } from "./CompanySidebar";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function CompanyRootLayout() {
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen bg-stone-50 min-w-screen">
+      <div className="flex min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 min-w-screen">
         <CompanySidebar>
           <SidebarItem
             icon={LayoutDashboard}
@@ -61,113 +24,19 @@ export default function CompanyRootLayout() {
             icon={BriefcaseBusiness}
             text="Job Listings"
             path="job-listings"
-            alert
           />
-          <SidebarItem
-            icon={Users}
-            text="Applications"
-            path="applications"
-            alert
-          />
+          <SidebarItem icon={Users} text="Applications" path="applications" />
           <SidebarItem
             icon={CalendarClock}
             text="Interviews"
             path="interviews"
-            alert
           />
-          <SidebarItem
-            icon={Building}
-            text="Company Profile"
-            path="profile"
-            alert
-          />
-          <SidebarItem icon={Settings} text="Settings" path="settings" alert />
+          <SidebarItem icon={Building} text="Company Profile" path="profile" />
         </CompanySidebar>
         <div className="flex-1 max-h-screen overflow-y-scroll thin-scrollbar max-xl:pl-16">
           <Outlet />
         </div>
-        {/* Notification sidebar */}
-        <div className="max-h-screen max-md:hidden bg-white px-4 sticky top-0 right-0 overflow-y-scroll border-l w-[300px] pt-6 thin-scrollbar">
-          <div className="flex justify-between">
-            <h3 className="text-lg font-bold text-gray-900">
-              Recent Applications
-            </h3>
-            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
-              View All
-            </button>
-          </div>
-          <div>
-            {applicationNotifs.map((application) => (
-              <ApplicationNotificationItem
-                key={application.jobId}
-                application={application}
-              />
-            ))}
-          </div>
-          <div className="flex justify-between">
-            <h3 className="text-lg font-bold text-gray-900">
-              Upcoming Interviews
-            </h3>
-            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
-              View All
-            </button>
-          </div>
-          <div>
-            {applicationNotifs.map((application) => (
-              <InterviewNotificationItem
-                key={application.jobId}
-                application={application}
-              />
-            ))}
-          </div>
-        </div>
       </div>
     </ProtectedRoute>
-  );
-}
-
-function ApplicationNotificationItem({
-  application,
-}: {
-  application: Application;
-}) {
-  return (
-    <div className="flex p-1 my-4 space-x-3 rounded hover:bg-gray-100">
-      <div className="flex items-center justify-center p-3 bg-gray-100 rounded-full shadow size-10">
-        <UserPlus className="text-gray-500 size-6" />
-      </div>
-      <div className="text-sm">
-        <span>{application.name}</span>
-        <span className="font-light"> applied for the </span>
-        <span>{application.jobTitle}</span>
-        <span className="font-light"> role.</span>
-        <span className="block text-xs text-gray-600">
-          {getRelativeTimeAgo(application.appliedAt.toLocaleString())}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function InterviewNotificationItem({
-  application,
-}: {
-  application: Application;
-}) {
-  return (
-    <div className="flex p-1 my-4 space-x-3 hover:bg-gray-100">
-      <div className="flex items-center justify-center p-3 bg-gray-100 rounded-full shadow size-10">
-        <CalendarCheck className="text-gray-500 size-6" />
-      </div>
-      <div className="text-sm">
-        <span className="font-light">Interview confirmed: </span>
-        <span>{application.name} </span>
-        <span className="font-light"> for </span>
-        <span>{application.jobTitle}</span>
-        <span className="block text-xs text-gray-600">
-          {getRelativeTimeAgo(application.appliedAt.toLocaleString())}
-        </span>
-      </div>
-    </div>
   );
 }

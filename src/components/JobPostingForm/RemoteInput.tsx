@@ -21,7 +21,7 @@ function RemoteInput({ value, defaultValue, onChange }: RemoteInputProps) {
           defaultChecked={defaultValue}
           onChange={(e) => onChange(e.target.checked)}
         />
-        <Label htmlFor="remote" className="block ml-2 text-sm text-gray-700">
+        <Label htmlFor="remote" className="block ml-2 text-sm text-gray-200">
           Remote position
         </Label>
       </div>

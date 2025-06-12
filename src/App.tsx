@@ -9,19 +9,23 @@ import ApplicantSignup from "@/pages/ApplicantSignup";
 import LandingPage from "@/pages/LandingPage";
 import Login from "@/pages/Login";
 import RecruiterSignup from "@/pages/RecruiterSignup";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import ApplicantRootLayout from "./components/ApplicantRootLayout";
 import CompanyRootLayout from "./components/CompanyRootLayout";
+import { queryClient } from "./lib/queryClient";
+import ApplicantInterviews from "./pages/Applicant/ApplicantInterviews";
 import CompanyDashboard from "./pages/Recruiter/CompanyDashboard";
 import CompanyJobListing from "./pages/Recruiter/CompanyJobListing";
 import CompanyProfile from "./pages/Recruiter/CompanyProfile";
-import CompanySettings from "./pages/Recruiter/CompanySettings";
 import EditCompanyJob from "./pages/Recruiter/EditCompanyJob";
 import Interviews from "./pages/Recruiter/Interviews";
 import JobApplicantsPage from "./pages/Recruiter/JobApplicantsPage";
 import JobPostingForm from "./pages/Recruiter/JobPostingForm";
 import SpecificJobApplicants from "./pages/Recruiter/SpecificJobApplicants";
 import ViewCompanyJob from "./pages/Recruiter/ViewCompanyJob";
+import SetupApplicantAccount from "./components/SetupApplicantAccount";
+import ApplicantDashboard from "./pages/Applicant/ApplicantDashboard";
 
 const router = createBrowserRouter([
   {
@@ -40,10 +44,12 @@ const router = createBrowserRouter([
     path: "/applicant",
     element: <ApplicantRootLayout />,
     children: [
+      { path: "dashboard", element: <ApplicantDashboard /> },
       { path: "job-listing", element: <JobListingPage /> },
-      { path: "profile", element: <ApplicantProfile /> },
+      { path: "applications", element: <MyApplications /> },
       { path: "saved-jobs", element: <SavedJobsPage /> },
-      { path: "my-applications", element: <MyApplications /> },
+      { path: "interviews", element: <ApplicantInterviews /> },
+      { path: "profile", element: <ApplicantProfile /> },
     ],
   },
   {
@@ -58,10 +64,10 @@ const router = createBrowserRouter([
       { path: "job/:jobId/applicants", element: <SpecificJobApplicants /> },
       { path: "edit-job/:jobId", element: <EditCompanyJob /> },
       { path: "profile", element: <CompanyProfile /> },
-      { path: "settings", element: <CompanySettings /> },
       { path: "interviews", element: <Interviews /> },
     ],
   },
+  { path: "setup-account", element: <SetupApplicantAccount /> },
   {
     path: "/company/:companySlug",
     element: <CompanyProfilePage />,
@@ -69,5 +75,9 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }

@@ -15,7 +15,7 @@ function EmploymentTypeInput({
 }: EmploymentTypeInputProps) {
   return (
     <div>
-      <Label className="block mb-1 text-sm font-medium text-gray-700">
+      <Label className="block mb-1 text-sm font-medium text-gray-200">
         Employment Type<span className="text-red-500">*</span>
       </Label>
       <div className="relative">
@@ -23,7 +23,7 @@ function EmploymentTypeInput({
           <Briefcase className="w-5 h-5 text-gray-400" />
         </div>
         <SelectComponent
-          className="pl-10 border border-gray-300"
+          className="pl-10 text-white bg-gray-700 border border-gray-400"
           options={Object.values(EmploymentType).map((i) => i)}
           defaultValue={defaultValue}
           setFn={onChange}

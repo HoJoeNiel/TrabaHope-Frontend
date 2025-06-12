@@ -1,19 +1,15 @@
+import { ResumeData } from "@/types";
 import { FiCheckCircle } from "react-icons/fi";
 
-type ResumeAnalysisProps = {
-  resume: File;
-};
-
-export default function ResumeAnalysis({ resume }: ResumeAnalysisProps) {
-  // TODO: Implement resume analysis feature
-
+export default function ResumeAnalysis({ resume }: { resume: ResumeData }) {
+  // PLAN: Do the analysis on the backend. The extracted data from the applicant's resume will be used to generate an analysis using generative AI. Propose nalang to kila Luis/Darren
   console.log(resume);
   return (
     <div className="mt-6">
-      <h3 className="font-medium mb-3">AI Resume Analysis</h3>
-      <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+      <h3 className="mb-3 font-medium">AI Resume Analysis</h3>
+      <div className="p-4 border border-blue-100 rounded-lg bg-blue-50">
         <div className="flex items-center mb-3">
-          <div className="bg-blue-100 rounded-full p-1">
+          <div className="p-1 bg-blue-100 rounded-full">
             <FiCheckCircle size={16} className="text-blue-500" />
           </div>
           <span className="ml-2 font-medium text-blue-700">

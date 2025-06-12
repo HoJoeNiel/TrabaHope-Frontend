@@ -1,28 +1,26 @@
-import { EmploymentType, Job } from "@/types";
-
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useJobPostingForm } from "@/hooks/useJobPostingForm";
-import { useCompanyJobsStore } from "@/stores/useCompanyJobsStore";
-
-import { Label } from "@/components/ui/label";
-import JobTitleInput from "@/components/JobPostingForm/JobTitleInput";
-import LocationInput from "@/components/JobPostingForm/LocationInput";
-import RemoteInput from "@/components/JobPostingForm/RemoteInput";
+import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
 import EmploymentTypeInput from "@/components/JobPostingForm/EmploymentTypeInput";
-import MinSalaryInput from "@/components/JobPostingForm/MinSalaryInput";
-import MaxSalaryInput from "@/components/JobPostingForm/MaxSalaryInput";
+import JobBenefitsAndPerksInput from "@/components/JobPostingForm/JobBenefitsAndPerksInput";
 import JobDescriptionInput from "@/components/JobPostingForm/JobDescriptionInput";
 import JobRequirementsInput from "@/components/JobPostingForm/JobRequirementsInput";
 import JobResponsibilitiesInput from "@/components/JobPostingForm/JobResponsibilitiesInput";
-import JobBenefitsAndPerksInput from "@/components/JobPostingForm/JobBenefitsAndPerksInput";
+import JobTitleInput from "@/components/JobPostingForm/JobTitleInput";
+import LocationInput from "@/components/JobPostingForm/LocationInput";
+import MaxSalaryInput from "@/components/JobPostingForm/MaxSalaryInput";
+import MinSalaryInput from "@/components/JobPostingForm/MinSalaryInput";
+import RemoteInput from "@/components/JobPostingForm/RemoteInput";
 import SkillsAndKeywordsInput from "@/components/JobPostingForm/SkillsAndKeywordsInput";
-import AIAssistantPanel from "@/components/JobPostingForm/AIAssistantPanel";
-import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { Label } from "@/components/ui/label";
 import { isRecruiter } from "@/helpers";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useJobPostingForm } from "@/hooks/useJobPostingForm";
 import { postJob } from "@/services/api";
+import { useCompanyJobsStore } from "@/stores/useCompanyJobsStore";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { EmploymentType, Job } from "@/types";
 
 export default function CreateJobPostPage() {
   const [loading, setLoading] = useState(false);
@@ -102,7 +100,7 @@ export default function CreateJobPostPage() {
       responsibilities,
       remote,
       tags,
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toISOString(),
     };
 
     const id = await postJob(companyPostedJob); // the backend api returns the created id if successful
@@ -113,16 +111,16 @@ export default function CreateJobPostPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-900">
       <div className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <div className="md:flex md:items-start md:justify-between">
           <div className="pr-0 md:w-2/3 md:pr-8">
-            <h1 className="mb-6 text-2xl font-bold text-gray-900">
+            <h1 className="mb-6 text-2xl font-bold text-gray-200">
               Create New Job Post
             </h1>
 
             <form className="space-y-6">
-              <div className="p-6 bg-white rounded-lg shadow">
+              <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg shadow">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <JobTitleInput value={jobTitle} onChange={setJobTitle} />
                   <LocationInput value={location} onChange={setLocation} />
@@ -133,7 +131,7 @@ export default function CreateJobPostPage() {
                   <EmploymentTypeInput onChange={setEmploymentType} />
 
                   <div className="flex flex-col">
-                    <Label className="block mb-1 text-sm font-medium text-gray-700">
+                    <Label className="block mb-1 text-sm font-medium text-gray-200">
                       Salary Range<span className="text-red-500">*</span>
                     </Label>
 

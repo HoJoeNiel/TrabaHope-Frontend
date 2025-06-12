@@ -1,34 +1,23 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type ResumeMeta = {
-  fileName: string;
-  size: number;
-  type: string;
-  lastModified: number;
-};
+import { ResumeData } from "@/types";
+
+// Note : Since persisted pa rin yung resume kahit iba na yung user, on log out dapat burado nalang lahat ng state management data, or pwede rin kapag nasa landing na yung user
 
 type ResumeStore = {
-  resumeFile: File | null;
-  resumeMeta: ResumeMeta | null;
-  setResume: (resume: File) => void;
+  resume: ResumeData | null;
+
+  setResume: (resume: ResumeData | null) => void;
 };
 
 const resumeStoreLogic = persist<ResumeStore>(
   (set) => ({
-    resumeFile: null,
-    resumeMeta: null,
+    resume: null,
 
-    setResume: (resume) =>
-      set({
-        resumeFile: resume,
-        resumeMeta: {
-          fileName: resume.name,
-          size: resume.size,
-          type: resume.type,
-          lastModified: resume.lastModified,
-        },
-      }),
+    setResume: (resume) => {
+      set({ resume });
+    },
   }),
   { name: "resume-storage" }
 );

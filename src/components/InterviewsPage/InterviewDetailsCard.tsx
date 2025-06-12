@@ -1,11 +1,29 @@
-import { Interview } from "@/types";
-import { Calendar, Mail, MapPin, Phone } from "lucide-react";
+import {
+  Calendar,
+  ExternalLink,
+  Mail,
+  MapPin,
+  Phone,
+  User,
+  Video,
+} from "lucide-react";
 
-type InterviewDetailsCardProp = {
+import { getStatusColor, getStatusIcon, isApplicant } from "@/helpers";
+import { useModifyInterview } from "@/services/mutations";
+import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
+import { Interview, InterviewData } from "@/types";
+
+import SetInterviewModal from "../ViewApplicants/SetInterviewModal";
+
+export default function InterviewDetailsCard({
+  interview,
+}: {
   interview: Interview;
-};
+}) {
+  const user = useLoggedInUserStore((state) => state.user);
 
-const InterviewDetailsCard = ({ interview }: InterviewDetailsCardProp) => {
+  const isUserApplicant = isApplicant(user);
+
   const {
     applicant,
     date,
@@ -14,129 +32,217 @@ const InterviewDetailsCard = ({ interview }: InterviewDetailsCardProp) => {
     location,
     status,
     time,
+    jobId,
     type,
   } = interview;
 
+  const { mutate: modifyInterview } = useModifyInterview();
+
+  const handleModifyInterview = (status: string) => {
+    const modified: InterviewData = {
+      applicantId: applicant.id,
+      jobId,
+      interviewerName: interviewer.name,
+      interviewerTitle: interviewer.title,
+      status,
+      duration,
+      date,
+      time,
+      type,
+      location,
+    };
+
+    modifyInterview(modified);
+  };
+
   return (
-    <div className="min-w-[600px] w-full border mx-auto overflow-hidden bg-white shadow-md  rounded-xl">
-      <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50">
-        <div className="flex items-center space-x-4">
-          <div className="flex-shrink-0">
-            <div className="flex items-center justify-center w-12 h-12 text-xl font-bold text-white bg-blue-500 rounded-full">
-              JV
-            </div>
-          </div>
+    <div
+      key={interview.applicant.id}
+      className="p-6 transition-all border bg-gray-800/50 backdrop-blur-xl rounded-2xl border-gray-700/50 hover:bg-gray-800/70 group"
+    >
+      <div className="flex items-start justify-between mb-6">
+        <div className="flex items-start gap-4">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">
-              {applicant.name}
-            </h2>
-            <p className="text-sm text-gray-600">{applicant.title}</p>
-            <div className="flex items-center mt-1">
-              <span className="flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                <div className="mr-2 bg-green-700 rounded-full size-2 " />
+            <div className="flex items-center gap-3 mb-1">
+              <h3 className="text-xl font-semibold text-white">
+                {interview.applicant.name}
+              </h3>
+              <div
+                className={`px-3 py-1 rounded-full text-xs font-medium border flex items-center gap-1 ${getStatusColor(
+                  interview.status
+                )}`}
+              >
+                {getStatusIcon(status)}
                 {status}
-              </span>
+              </div>
             </div>
+            <p className="mb-2 text-gray-400">{interview.applicant.title}</p>
           </div>
         </div>
+        {!isUserApplicant && (
+          <div className="flex items-center gap-2">
+            <SetInterviewModal
+              isEditing
+              applicationData={{
+                applicantId: applicant.id,
+                jobId,
+                interviewerName: interviewer.name,
+                interviewerTitle: interviewer.title,
+                status,
+                duration,
+                date,
+                time,
+                type,
+                location,
+              }}
+            />
+          </div>
+        )}
       </div>
 
-      <div className="p-6">
-        <h3 className="flex items-center mb-4 font-semibold text-gray-900">
-          <Calendar strokeWidth={1.5} className="mr-2 text-blue-500" />
-          Interview Details
-        </h3>
-
-        <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-                Date
-              </p>
-              <p className="text-sm font-medium">{date.toLocaleString()}</p>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        {/* Interview Details */}
+        <div>
+          <h4 className="flex items-center gap-2 mb-4 font-medium text-white">
+            <Calendar className="w-4 h-4 text-blue-400" />
+            Interview Details
+          </h4>
+          <div className="p-4 space-y-3 bg-gray-700/30 rounded-xl">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <div className="mb-1 text-xs tracking-wide text-gray-400 uppercase">
+                  Date
+                </div>
+                <div className="font-medium text-white">{interview.date}</div>
+              </div>
+              <div>
+                <div className="mb-1 text-xs tracking-wide text-gray-400 uppercase">
+                  Time
+                </div>
+                <div className="font-medium text-white">{interview.time}</div>
+              </div>
+              <div>
+                <div className="mb-1 text-xs tracking-wide text-gray-400 uppercase">
+                  Duration
+                </div>
+                <div className="font-medium text-white">
+                  {interview.duration}
+                </div>
+              </div>
             </div>
             <div>
-              <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-                Time
-              </p>
-              <p className="text-sm font-medium">{time.toString()}</p>
-              <p className="text-sm text-gray-500">{duration}</p>
-            </div>
-            <div>
-              <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
+              <div className="mb-1 text-xs tracking-wide text-gray-400 uppercase">
                 Type
-              </p>
-              <p className="text-sm font-medium">{type}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                {interview.type === "Video Call" ? (
+                  <Video className="w-4 h-4 text-blue-400" />
+                ) : (
+                  <MapPin className="w-4 h-4 text-green-400" />
+                )}
+                <span className="font-medium text-white">{interview.type}</span>
+              </div>
+            </div>
+            <div>
+              <div className="mb-1 text-xs tracking-wide text-gray-400 uppercase">
+                Location
+              </div>
+              <div className="text-white">{interview.location}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact & Interviewer Info */}
+        <div className="space-y-6">
+          {/* Contact Info */}
+          <div>
+            <h4 className="flex items-center gap-2 mb-4 font-medium text-white">
+              <User className="w-4 h-4 text-green-400" />
+              Contact Information
+            </h4>
+            <div className="p-4 space-y-3 bg-gray-700/30 rounded-xl">
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-blue-400" />
+                <span className="text-blue-400 transition-colors cursor-pointer hover:text-blue-300">
+                  {interview.applicant.email}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-green-400" />
+                <span className="text-white">
+                  {interview.applicant.contactNumber}
+                </span>
+              </div>
             </div>
           </div>
 
+          {/* Interviewer */}
           <div>
-            <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-              Location
-            </p>
-            <p className="flex items-center text-sm font-medium">
-              <MapPin strokeWidth={1.5} className="mr-2 text-gray-500 size-5" />
-              {location}
-            </p>
+            <h4 className="mb-4 font-medium text-white">Interviewer</h4>
+            <div className="p-4 bg-gray-700/30 rounded-xl">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600">
+                  <span className="text-xl font-semibold text-white">
+                    {interview.applicant.name
+                      .split(" ")
+                      .map((word) => word[0]?.toUpperCase())
+                      .join("")}
+                  </span>
+                </div>
+                <div>
+                  <div className="font-medium text-white">
+                    {interview.interviewer.name}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {interview.interviewer.title}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="p-6 border-t border-gray-200">
-        <h3 className="flex items-center mb-4 font-semibold text-gray-900">
-          <Mail className="mr-2 text-blue-500 size-5" />
-          Contact Info
-        </h3>
-
-        <div className="space-y-3">
-          <div className="flex items-center text-sm">
-            <Mail className="mr-2 text-gray-400 size-5" />
-            <a
-              href={`mailto:${applicant.email}`}
-              className="text-blue-600 hover:underline"
+      {/* Action Buttons */}
+      <div className="flex items-center justify-end gap-3 pt-6 mt-6 border-t border-gray-700/50">
+        {isUserApplicant ? (
+          <>
+            <button
+              onClick={() => handleModifyInterview("Declined")}
+              className="px-4 py-2 text-gray-400 transition-colors rounded-lg hover:text-white hover:bg-gray-700/50"
             >
-              {applicant.email}
-            </a>
-          </div>
-          <div className="flex items-center text-sm">
-            <Phone className="mr-2 text-gray-400 size-5" />
-            <a href="tel:09708075290" className="text-gray-700">
-              {applicant.contactNumber}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-6 border-t border-gray-200">
-        <h3 className="mb-4 font-semibold text-gray-900">Interviewer</h3>
-        <div className="flex items-center space-x-3">
-          <div className="flex-shrink-0">
-            <div className="flex items-center justify-center w-10 h-10 font-bold text-white bg-purple-500 rounded-full">
-              SJ
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-medium">{interviewer.name}</p>
-            <p className="text-xs text-gray-500">{interviewer.title}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-between px-6 py-4 text-sm bg-gray-50">
-        <button className="px-4 py-2 font-medium text-gray-700 transition-colors border border-gray-300 rounded-md hover:bg-gray-100">
-          Reschedule
-        </button>
-        <div className="flex space-x-3">
-          <button className="px-4 py-2 font-medium text-gray-700 transition-colors border border-gray-300 rounded-md hover:bg-gray-100">
-            Cancel
-          </button>
-          <button className="px-4 py-2 font-medium text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700">
-            Send Reminder
-          </button>
-        </div>
+              Decline
+            </button>
+            <button
+              onClick={() => handleModifyInterview("Confirmed")}
+              className="px-4 py-2 text-green-400 transition-colors border rounded-lg bg-green-500/20 hover:bg-green-500/30 border-green-500/30"
+            >
+              Confirm
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => handleModifyInterview("Rescheduled")}
+              className="px-4 py-2 text-gray-400 transition-colors rounded-lg hover:text-white hover:bg-gray-700/50"
+            >
+              Reschedule
+            </button>
+            {interview.type === "Video Call" && (
+              <button className="flex items-center gap-2 px-4 py-2 text-blue-400 transition-colors border rounded-lg bg-blue-500/20 hover:bg-blue-500/30 border-blue-500/30">
+                <ExternalLink className="w-4 h-4" />
+                Join Call
+              </button>
+            )}
+            <button
+              onClick={() => handleModifyInterview("Cancelled")}
+              className="px-4 py-2 text-red-400 transition-colors border rounded-lg bg-red-500/20 hover:bg-red-500/30 border-red-500/30"
+            >
+              Cancel Interview
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
-};
-
-export default InterviewDetailsCard;
+}

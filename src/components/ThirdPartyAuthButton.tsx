@@ -19,7 +19,7 @@ export default function ThirdPartyAuthButton({
     return (
       <Button
         disabled
-        className="bg-white text-black border border-gray-300 w-full my-2 py-2.5 rounded-md flex items-center justify-center space-x-4 hover:bg-gray-50"
+        className="bg-slate-700/50 hover:bg-slate-700 border-slate-600  text-white border  w-full my-2 py-2.5 rounded-md flex items-center justify-center space-x-4"
       >
         <Loader2 className="animate-spin" />
         Please wait
@@ -31,10 +31,10 @@ export default function ThirdPartyAuthButton({
     <button
       type="button"
       onClick={onClick}
-      className="border border-gray-300 w-full my-2 py-2.5 rounded-md flex items-center justify-center space-x-4 hover:bg-gray-50"
+      className="border bg-slate-700/50 hover:bg-slate-700 border-slate-600  w-full my-2 py-2.5 rounded-md flex items-center justify-center space-x-4"
     >
       {icon}
-      <span className="text-gray-700 max-lg:hidden">{label}</span>
+      <span className="text-gray-200 max-lg:hidden">{label}</span>
     </button>
   );
 }
