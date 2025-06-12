@@ -203,6 +203,7 @@ export interface ApplicationData {
   status: string;
   appliedAt: string;
   feedback: string | null;
+  score?: number;
 }
 
 export type Query = {

@@ -8,7 +8,6 @@ import {
   ExperienceToPost,
   Interview,
   InterviewData,
-  InterviewForPut,
   Job,
   JobWithId,
   Query,
@@ -145,22 +144,6 @@ export const editCompanyAuth = async (
 
   return response.json();
 };
-
-// Abang lang muna pero dapat may query parameter to sa susunod
-// export const fetchApplicantJobs = async (): Promise<ApplicantJob[]> => {
-//   const response = await fetch(`${import.meta.env.VITE_API_URL}/api/web/jobs`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-
-//   if (!response.ok) {
-//     throw new Error(`API Request failed with status ${response.status}`);
-//   }
-
-//   return await response.json();
-// };
 
 export const fetchRecommendedJobs = async (query: Query) => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/api/web/jobs`, {

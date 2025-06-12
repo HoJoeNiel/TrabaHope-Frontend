@@ -5,7 +5,6 @@ import {
   CompanyAuth,
   ExperienceToPost,
   InterviewData,
-  InterviewForPut,
   Query,
 } from "@/types";
 import { useMutation } from "@tanstack/react-query";

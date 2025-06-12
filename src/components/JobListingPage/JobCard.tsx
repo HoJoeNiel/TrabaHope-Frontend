@@ -2,7 +2,6 @@ import { useState } from "react";
 import { CiBookmark, CiClock1 } from "react-icons/ci";
 import { IoBookmark, IoLocationOutline } from "react-icons/io5";
 import { LuBuilding } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
 
 import {
   Accordion,
@@ -14,7 +13,7 @@ import {
   checkIfAlreadyApplied,
   getRelativeTimeAgo,
   isApplicant,
-  slugify,
+  parseMultilineInput,
 } from "@/helpers";
 import {
   useCancelApplication,
@@ -27,23 +26,22 @@ import { useLoggedInUserStore } from "@/stores/useLoggedInUserStore";
 import { ApplicantJob, ApplicationData } from "@/types";
 
 export default function JobCard({ job }: { job: ApplicantJob }) {
-  const applicant = useLoggedInUserStore((state) => state.user);
+  const user = useLoggedInUserStore((state) => state.user);
 
-  if (!isApplicant(applicant))
+  if (!user || !isApplicant(user))
     throw new Error("User logged in is not an applicant.");
 
   const { mutate: sendApp, isPending: sending } = useSendApplication();
   const { mutate: cancelApp, isPending: cancelling } = useCancelApplication();
-  const { mutate: saveJob, isPending: saving } = useSaveJob(applicant.id);
-  const { mutate: unsaveJob, isPending: unsaving } = useUnsaveJob(applicant.id);
-  const { data: appliedJobs } = useAppliedJobs(applicant.id);
-  const { data: savedJobs } = useSavedJobs(applicant.id);
+  const { mutate: saveJob, isPending: saving } = useSaveJob(user.id);
+  const { mutate: unsaveJob, isPending: unsaving } = useUnsaveJob(user.id);
+  const { data: appliedJobs } = useAppliedJobs(user.id);
+  const { data: savedJobs } = useSavedJobs(user.id);
 
   const isAlreadyApplied = checkIfAlreadyApplied(appliedJobs ?? [], job);
   const savedJobIds = savedJobs?.map((j) => j.id);
   const isSaved = savedJobIds?.includes(job.id);
 
-  const navigate = useNavigate();
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const {
     company,
@@ -56,30 +54,26 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
     minSalary,
     remote,
     tags,
+    requirements,
+    responsibilities,
+    benefits,
   } = job;
 
   const handleSendApplication = () => {
     const applicationData: ApplicationData = {
       jobId: String(job.id),
       companyId: job.companyId,
-      applicantId: applicant.id,
+      applicantId: user.id,
       status: "Pending",
       appliedAt: new Date().toISOString(),
       feedback: null,
     };
 
-    console.log(applicationData);
-
     sendApp(applicationData);
   };
 
   const handleCancelApplication = () => {
-    cancelApp({ jobId: String(job.id), applicantId: applicant.id });
-  };
-
-  const handleViewCompany = () => {
-    const slug = slugify(company.name);
-    navigate(`/company/${slug}`);
+    cancelApp({ jobId: String(job.id), applicantId: user.id });
   };
 
   const handleToggleSave = () => {
@@ -92,12 +86,12 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
 
   return (
     <div
-      className={`w-full bg-white border-l-4 border-cyan-200 rounded-lg mb-8 shadow hover:shadow-lg transition-all duration-300`}
+      className={`w-full bg-gray-800/50 border border-gray-700/50 border-cyan-200 rounded-lg mb-8 shadow hover:shadow-lg transition-all duration-300`}
     >
       <div className="p-6">
         <div className="flex mb-4 space-x-4">
           <div
-            className={`size-12 bg-black border border-gray-100 p-2 rounded-lg text-sm flex justify-center items-center`}
+            className={`size-16 bg-fuchsia overflow-hidden rounded-lg text-sm flex justify-center items-center`}
           >
             {job.company.photoURL ? (
               <img
@@ -120,34 +114,37 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
           <div className="w-full">
             <div className="flex justify-between">
               <div className="flex flex-col space-y-1">
-                <h2 className="text-lg font-bold">{title}</h2>
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-xl font-semibold text-white">{title}</h3>
+                  <div className="px-3 py-1 text-sm font-medium text-green-400 border rounded-full bg-green-500/20 border-green-500/30">
+                    {job.score?.toFixed(2)}% match score
+                  </div>
+                </div>
                 <div className="flex items-center space-x-1">
                   <LuBuilding className="text-sky-600 size-4" />
                   <span className="text-sm text-sky-600">{company.name}</span>
                 </div>
-                <div className="flex items-center space-x-1">
-                  <IoLocationOutline className="text-gray-700 size-4" />
-                  <span className="text-sm text-gray-700">{location}</span>
+                <div className="flex items-center space-x-1 text-gray-400">
+                  <IoLocationOutline className="size-4" />
+                  <span className="text-sm text-gray-00">{location}</span>
 
                   {remote && (
-                    <div className="bg-blue-100 text-blue-700 px-2 py-0.5 text-sm rounded-full">
-                      Remote
+                    <div className="flex items-center gap-1">
+                      <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                      <span>Remote</span>
                     </div>
                   )}
 
                   <div className="flex items-center space-x-2">
-                    <CiClock1 className="text-gray-700 size-4" />
-                    <span className="text-sm text-gray-700">
-                      {getRelativeTimeAgo(createdAt)}
+                    <CiClock1 className="size-4" />
+                    <span className="text-sm">
+                      {getRelativeTimeAgo(new Date(createdAt))}
                     </span>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col items-end space-y-3">
-                <div className="px-4 py-2 text-sm text-green-600 bg-green-100 rounded">
-                  {job.AIScore}% match score
-                </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={handleToggleSave}
@@ -155,9 +152,9 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
                     className="flex items-center justify-center p-2 rounded-full size-10"
                   >
                     {isSaved ? (
-                      <IoBookmark className="text-yellow-800 size-5" />
+                      <IoBookmark className="text-yellow-400 size-5" />
                     ) : (
-                      <CiBookmark className="text-gray-800 size-5" />
+                      <CiBookmark className="text-gray-200 size-5" />
                     )}
                   </button>
                 </div>
@@ -169,36 +166,75 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger onClick={() => setExpanded(!isExpanded)}>
-              <span className="">
+              <span className="text-white">
                 {isExpanded ? "Show Less" : "Show Details"}
               </span>
             </AccordionTrigger>
             <AccordionContent>
-              <h2 className="mb-2 text-lg font-medium text-gray-800">
-                Job Description
-              </h2>
-              <p className="text-justify text-gray-600">{description}</p>
+              <div className="my-4">
+                <h2 className="mb-2 text-lg font-medium text-white">
+                  Job Description
+                </h2>
+                <p className="text-justify text-gray-300">{description}</p>
+              </div>
 
-              <div className="flex w-full mt-4 space-x-4 overflow-x-scroll no-scrollbar">
+              <div className="my-4">
+                <h2 className="mb-2 text-lg font-medium text-white">
+                  Requirements
+                </h2>
+                <ul className="text-gray-300 list-disc list-inside indent-4">
+                  {parseMultilineInput(requirements).map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="my-4">
+                <h2 className="mb-2 text-lg font-medium text-white">
+                  Responsibilities
+                </h2>
+                <ul className="text-gray-300 list-disc list-inside indent-4">
+                  {parseMultilineInput(responsibilities).map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="my-4">
+                <h2 className="mb-2 text-lg font-medium text-white">
+                  Benefits and Perks
+                </h2>
+                <ul className="text-gray-300 list-disc list-inside indent-4">
+                  {parseMultilineInput(benefits).map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-2 my-4">
                 {tags.map((tag) => (
-                  <div
+                  <span
                     key={tag}
-                    className="px-2 py-1 text-sm text-gray-600 bg-gray-100 rounded"
+                    className="px-3 py-1 text-sm text-gray-300 rounded-lg bg-gray-700/50"
                   >
                     {tag}
-                  </div>
+                  </span>
                 ))}
               </div>
 
               <div className="grid w-full grid-cols-2 mt-6">
                 <div className="">
-                  <p className="font-bold text-gray-800">Salary Range</p>
-                  <p className="text-gray-500">{`₱${minSalary} - ₱${maxSalary}`}</p>
+                  <p className="text-xs font-bold text-gray-400">
+                    Salary Range
+                  </p>
+                  <p className="text-white">{`₱${minSalary} - ₱${maxSalary}`}</p>
                 </div>
 
                 <div className="">
-                  <p className="font-bold text-gray-800">Employment Type</p>
-                  <p className="text-gray-500">{employmentType}</p>
+                  <p className="text-xs font-bold text-gray-400">
+                    Employment Type
+                  </p>
+                  <p className="text-white">{employmentType}</p>
                 </div>
               </div>
 
@@ -220,12 +256,6 @@ export default function JobCard({ job }: { job: ApplicantJob }) {
                     Apply Now
                   </button>
                 )}
-                <button
-                  onClick={handleViewCompany}
-                  className="px-3 py-1 text-base text-gray-700 bg-white border border-gray-300 rounded"
-                >
-                  View Company
-                </button>
               </div>
             </AccordionContent>
           </AccordionItem>
