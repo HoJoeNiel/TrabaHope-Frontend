@@ -13,11 +13,9 @@ export default function ApplicantProfile() {
     throw new Error("No authenticated user.");
   }
 
-  console.log(user);
-
   return (
     <div className="flex flex-col min-h-screen p-4 min-w-screen">
-      <main className="flex-1 w-full max-w-[1440px] mx-auto mt-4">
+      <main className="flex-1 w-full mt-4">
         <ApplicantProfileCard user={user} />
         <ResumeSection user={user} />
         <WorkExperienceAccordion user={user} />
