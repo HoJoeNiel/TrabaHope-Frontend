@@ -1,53 +1,70 @@
-# 🚀 TrabaHope – Frontend
+# 🚀 TrabaHope – AI-Powered Job Platform
 
-TrabaHope is a smart job platform that connects **applicants** and **recruiters** through an AI-enhanced hiring experience. The frontend is built using modern React tools and component libraries for a clean, responsive, and accessible user experience.
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![Firebase Auth](https://img.shields.io/badge/Firebase-Auth-FFCA28?logo=firebase)](https://firebase.google.com/)
 
----
+TrabaHope is an intelligent hiring platform connecting **job seekers** and **recruiters** through AI-enhanced matching. Featuring resume analysis, smart recommendations, and real-time application tracking, it transforms traditional job searching into a personalized experience.
 
-## 🌐 Live Demo
-Coming soon...
+**Live Demo**: Coming soon...
 
----
+![TrabaHope Dashboard Preview](https://via.placeholder.com/800x400?text=Dashboard+Screenshot)
 
-## 📌 Project Description
+## ✨ Key Features
 
-TrabaHope aims to bring hope and opportunity by providing a seamless and intelligent job-matching platform. It supports two main user types:
+### 👤 Job Seeker Experience
+- **AI Job Matching**: Get recommended jobs based on resume analysis
+- **Application Tracker**: Real-time status updates (Applied → Interview → Hired)
+- **Resume Insights**: AI-powered feedback on missing skills and improvements
+- **Career Suggestions**: Personalized career path recommendations
+- **Interview Management**: Accept/decline invitations
+- **Profile Builder**: Add work experience and contact details
+- **Favorites System**: Save interesting job postings
+- **Dashboard Analytics**: Track application success rates and trends
 
-### 👤 Applicant Features:
-- Filter jobs based on resume
-- Save jobs to favorites
-- Track application status
-- Upload resume (PDF)
-- Manage profile (email, LinkedIn, contact info)
+### 🧑‍💼 Recruiter Portal
+- **Job Posting Manager**: Create and edit job listings
+- **AI Candidate Ranking**: Automatically prioritize applicants by match score
+- **Application Pipeline**: Manage candidates (Hire/Reject/Interview)
+- **Interview Scheduling**: Coordinate interviews within platform
+- **Resume Access**: Direct PDF viewing of applicant resumes
+- **Company Analytics**: Dashboard with job performance metrics
 
-### 🧑‍💼 Recruiter Features:
-- Post job listings
-- Manage and view applicants
-- Filter candidates using AI rating scores
-- Respond to applications (Hire / Reject / Set Interview)
+### 🤖 AI Capabilities
+- **Resume-Job Matching**: Cosine similarity scoring with vector embeddings
+- **Candidate Ranking**: Intelligent applicant prioritization
+- **Resume Analysis**: Skill gap identification and profile suggestions
+- **Career Recommendations**: Data-driven career path suggestions
 
-### 🤖 AI Features:
-- Resume match scoring based on job description
-- AI-based candidate ranking
-- Resume feedback (missing skills, section suggestions)
-- Career path/job recommendations based on applicant resume
+## 🛠️ Tech Stack
 
----
+### Core Framework
+- React 19 + TypeScript
+- React Router Dom (Navigation)
+- Tanstack Query (Data Fetching and Mutation)
+- Zustand (State Management)
 
-## 🧰 Tech Stack
+### Styling & UI
+- Tailwind CSS (Utility-first CSS)
+- Shadcn/UI (Accessible Components)
+- Material UI (Supplementary Components)
 
-| Tool/Library       | Description                              |
-|--------------------|------------------------------------------|
-| **React + TypeScript** | Modern UI development with static typing |
-| **Tailwind CSS**       | Utility-first styling for rapid UI design |
-| **Shadcn/UI**          | Beautiful and accessible UI components   |
-| **Material UI (MUI)**  | Additional component library             |
-| **Zustand**            | Lightweight state management             |
-| **Firebase Auth**      | User authentication                     |
+### Services
+- Firebase Authentication (User Management)
+- Cloudinary (Resume/Image Storage)
+- AI Backend (Python-based recommendation engine)
 
----
+## 🧩 Project Structure
+```bash
 
-## 💡 Inspiration
-The name TrabaHope comes from the desire to bring "trabaho" (work) and hope together—empowering job seekers and recruiters through intelligent design and technology.
-
-
+src/
+├── components/   # Reusable UI components
+├── helpers/      # Helper functions
+├── hooks/        # Custom hooks
+├── lib/          # Utility functions 
+├── mocks/        # Mock data
+├── pages/        # Route-based pages
+├── schema/       # Schema for yup form validation
+├── services/     # API clients and service wrappers
+├── store/        # Zustand state stores
+├── types/        # TypeScript interfaces
